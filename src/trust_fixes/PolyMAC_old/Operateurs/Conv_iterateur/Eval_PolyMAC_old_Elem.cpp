@@ -1,5 +1,5 @@
 /****************************************************************************
-* Copyright (c) 2022, CEA
+* Copyright (c) 2019, CEA
 * All rights reserved.
 *
 * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -14,27 +14,18 @@
 *****************************************************************************/
 //////////////////////////////////////////////////////////////////////////////
 //
-// File:        Op_PolyMAC_Elem.h
-// Directory:   $TRUST_ROOT/src/PolyMAC/Operateurs/Conv_iterateur
-// Version:     /main/5
+// File:        Eval_PolyMAC_old_Elem.cpp
+// Directory:   $TRUST_ROOT/src/PolyMAC_old/Operateurs/Conv_iterateur
+// Version:     /main/4
 //
 //////////////////////////////////////////////////////////////////////////////
+#include <Champ_P0_PolyMAC_old.h>
+#include <Eval_PolyMAC_old_Elem.h>
 
-#ifndef Op_PolyMAC_Elem_included
-#define Op_PolyMAC_Elem_included
-
-#include <TRUSTTabs_forward.h>
-class Matrice_Morse;
-class Zone_PolyMAC;
-class Zone_Cl_PolyMAC;
-
-class Op_PolyMAC_Elem
+void Eval_PolyMAC_old_Elem::associer_inconnue(const Champ_base& inco)
 {
-public :
+  assert(sub_type(Champ_P0_PolyMAC_old,inco));
+  inconnue=inco;
+}
 
-  void dimensionner(const Zone_PolyMAC&, const Zone_Cl_PolyMAC&, Matrice_Morse&) const;
-  void dimensionner_bloc_vitesse(const Zone_PolyMAC&, const Zone_Cl_PolyMAC&, Matrice_Morse&) const;
-  void modifier_pour_Cl(const Zone_PolyMAC&, const Zone_Cl_PolyMAC&, Matrice_Morse&, DoubleTab&) const;
-};
 
-#endif

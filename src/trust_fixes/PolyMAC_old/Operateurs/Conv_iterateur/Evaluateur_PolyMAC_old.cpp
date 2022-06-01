@@ -14,26 +14,43 @@
 *****************************************************************************/
 //////////////////////////////////////////////////////////////////////////////
 //
-// File:        ItPolyMACEl.h
-// Directory:   $TRUST_ROOT/src/PolyMAC/Operateurs/Conv_iterateur
-// Version:     /main/5
+// File:        Evaluateur_PolyMAC_old.cpp
+// Directory:   $TRUST_ROOT/src/PolyMAC_old/Operateurs/Conv_iterateur
+// Version:     /main/8
 //
 //////////////////////////////////////////////////////////////////////////////
 
-#ifndef It_PolyMACEl_H
-#define It_PolyMACEl_H
+#include <Evaluateur_PolyMAC_old.h>
+#include <Zone_PolyMAC_old.h>
 
-#include <Config_Template_Version_PolyMAC_Operateur.h>
-#define It_PolyMAC_Elem(_TYPE_) name2(Iterateur_PolyMAC_Elem, _TYPE_)
+Evaluateur_PolyMAC_old::Evaluateur_PolyMAC_old(const Evaluateur_PolyMAC_old& eval)
+  :
+  la_zone(eval.la_zone),la_zcl(eval.la_zcl),dimension(eval.dimension),premiere_face_bord(eval.premiere_face_bord)
+{
+  surface.ref(eval.surface);
+  elem_.ref(eval.elem_);
+  porosite.ref(eval.porosite);
+  volume_entrelaces.ref(eval.volume_entrelaces);
+  xv.ref(eval.xv);
 
-#ifdef Template_Version_PolyMAC
-#include <T_It_PolyMAC_Elem.h>
-#define declare_It_PolyMAC_Elem(_TYPE_)
+}
 
-#define implemente_It_PolyMAC_Elem(_TYPE_) \
-  typedef T_It_PolyMAC_Elem<_TYPE_> It_PolyMAC_Elem(_TYPE_);
-#else
-#include <MItPolyMACEl.h>
-#endif
+void Evaluateur_PolyMAC_old::associer_zones(const Zone_PolyMAC_old& zone_vdf,
+                                        const Zone_Cl_PolyMAC_old& zone_cl_vdf)
+{
+  la_zone = zone_vdf;
+  la_zcl = zone_cl_vdf;
+  dimension = Objet_U::dimension;
+  premiere_face_bord = zone_vdf.premiere_face_bord();
+  surface.ref(zone_vdf.face_surfaces());
+  elem_.ref(zone_vdf.face_voisins());
+  porosite.ref(zone_vdf.porosite_face());
+  volume_entrelaces.ref(zone_vdf.volumes_entrelaces());
+  xv.ref(zone_vdf.xv());
+}
 
-#endif
+void Evaluateur_PolyMAC_old::associer_porosite(const DoubleVect& poro)
+{
+  porosite.ref(poro);
+}
+

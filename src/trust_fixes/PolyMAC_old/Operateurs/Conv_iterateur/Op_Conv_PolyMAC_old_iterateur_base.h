@@ -14,23 +14,23 @@
 *****************************************************************************/
 //////////////////////////////////////////////////////////////////////////////
 //
-// File:        Op_Conv_PolyMAC_iterateur_base.h
-// Directory:   $TRUST_ROOT/src/PolyMAC/Operateurs/Conv_iterateur
+// File:        Op_Conv_PolyMAC_old_iterateur_base.h
+// Directory:   $TRUST_ROOT/src/PolyMAC_old/Operateurs/Conv_iterateur
 // Version:     /main/14
 //
 //////////////////////////////////////////////////////////////////////////////
 
 
-#ifndef Op_Conv_PolyMAC_iterateur_base_included
-#define Op_Conv_PolyMAC_iterateur_base_included
+#ifndef Op_Conv_PolyMAC_old_iterateur_base_included
+#define Op_Conv_PolyMAC_old_iterateur_base_included
 
 #include <Operateur_Conv.h>
-#include <Iterateur_PolyMAC_base.h>
+#include <Iterateur_PolyMAC_old_base.h>
 
 //
-// .DESCRIPTION class Op_Conv_PolyMAC_iterateur_base
+// .DESCRIPTION class Op_Conv_PolyMAC_old_iterateur_base
 //
-// Classe de base des operateurs de convection PolyMAC
+// Classe de base des operateurs de convection PolyMAC_old
 
 //
 // .SECTION voir aussi
@@ -40,18 +40,18 @@
 
 //////////////////////////////////////////////////////////////////////////////
 //
-// CLASS: Op_Conv_PolyMAC_iterateur_base
+// CLASS: Op_Conv_PolyMAC_old_iterateur_base
 //
 //////////////////////////////////////////////////////////////////////////////
 
-class Op_Conv_PolyMAC_iterateur_base : public Operateur_Conv_base
+class Op_Conv_PolyMAC_old_iterateur_base : public Operateur_Conv_base
 {
 
-  Declare_base(Op_Conv_PolyMAC_iterateur_base);
+  Declare_base(Op_Conv_PolyMAC_old_iterateur_base);
 
 public:
 
-  inline Op_Conv_PolyMAC_iterateur_base( const Iterateur_PolyMAC_base&);
+  inline Op_Conv_PolyMAC_old_iterateur_base( const Iterateur_PolyMAC_old_base&);
   inline DoubleTab& ajouter(const DoubleTab& inco, DoubleTab& resu) const override;
   inline DoubleTab& calculer(const DoubleTab& inco, DoubleTab& resu ) const override;
   inline void contribuer_a_avec(const DoubleTab&, Matrice_Morse&) const override;
@@ -67,24 +67,24 @@ public:
   void associer_zone_cl_dis(const Zone_Cl_dis_base&) override;
 protected:
 
-  Iterateur_PolyMAC iter;
+  Iterateur_PolyMAC_old iter;
 
 };
 
 //
-// Fonctions inline de la classe Op_Conv_PolyMAC_iterateur_base
+// Fonctions inline de la classe Op_Conv_PolyMAC_old_iterateur_base
 //
 
 // Description:
 // constructeur
-inline Op_Conv_PolyMAC_iterateur_base::Op_Conv_PolyMAC_iterateur_base(const Iterateur_PolyMAC_base& iter_base) :
+inline Op_Conv_PolyMAC_old_iterateur_base::Op_Conv_PolyMAC_old_iterateur_base(const Iterateur_PolyMAC_old_base& iter_base) :
   iter(iter_base)
 {}
 
 // Description:
 // ajoute la contribution de la convection au second membre resu
 // renvoie resu
-inline DoubleTab& Op_Conv_PolyMAC_iterateur_base::ajouter(const DoubleTab& inco, DoubleTab& resu) const
+inline DoubleTab& Op_Conv_PolyMAC_old_iterateur_base::ajouter(const DoubleTab& inco, DoubleTab& resu) const
 {
   return iter.ajouter(inco, resu);
 }
@@ -92,13 +92,13 @@ inline DoubleTab& Op_Conv_PolyMAC_iterateur_base::ajouter(const DoubleTab& inco,
 //Description:
 //on assemble la matrice.
 
-inline void Op_Conv_PolyMAC_iterateur_base::contribuer_a_avec(const DoubleTab& inco,
+inline void Op_Conv_PolyMAC_old_iterateur_base::contribuer_a_avec(const DoubleTab& inco,
                                                               Matrice_Morse& matrice) const
 {
   iter.ajouter_contribution(inco, matrice);
 }
 
-inline void Op_Conv_PolyMAC_iterateur_base::contribuer_bloc_vitesse(const DoubleTab& inco,
+inline void Op_Conv_PolyMAC_old_iterateur_base::contribuer_bloc_vitesse(const DoubleTab& inco,
                                                                     Matrice_Morse& matrice) const
 {
   iter.ajouter_contribution_vitesse(inco, matrice);
@@ -107,7 +107,7 @@ inline void Op_Conv_PolyMAC_iterateur_base::contribuer_bloc_vitesse(const Double
 //Description:
 //on ajoute la contribution du second membre.
 
-inline void Op_Conv_PolyMAC_iterateur_base::contribuer_au_second_membre(DoubleTab& resu) const
+inline void Op_Conv_PolyMAC_old_iterateur_base::contribuer_au_second_membre(DoubleTab& resu) const
 {
   iter.contribuer_au_second_membre(resu);
 }
@@ -116,7 +116,7 @@ inline void Op_Conv_PolyMAC_iterateur_base::contribuer_au_second_membre(DoubleTa
 // Description:
 // calcule la contribution de la convection, la range dans resu
 // renvoie resu
-inline DoubleTab& Op_Conv_PolyMAC_iterateur_base::calculer(const DoubleTab& inco, DoubleTab& resu) const
+inline DoubleTab& Op_Conv_PolyMAC_old_iterateur_base::calculer(const DoubleTab& inco, DoubleTab& resu) const
 {
   return iter.calculer(inco, resu);
 }

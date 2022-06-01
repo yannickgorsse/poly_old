@@ -1,5 +1,5 @@
 /****************************************************************************
-* Copyright (c) 2019, CEA
+* Copyright (c) 2022, CEA
 * All rights reserved.
 *
 * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -14,23 +14,27 @@
 *****************************************************************************/
 //////////////////////////////////////////////////////////////////////////////
 //
-// File:        Op_Conv_PolyMAC.h
-// Directory:   $TRUST_ROOT/src/PolyMAC/Operateurs/Conv_iterateur
-// Version:     /main/6
+// File:        Op_PolyMAC_old_Elem.h
+// Directory:   $TRUST_ROOT/src/PolyMAC_old/Operateurs/Conv_iterateur
+// Version:     /main/5
 //
 //////////////////////////////////////////////////////////////////////////////
 
-#ifndef Op_Conv_PolyMAC_H
-#define Op_Conv_PolyMAC_H
+#ifndef Op_PolyMAC_old_Elem_included
+#define Op_PolyMAC_old_Elem_included
 
-#include <Op_Conv_Amont_PolyMAC_Elem.h>
-#include <Op_Conv_Quick_PolyMAC_Elem.h>
-#include <Op_Conv_Amont_PolyMAC_Face.h>
-#include <Op_Conv_Quick_PolyMAC_Face.h>
-#include <OpPolyMACFaQuiPe.h>
-#include <OpPolyMACElQuiPe.h>
-#include <Op_Conv_Centre_PolyMAC_Face.h>
-#include <Op_Conv_centre4_PolyMAC_Face.h>
-#include <Op_Conv_centre4_PolyMAC_Elem.h>
-#include <Op_Conv_centre_PolyMAC_Elem.h>
+#include <TRUSTTabs_forward.h>
+class Matrice_Morse;
+class Zone_PolyMAC_old;
+class Zone_Cl_PolyMAC_old;
+
+class Op_PolyMAC_old_Elem
+{
+public :
+
+  void dimensionner(const Zone_PolyMAC_old&, const Zone_Cl_PolyMAC_old&, Matrice_Morse&) const;
+  void dimensionner_bloc_vitesse(const Zone_PolyMAC_old&, const Zone_Cl_PolyMAC_old&, Matrice_Morse&) const;
+  void modifier_pour_Cl(const Zone_PolyMAC_old&, const Zone_Cl_PolyMAC_old&, Matrice_Morse&, DoubleTab&) const;
+};
+
 #endif

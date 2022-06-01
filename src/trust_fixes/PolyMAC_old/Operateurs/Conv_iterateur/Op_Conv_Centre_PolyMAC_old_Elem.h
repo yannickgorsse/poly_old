@@ -1,5 +1,5 @@
 /****************************************************************************
-* Copyright (c) 2015 - 2016, CEA
+* Copyright (c) 2022, CEA
 * All rights reserved.
 *
 * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -14,76 +14,85 @@
 *****************************************************************************/
 //////////////////////////////////////////////////////////////////////////////
 //
-// File:        Op_Conv_centre_PolyMAC_Elem.h
-// Directory:   $TRUST_ROOT/src/PolyMAC/Operateurs
+// File:        Op_Conv_Centre_PolyMAC_old_Elem.h
+// Directory:   $TRUST_ROOT/src/PolyMAC_old/Operateurs/Conv_iterateur
 // Version:     /main/11
 //
 //////////////////////////////////////////////////////////////////////////////
 
 
-#ifndef Op_Conv_centre_PolyMAC_Elem_included
-#define Op_Conv_centre_PolyMAC_Elem_included
+#ifndef Op_Conv_Centre_PolyMAC_old_Elem_included
+#define Op_Conv_Centre_PolyMAC_old_Elem_included
 
-#include <ItPolyMACEl.h>
-#include <Eval_centre_PolyMAC_Elem.h>
-#include <Op_PolyMAC_Elem.h>
+#include <ItPolyMAC_oldEl.h>
+#include <Eval_centre_PolyMAC_old_Elem.h>
+#include <Op_PolyMAC_old_Elem.h>
 
 //
-// .DESCRIPTION class Op_Conv_centre_PolyMAC_Elem
+// .DESCRIPTION class Op_Conv_Centre_PolyMAC_old_Elem
 //
 //  Cette classe represente l'operateur de convection associe a une equation de
 //  transport d'un scalaire.
-//  La discretisation est PolyMAC
+//  La discretisation est PolyMAC_old
 //  Le champ convecte est scalaire
-//  Le schema de convection est du type Centre (sur 2 points)
-//  L'iterateur associe est de type Iterateur_PolyMAC_Elem
-//  L'evaluateur associe est de type Eval_centre_PolyMAC_Elem
+//  Le schema de convection est du type Centre
+//  L'iterateur associe est de type Iterateur_PolyMAC_old_Elem
+//  L'evaluateur associe est de type Eval_centre_PolyMAC_old_Elem
 
 //
 // .SECTION voir aussi
 //
 //
-declare_It_PolyMAC_Elem(Eval_centre_PolyMAC_Elem)
+
+declare_It_PolyMAC_old_Elem(Eval_centre_PolyMAC_old_Elem)
 
 //////////////////////////////////////////////////////////////////////////////
 //
-// CLASS: Op_Conv_centre_PolyMAC_Elem
+// CLASS: Op_Conv_Centre_PolyMAC_old_Elem
 //
 //////////////////////////////////////////////////////////////////////////////
 
-class Op_Conv_centre_PolyMAC_Elem : public Op_Conv_PolyMAC_iterateur_base, public Op_PolyMAC_Elem
+class Op_Conv_Centre_PolyMAC_old_Elem : public Op_Conv_PolyMAC_old_iterateur_base, public Op_PolyMAC_old_Elem
 {
-  Declare_instanciable_sans_constructeur(Op_Conv_centre_PolyMAC_Elem);
+
+  Declare_instanciable_sans_constructeur(Op_Conv_Centre_PolyMAC_old_Elem);
 
 public:
 
-  Op_Conv_centre_PolyMAC_Elem();
-  void associer(const Zone_dis& , const Zone_Cl_dis& , const Champ_Inc&  ) override;
-  inline void associer_vitesse(const Champ_base& ) override;
-  const Champ_Inc_base& vitesse() const override;
-  Champ_Inc_base& vitesse() override;
-
+  Op_Conv_Centre_PolyMAC_old_Elem();
+  void associer(const Zone_dis& , const Zone_Cl_dis& ,const Champ_Inc& ) override;
+  void associer_vitesse(const Champ_base& ) override;
+  const Champ_base& vitesse() const override;
+  Champ_base& vitesse() override;
   inline void dimensionner(Matrice_Morse& ) const override;
+  inline void dimensionner_bloc_vitesse(Matrice_Morse& ) const override;
   inline void modifier_pour_Cl(Matrice_Morse&, DoubleTab&) const override;
+
+protected:
+  inline Op_Conv_Centre_PolyMAC_old_Elem(const Iterateur_PolyMAC_old_base&);
 };
 
+// Ce constructeur permet de creer des classes filles (exemple : front_tracking)
+inline Op_Conv_Centre_PolyMAC_old_Elem::Op_Conv_Centre_PolyMAC_old_Elem(const Iterateur_PolyMAC_old_base& it)
+  : Op_Conv_PolyMAC_old_iterateur_base(it)
+{
+}
+
 // Description:
-// associe le champ de vitesse a l'evaluateur
-inline void Op_Conv_centre_PolyMAC_Elem::associer_vitesse(const Champ_base& ch_vit)
+// on dimensionne notre matrice.
+inline  void Op_Conv_Centre_PolyMAC_old_Elem::dimensionner(Matrice_Morse& matrice) const
 {
-  const Champ_Face& vit = (Champ_Face&) ch_vit;
-
-  Eval_centre_PolyMAC_Elem& eval_conv = (Eval_centre_PolyMAC_Elem&) iter.evaluateur();
-  eval_conv.associer(vit );                // Eval_Conv_PolyMAC::associer
+  Op_PolyMAC_old_Elem::dimensionner(iter.zone(), iter.zone_Cl(), matrice);
 }
 
-inline  void Op_Conv_centre_PolyMAC_Elem::dimensionner(Matrice_Morse& matrice) const
+inline  void Op_Conv_Centre_PolyMAC_old_Elem::dimensionner_bloc_vitesse(Matrice_Morse& matrice) const
 {
-  Op_PolyMAC_Elem::dimensionner(iter.zone(), iter.zone_Cl(), matrice);
+  Op_PolyMAC_old_Elem::dimensionner_bloc_vitesse(iter.zone(), iter.zone_Cl(), matrice);
 }
 
-inline void Op_Conv_centre_PolyMAC_Elem::modifier_pour_Cl(Matrice_Morse& matrice, DoubleTab& secmem) const
+inline void Op_Conv_Centre_PolyMAC_old_Elem::modifier_pour_Cl(Matrice_Morse& matrice, DoubleTab& secmem) const
 {
-  Op_PolyMAC_Elem::modifier_pour_Cl(iter.zone(), iter.zone_Cl(), matrice, secmem);
+  Op_PolyMAC_old_Elem::modifier_pour_Cl(iter.zone(), iter.zone_Cl(), matrice, secmem);
 }
+
 #endif

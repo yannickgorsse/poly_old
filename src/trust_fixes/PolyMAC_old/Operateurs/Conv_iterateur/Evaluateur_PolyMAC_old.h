@@ -1,5 +1,5 @@
 /****************************************************************************
-* Copyright (c) 2015 - 2016, CEA
+* Copyright (c) 2022, CEA
 * All rights reserved.
 *
 * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -14,63 +14,69 @@
 *****************************************************************************/
 //////////////////////////////////////////////////////////////////////////////
 //
-// File:        Op_Conv_centre4_PolyMAC_Elem.h
-// Directory:   $TRUST_ROOT/src/PolyMAC/Operateurs
-// Version:     /main/10
+// File:        Evaluateur_PolyMAC_old.h
+// Directory:   $TRUST_ROOT/src/PolyMAC_old/Operateurs/Conv_iterateur
+// Version:     /main/12
 //
 //////////////////////////////////////////////////////////////////////////////
 
 
-#ifndef Op_Conv_centre4_PolyMAC_Elem_included
-#define Op_Conv_centre4_PolyMAC_Elem_included
+#ifndef Evaluateur_PolyMAC_old_included
+#define Evaluateur_PolyMAC_old_included
 
-#include <ItPolyMACEl.h>
-#include <Eval_centre4_PolyMAC_Elem.h>
+#include <Ref_Zone_Cl_PolyMAC_old.h>
+#include <Ref_Zone_PolyMAC_old.h>
+#include <TRUSTTab.h>
 
 //
-// .DESCRIPTION class Op_Conv_centre4_PolyMAC_Elem
+// .DESCRIPTION class Evaluateur_PolyMAC_old
 //
-//  Cette classe represente l'operateur de convection associe a une equation de
-//  transport d'un scalaire.
-//  La discretisation est PolyMAC
-//  Le champ convecte est scalaire
-//  Le schema de convection est du type Centre (sur 4 points)
-//  L'iterateur associe est de type Iterateur_PolyMAC_Elem
-//  L'evaluateur associe est de type Eval_centre4_PolyMAC_Elem
+// Classe de base des evaluateurs PolyMAC_old. Cette classe n'appartient pas a la
+// hierarchie des Objet_U.
+// Cette classe porte une reference a un objet de type Zone_PolyMAC_old et une
+// reference a un objet de type Zone_Cl_PolyMAC_old. Elle porte des tableaux locaux
+// qui sont en fait des references aux tableaux de l'objet de type Zone_PolyMAC_old
+// (ces tableaux locaux n'existent pas en memoire).
 
 //
 // .SECTION voir aussi
 //
 //
-declare_It_PolyMAC_Elem(Eval_centre4_PolyMAC_Elem)
 
-//////////////////////////////////////////////////////////////////////////////
-//
-// CLASS: Op_Conv_centre4_PolyMAC_Elem
-//
-//////////////////////////////////////////////////////////////////////////////
 
-class Op_Conv_centre4_PolyMAC_Elem : public Op_Conv_PolyMAC_iterateur_base
+class Evaluateur_PolyMAC_old
 {
-  Declare_instanciable_sans_constructeur(Op_Conv_centre4_PolyMAC_Elem);
 
 public:
 
-  Op_Conv_centre4_PolyMAC_Elem();
-  void associer(const Zone_dis& , const Zone_Cl_dis& , const Champ_Inc&  ) override;
-  inline void associer_vitesse(const Champ_base& ) override;
-  const Champ_Inc_base& vitesse() const override;
-  Champ_Inc_base& vitesse() override;
+  inline Evaluateur_PolyMAC_old();
+  inline virtual ~Evaluateur_PolyMAC_old() {};
+
+  Evaluateur_PolyMAC_old(const Evaluateur_PolyMAC_old& );
+  virtual void associer_zones(const Zone_PolyMAC_old& , const Zone_Cl_PolyMAC_old& );
+  virtual void associer_porosite(const DoubleVect&);
+
+protected:
+
+  REF(Zone_PolyMAC_old) la_zone;
+  REF(Zone_Cl_PolyMAC_old) la_zcl;
+  int dimension;
+  int premiere_face_bord;
+  IntTab elem_;                       // les 2 elements voisins d'une face
+  DoubleVect surface;          // surfaces des faces
+  DoubleVect porosite;               // porosites surfaciques
+  DoubleVect volume_entrelaces;//
+  DoubleTab xv;                // coord des centres des faces
+
+
 };
 
-// Description:
-// associe le champ de vitesse a l'evaluateur
-inline void Op_Conv_centre4_PolyMAC_Elem::associer_vitesse(const Champ_base& ch_vit)
-{
-  const Champ_Face& vit = (Champ_Face&) ch_vit;
+//
+//   Fonctions inline de Evaluateur_PolyMAC_old
+//
 
-  Eval_centre4_PolyMAC_Elem& eval_conv = (Eval_centre4_PolyMAC_Elem&) iter.evaluateur();
-  eval_conv.associer(vit );                // Eval_Conv_PolyMAC::associer
-}
+inline Evaluateur_PolyMAC_old::Evaluateur_PolyMAC_old()
+{}
+
 
 #endif

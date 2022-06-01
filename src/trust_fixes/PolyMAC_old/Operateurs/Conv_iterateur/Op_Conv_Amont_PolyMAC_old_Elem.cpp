@@ -14,24 +14,24 @@
 *****************************************************************************/
 //////////////////////////////////////////////////////////////////////////////
 //
-// File:        Op_Conv_Centre_PolyMAC_Elem.cpp
-// Directory:   $TRUST_ROOT/src/PolyMAC/Operateurs/Conv_iterateur
+// File:        Op_Conv_Amont_PolyMAC_old_Elem.cpp
+// Directory:   $TRUST_ROOT/src/PolyMAC_old/Operateurs/Conv_iterateur
 // Version:     /main/9
 //
 //////////////////////////////////////////////////////////////////////////////
 
-#include <Op_Conv_Centre_PolyMAC_Elem.h>
-#include <Champ_P0_PolyMAC.h>
-#include <Champ_Face_PolyMAC.h>
+#include <Op_Conv_Amont_PolyMAC_old_Elem.h>
+#include <Champ_P0_PolyMAC_old.h>
+#include <Champ_Face_PolyMAC_old.h>
 
-Implemente_instanciable_sans_constructeur(Op_Conv_Centre_PolyMAC_Elem,"Op_Conv_Centre_PolyMAC_Elem_PolyMAC",Op_Conv_PolyMAC_iterateur_base);
+Implemente_instanciable_sans_constructeur(Op_Conv_Amont_PolyMAC_old_Elem,"Op_Conv_Amont_PolyMAC_old_Elem_PolyMAC_old",Op_Conv_PolyMAC_old_iterateur_base);
 
-implemente_It_PolyMAC_Elem(Eval_centre_PolyMAC_Elem)
+implemente_It_PolyMAC_old_Elem(Eval_Amont_PolyMAC_old_Elem)
 
 //// printOn
 //
 
-Sortie& Op_Conv_Centre_PolyMAC_Elem::printOn(Sortie& s ) const
+Sortie& Op_Conv_Amont_PolyMAC_old_Elem::printOn(Sortie& s ) const
 {
   return s << que_suis_je() ;
 }
@@ -39,7 +39,7 @@ Sortie& Op_Conv_Centre_PolyMAC_Elem::printOn(Sortie& s ) const
 //// readOn
 //
 
-Entree& Op_Conv_Centre_PolyMAC_Elem::readOn(Entree& s )
+Entree& Op_Conv_Amont_PolyMAC_old_Elem::readOn(Entree& s )
 {
   return s ;
 }
@@ -47,49 +47,49 @@ Entree& Op_Conv_Centre_PolyMAC_Elem::readOn(Entree& s )
 
 // Description:
 // complete l'iterateur et l'evaluateur
-void Op_Conv_Centre_PolyMAC_Elem::associer(const Zone_dis& zone_dis,
-                                           const Zone_Cl_dis& zone_cl_dis,
-                                           const Champ_Inc& ch_transporte)
+void Op_Conv_Amont_PolyMAC_old_Elem::associer(const Zone_dis& zone_dis,
+                                          const Zone_Cl_dis& zone_cl_dis,
+                                          const Champ_Inc& ch_transporte)
 {
-  const Zone_PolyMAC& zvdf = ref_cast(Zone_PolyMAC,zone_dis.valeur());
-  const Zone_Cl_PolyMAC& zclvdf = ref_cast(Zone_Cl_PolyMAC,zone_cl_dis.valeur());
-  const Champ_P0_PolyMAC& inco = ref_cast(Champ_P0_PolyMAC,ch_transporte.valeur());
+  const Zone_PolyMAC_old& zvdf = ref_cast(Zone_PolyMAC_old,zone_dis.valeur());
+  const Zone_Cl_PolyMAC_old& zclvdf = ref_cast(Zone_Cl_PolyMAC_old,zone_cl_dis.valeur());
+  const Champ_P0_PolyMAC_old& inco = ref_cast(Champ_P0_PolyMAC_old,ch_transporte.valeur());
 
   iter->associer(zvdf, zclvdf, *this);
 
-  Eval_centre_PolyMAC_Elem& eval_conv = (Eval_centre_PolyMAC_Elem&) iter.evaluateur();
-  eval_conv.associer_zones(zvdf, zclvdf );          // Evaluateur_PolyMAC::associer
-  eval_conv.associer_inconnue(inco );        // Eval_PolyMAC_Elem::associer_inconnue
+  Eval_Amont_PolyMAC_old_Elem& eval_conv = (Eval_Amont_PolyMAC_old_Elem&) iter.evaluateur();
+  eval_conv.associer_zones(zvdf, zclvdf );          // Evaluateur_PolyMAC_old::associer
+  eval_conv.associer_inconnue(inco );        // Eval_PolyMAC_old_Elem::associer_inconnue
 }
 
 // Description:
 // associe le champ de vitesse a l'evaluateur
-void Op_Conv_Centre_PolyMAC_Elem::associer_vitesse(const Champ_base& ch_vit)
+void Op_Conv_Amont_PolyMAC_old_Elem::associer_vitesse(const Champ_base& ch_vit)
 {
-  const Champ_Face_PolyMAC& vit = ref_cast(Champ_Face_PolyMAC, ch_vit);
+  const Champ_Face_PolyMAC_old& vit = ref_cast(Champ_Face_PolyMAC_old, ch_vit);
 
-  Eval_centre_PolyMAC_Elem& eval_conv = (Eval_centre_PolyMAC_Elem&) iter.evaluateur();
-  eval_conv.associer(vit);                // Eval_Conv_PolyMAC::associer
+  Eval_Amont_PolyMAC_old_Elem& eval_conv = (Eval_Amont_PolyMAC_old_Elem&) iter.evaluateur();
+  eval_conv.associer(vit);                // Eval_Conv_PolyMAC_old::associer
 }
 
-const Champ_base& Op_Conv_Centre_PolyMAC_Elem::vitesse() const
+const Champ_base& Op_Conv_Amont_PolyMAC_old_Elem::vitesse() const
 {
-  Eval_centre_PolyMAC_Elem& eval_conv = (Eval_centre_PolyMAC_Elem&) iter.evaluateur();
+  Eval_Amont_PolyMAC_old_Elem& eval_conv = (Eval_Amont_PolyMAC_old_Elem&) iter.evaluateur();
   return eval_conv.vitesse();
 }
 
-Champ_base& Op_Conv_Centre_PolyMAC_Elem::vitesse()
+Champ_base& Op_Conv_Amont_PolyMAC_old_Elem::vitesse()
 {
-  Eval_centre_PolyMAC_Elem& eval_conv = (Eval_centre_PolyMAC_Elem&) iter.evaluateur();
+  Eval_Amont_PolyMAC_old_Elem& eval_conv = (Eval_Amont_PolyMAC_old_Elem&) iter.evaluateur();
   return eval_conv.vitesse();
 }
 
 //
-// Fonctions inline de la classe Op_Conv_Centre_PolyMAC_Elem
+// Fonctions inline de la classe Op_Conv_Amont_PolyMAC_old_Elem
 //
 // Description:
 // constructeur
-Op_Conv_Centre_PolyMAC_Elem::Op_Conv_Centre_PolyMAC_Elem() :
-  Op_Conv_PolyMAC_iterateur_base(It_PolyMAC_Elem(Eval_centre_PolyMAC_Elem)())
+Op_Conv_Amont_PolyMAC_old_Elem::Op_Conv_Amont_PolyMAC_old_Elem() :
+  Op_Conv_PolyMAC_old_iterateur_base(It_PolyMAC_old_Elem(Eval_Amont_PolyMAC_old_Elem)())
 {
 }

@@ -14,36 +14,14 @@
 *****************************************************************************/
 //////////////////////////////////////////////////////////////////////////////
 //
-// File:        Eval_Conv_PolyMAC.cpp
-// Directory:   $TRUST_ROOT/src/PolyMAC/Operateurs/Conv_iterateur
-// Version:     /main/4
+// File:        Config_Template_Version_PolyMAC_old_Operateur.h
+// Directory:   $TRUST_ROOT/src/PolyMAC_old/Operateurs/Conv_iterateur
+// Version:     1
 //
 //////////////////////////////////////////////////////////////////////////////
+#ifndef Config_Template_Version_PolyMAC_old_Operateur_included
+#define Config_Template_Version_PolyMAC_old_Operateur_included
 
-#include <Eval_Conv_PolyMAC.h>
-#include <Champ_Face_PolyMAC.h>
-
-const Champ_Inc_base& Eval_Conv_PolyMAC::vitesse() const
-{
-  return vitesse_.valeur();
-}
-
-Champ_Inc_base& Eval_Conv_PolyMAC::vitesse()
-{
-  return vitesse_.valeur();
-}
-
-// Description:
-// associe le champ de vitesse transportante
-void Eval_Conv_PolyMAC::associer(const Champ_Face_PolyMAC& vit)
-{
-  vitesse_=vit;
-  dt_vitesse.ref(vit.valeurs());
-}
-
-// Description:
-// mise a jour du DoubleTab vitesse
-void Eval_Conv_PolyMAC::mettre_a_jour( )
-{
-  dt_vitesse.ref(vitesse_->valeurs());
-}
+// To use template version of operateur in PolyMAC_old define Template_Version_PolyMAC_old to 1
+#define Template_Version_PolyMAC_old 1
+#endif

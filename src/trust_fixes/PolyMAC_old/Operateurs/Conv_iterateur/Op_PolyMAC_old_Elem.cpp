@@ -14,15 +14,15 @@
 *****************************************************************************/
 //////////////////////////////////////////////////////////////////////////////
 //
-// File:        Op_PolyMAC_Elem.cpp
-// Directory:   $TRUST_ROOT/src/PolyMAC/Operateurs/Conv_iterateur
+// File:        Op_PolyMAC_old_Elem.cpp
+// Directory:   $TRUST_ROOT/src/PolyMAC_old/Operateurs/Conv_iterateur
 // Version:     /main/10
 //
 //////////////////////////////////////////////////////////////////////////////
 
-#include <Op_PolyMAC_Elem.h>
-#include <Zone_PolyMAC.h>
-#include <Zone_Cl_PolyMAC.h>
+#include <Op_PolyMAC_old_Elem.h>
+#include <Zone_PolyMAC_old.h>
+#include <Zone_Cl_PolyMAC_old.h>
 #include <Periodique.h>
 #include <Matrice_Morse.h>
 #include <Equation_base.h>
@@ -30,8 +30,8 @@
 #include <Matrix_tools.h>
 #include <Array_tools.h>
 
-void Op_PolyMAC_Elem::dimensionner(const Zone_PolyMAC& la_zone,
-                                   const Zone_Cl_PolyMAC& la_zone_cl,
+void Op_PolyMAC_old_Elem::dimensionner(const Zone_PolyMAC_old& la_zone,
+                                   const Zone_Cl_PolyMAC_old& la_zone_cl,
                                    Matrice_Morse& la_matrice) const
 {
   // Dimensionnement de la matrice qui devra recevoir les coefficients provenant de
@@ -51,8 +51,8 @@ void Op_PolyMAC_Elem::dimensionner(const Zone_PolyMAC& la_zone,
 
   const DoubleTab& champ_inconnue = la_zone_cl.equation().inconnue().valeurs();
   if (champ_inconnue.nb_dim() == 2) nb_comp = champ_inconnue.dimension(1);
-  //Cerr << "nb_compo de Op_PolyMAC_Elem::dimensionner" << nb_comp << finl;
-  //Cerr << " nombre d'elements de Op_PolyMAC_Elem::dimensionner" << n1 << finl;
+  //Cerr << "nb_compo de Op_PolyMAC_old_Elem::dimensionner" << nb_comp << finl;
+  //Cerr << " nombre d'elements de Op_PolyMAC_old_Elem::dimensionner" << n1 << finl;
 
   la_matrice.dimensionner((n1 + n2) * nb_comp, (n1 + n2) * nb_comp, 0);
 
@@ -185,8 +185,8 @@ void Op_PolyMAC_Elem::dimensionner(const Zone_PolyMAC& la_zone,
   // Cerr << "tab2 = " << tab2 << finl;
 }
 
-void Op_PolyMAC_Elem::dimensionner_bloc_vitesse(const Zone_PolyMAC& la_zone,
-                                                const Zone_Cl_PolyMAC& la_zone_cl,
+void Op_PolyMAC_old_Elem::dimensionner_bloc_vitesse(const Zone_PolyMAC_old& la_zone,
+                                                const Zone_Cl_PolyMAC_old& la_zone_cl,
                                                 Matrice_Morse& matrice) const
 {
 
@@ -218,8 +218,8 @@ void Op_PolyMAC_Elem::dimensionner_bloc_vitesse(const Zone_PolyMAC& la_zone,
 }
 
 
-void Op_PolyMAC_Elem:: modifier_pour_Cl(const Zone_PolyMAC& la_zone,
-                                        const Zone_Cl_PolyMAC& la_zone_cl,
+void Op_PolyMAC_old_Elem:: modifier_pour_Cl(const Zone_PolyMAC_old& la_zone,
+                                        const Zone_Cl_PolyMAC_old& la_zone_cl,
                                         Matrice_Morse& la_matrice, DoubleTab& secmem) const
 {
   // Dimensionnement de la matrice qui devra recevoir les coefficients provenant de
@@ -232,6 +232,6 @@ void Op_PolyMAC_Elem:: modifier_pour_Cl(const Zone_PolyMAC& la_zone,
   //  const IntVect& orientation=la_zone.orientation();
 
   // Prise en compte des conditions de type periodicite
-  //Cerr << "dans Op_PolyMAC_Elem:: modifier_pour_Cl" << finl;
+  //Cerr << "dans Op_PolyMAC_old_Elem:: modifier_pour_Cl" << finl;
 
 }

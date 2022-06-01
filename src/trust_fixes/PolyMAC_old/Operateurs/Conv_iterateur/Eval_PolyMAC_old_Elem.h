@@ -14,15 +14,15 @@
 *****************************************************************************/
 //////////////////////////////////////////////////////////////////////////////
 //
-// File:        Eval_PolyMAC_Elem.h
-// Directory:   $TRUST_ROOT/src/PolyMAC/Operateurs/Conv_iterateur
+// File:        Eval_PolyMAC_old_Elem.h
+// Directory:   $TRUST_ROOT/src/PolyMAC_old/Operateurs/Conv_iterateur
 // Version:     /main/11
 //
 //////////////////////////////////////////////////////////////////////////////
 
 
-#ifndef Eval_PolyMAC_Elem_included
-#define Eval_PolyMAC_Elem_included
+#ifndef Eval_PolyMAC_old_Elem_included
+#define Eval_PolyMAC_old_Elem_included
 
 #include <Ref_Champ_base.h>
 #include <Periodique.h>
@@ -37,20 +37,20 @@
 #include <Neumann_sortie_libre.h>
 
 //
-// .DESCRIPTION class Eval_PolyMAC_Elem
+// .DESCRIPTION class Eval_PolyMAC_old_Elem
 //
 // Cette classe represente le prototype fonctionnel
 // des evaluateurs de flux associes aux equations de
 // conservation integrees sur les elements
 
 
-class Eval_PolyMAC_Elem
+class Eval_PolyMAC_old_Elem
 {
 
 public:
 
-  inline Eval_PolyMAC_Elem();
-  inline virtual ~Eval_PolyMAC_Elem() {};
+  inline Eval_PolyMAC_old_Elem();
+  inline virtual ~Eval_PolyMAC_old_Elem() {};
   void associer_inconnue(const Champ_base& );
 
   virtual int calculer_flux_faces_symetrie() const=0;
@@ -64,7 +64,7 @@ public:
   virtual int calculer_flux_faces_echange_global_impose() const=0;
   virtual int calculer_flux_faces_periodique() const=0;
 
-  //virtual int calculer_flux_faces_nouvelle_Cl_PolyMAC() const=0;
+  //virtual int calculer_flux_faces_nouvelle_Cl_PolyMAC_old() const=0;
 
 
   // Fonctions qui servent a calculer le flux de grandeurs scalaires
@@ -80,7 +80,7 @@ public:
   virtual double flux_face(const DoubleTab&, int , int , int , const Echange_externe_impose&, int ) const=0;
   virtual double flux_face(const DoubleTab&, int , const Echange_global_impose&, int ) const=0;
   virtual double flux_face(const DoubleTab&, int , const Periodique&, int ) const=0;
-  //virtual inline double flux_face(const DoubleTab&, int , const Nouvelle_Cl_PolyMAC&, int ) const=0;
+  //virtual inline double flux_face(const DoubleTab&, int , const Nouvelle_Cl_PolyMAC_old&, int ) const=0;
 
   virtual inline double flux_faces_interne(const DoubleTab&, int ) const=0;
 
@@ -109,7 +109,7 @@ public:
   virtual void flux_face(const DoubleTab&, int , const Periodique&,
                          int, DoubleVect& flux) const=0;
 
-  //virtual inline void flux_face(const DoubleTab&, int ,const Nouvelle_Cl_PolyMAC&,
+  //virtual inline void flux_face(const DoubleTab&, int ,const Nouvelle_Cl_PolyMAC_old&,
   //                              int, DoubleVect& flux) const=0;
 
   virtual inline void flux_faces_interne(const DoubleTab&, int ,
@@ -207,7 +207,7 @@ public:
     return 0.;
   }
 
-  //virtual void coeffs_face(int , const Nouvelle_Cl_PolyMAC&, int,
+  //virtual void coeffs_face(int , const Nouvelle_Cl_PolyMAC_old&, int,
   //                       double& aii, double& ajj ) const { ; }
 
   virtual void coeffs_faces_interne(int, double& aii, double& ajj ) const
@@ -263,7 +263,7 @@ public:
     return 0;
   }
 
-  //virtual double secmem_face(int , const Nouvelle_Cl_PolyMAC&, int ) const { ; }
+  //virtual double secmem_face(int , const Nouvelle_Cl_PolyMAC_old&, int ) const { ; }
 
 
   // Fonctions qui servent a calculer les coefficients de la matrice pour des grandeurs
@@ -373,7 +373,7 @@ public:
     ;
   }
 
-  //virtual void secmem_face(int , const Nouvelle_Cl_PolyMAC&, int, DoubleVect& ) const { ; }
+  //virtual void secmem_face(int , const Nouvelle_Cl_PolyMAC_old&, int, DoubleVect& ) const { ; }
 protected:
 
   REF(Champ_base) inconnue;
@@ -381,9 +381,9 @@ protected:
 };
 
 //
-// Fonctions inline de la classe Eval_PolyMAC_Elem
+// Fonctions inline de la classe Eval_PolyMAC_old_Elem
 //
 
-inline Eval_PolyMAC_Elem::Eval_PolyMAC_Elem()
+inline Eval_PolyMAC_old_Elem::Eval_PolyMAC_old_Elem()
 {}
 #endif

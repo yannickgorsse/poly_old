@@ -14,70 +14,36 @@
 *****************************************************************************/
 //////////////////////////////////////////////////////////////////////////////
 //
-// File:        Iterateur_PolyMAC_base.cpp
-// Directory:   $TRUST_ROOT/src/PolyMAC/Operateurs/Conv_iterateur
-// Version:     /main/9
+// File:        Eval_Conv_PolyMAC_old.cpp
+// Directory:   $TRUST_ROOT/src/PolyMAC_old/Operateurs/Conv_iterateur
+// Version:     /main/4
 //
 //////////////////////////////////////////////////////////////////////////////
 
-#include <Iterateur_PolyMAC_base.h>
+#include <Eval_Conv_PolyMAC_old.h>
+#include <Champ_Face_PolyMAC_old.h>
 
-Implemente_deriv(Iterateur_PolyMAC_base);
-Implemente_base(Iterateur_PolyMAC_base,"Iterateur_PolyMAC_base",Objet_U);
-Implemente_instanciable(Iterateur_PolyMAC,"Iterateur_PolyMAC",DERIV(Iterateur_PolyMAC_base));
-
-
-//// printOn
-//
-
-Sortie& Iterateur_PolyMAC::printOn(Sortie& s ) const
+const Champ_Inc_base& Eval_Conv_PolyMAC_old::vitesse() const
 {
-  return s << que_suis_je() ;
+  return vitesse_.valeur();
 }
 
-Sortie& Iterateur_PolyMAC_base::printOn(Sortie& s ) const
+Champ_Inc_base& Eval_Conv_PolyMAC_old::vitesse()
 {
-  return s << que_suis_je() ;
+  return vitesse_.valeur();
 }
 
-
-//// readOn
-void Iterateur_PolyMAC_base::calculer_flux_bord(const DoubleTab& inco) const
+// Description:
+// associe le champ de vitesse transportante
+void Eval_Conv_PolyMAC_old::associer(const Champ_Face_PolyMAC_old& vit)
 {
-  Cerr<<que_suis_je()<<" must implement alculer_flux_bord"<<finl;
-  assert(0);
-  Process::exit();
+  vitesse_=vit;
+  dt_vitesse.ref(vit.valeurs());
 }
 
-Entree& Iterateur_PolyMAC_base::readOn(Entree& s )
+// Description:
+// mise a jour du DoubleTab vitesse
+void Eval_Conv_PolyMAC_old::mettre_a_jour( )
 {
-  return s ;
+  dt_vitesse.ref(vitesse_->valeurs());
 }
-Entree& Iterateur_PolyMAC::readOn(Entree& s )
-{
-  return s ;
-}
-
-
-void Iterateur_PolyMAC_base::associer(const Zone_dis& z,
-                                      const Zone_Cl_dis& zcl, const Operateur_base& op)
-{
-  const Zone_PolyMAC& zone_vdf=ref_cast(Zone_PolyMAC, z.valeur());
-  const Zone_Cl_PolyMAC& zone_cl_vdf=ref_cast(Zone_Cl_PolyMAC, zcl.valeur());
-  associer(zone_vdf, zone_cl_vdf,op);
-}
-void Iterateur_PolyMAC_base::associer_zone_cl_dis(const Zone_Cl_dis_base& zcl)
-{
-  const Zone_Cl_PolyMAC& zone_cl_vdf=ref_cast(Zone_Cl_PolyMAC, zcl);
-  la_zcl=zone_cl_vdf;
-
-}
-void Iterateur_PolyMAC_base::associer(const Zone_PolyMAC& zone_vdf,
-                                      const Zone_Cl_PolyMAC& zone_cl_vdf, const Operateur_base& op)
-{
-  la_zone=zone_vdf;
-  la_zcl=zone_cl_vdf;
-  op_base=op;
-  // completer_();
-}
-

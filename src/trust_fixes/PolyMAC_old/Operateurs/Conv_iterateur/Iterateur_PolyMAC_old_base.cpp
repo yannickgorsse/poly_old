@@ -1,5 +1,5 @@
 /****************************************************************************
-* Copyright (c) 2022, CEA
+* Copyright (c) 2019, CEA
 * All rights reserved.
 *
 * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -14,47 +14,70 @@
 *****************************************************************************/
 //////////////////////////////////////////////////////////////////////////////
 //
-// File:        Eval_Conv_PolyMAC.h
-// Directory:   $TRUST_ROOT/src/PolyMAC/Operateurs/Conv_iterateur
-// Version:     /main/6
+// File:        Iterateur_PolyMAC_old_base.cpp
+// Directory:   $TRUST_ROOT/src/PolyMAC_old/Operateurs/Conv_iterateur
+// Version:     /main/9
 //
 //////////////////////////////////////////////////////////////////////////////
 
-#ifndef Eval_Conv_PolyMAC_included
-#define Eval_Conv_PolyMAC_included
+#include <Iterateur_PolyMAC_old_base.h>
 
-#include <Ref_Champ_Face_PolyMAC.h>
-#include <Evaluateur_PolyMAC.h>
+Implemente_deriv(Iterateur_PolyMAC_old_base);
+Implemente_base(Iterateur_PolyMAC_old_base,"Iterateur_PolyMAC_old_base",Objet_U);
+Implemente_instanciable(Iterateur_PolyMAC_old,"Iterateur_PolyMAC_old",DERIV(Iterateur_PolyMAC_old_base));
 
-class Champ_Inc_base;
 
-class Eval_Conv_PolyMAC : public Evaluateur_PolyMAC
-{
-public:
-  inline Eval_Conv_PolyMAC();
-  inline Eval_Conv_PolyMAC(const Eval_Conv_PolyMAC&);
-  void associer(const Champ_Face_PolyMAC& );
-  void mettre_a_jour( );
-  const Champ_Inc_base& vitesse() const;
-  Champ_Inc_base& vitesse();
-
-protected:
-  REF(Champ_Face_PolyMAC) vitesse_;
-  DoubleTab dt_vitesse;
-};
-
+//// printOn
 //
-//  Fonctions inline de la classe Eval_Conv_PolyMAC
-//
-// Description:
-// constructeur par defaut
-inline Eval_Conv_PolyMAC::Eval_Conv_PolyMAC()
-{}
 
-inline Eval_Conv_PolyMAC::Eval_Conv_PolyMAC(const Eval_Conv_PolyMAC& eval)
-  :Evaluateur_PolyMAC(eval), vitesse_(eval.vitesse_)
+Sortie& Iterateur_PolyMAC_old::printOn(Sortie& s ) const
 {
-  dt_vitesse.ref(eval.dt_vitesse);
+  return s << que_suis_je() ;
 }
 
-#endif
+Sortie& Iterateur_PolyMAC_old_base::printOn(Sortie& s ) const
+{
+  return s << que_suis_je() ;
+}
+
+
+//// readOn
+void Iterateur_PolyMAC_old_base::calculer_flux_bord(const DoubleTab& inco) const
+{
+  Cerr<<que_suis_je()<<" must implement alculer_flux_bord"<<finl;
+  assert(0);
+  Process::exit();
+}
+
+Entree& Iterateur_PolyMAC_old_base::readOn(Entree& s )
+{
+  return s ;
+}
+Entree& Iterateur_PolyMAC_old::readOn(Entree& s )
+{
+  return s ;
+}
+
+
+void Iterateur_PolyMAC_old_base::associer(const Zone_dis& z,
+                                      const Zone_Cl_dis& zcl, const Operateur_base& op)
+{
+  const Zone_PolyMAC_old& zone_vdf=ref_cast(Zone_PolyMAC_old, z.valeur());
+  const Zone_Cl_PolyMAC_old& zone_cl_vdf=ref_cast(Zone_Cl_PolyMAC_old, zcl.valeur());
+  associer(zone_vdf, zone_cl_vdf,op);
+}
+void Iterateur_PolyMAC_old_base::associer_zone_cl_dis(const Zone_Cl_dis_base& zcl)
+{
+  const Zone_Cl_PolyMAC_old& zone_cl_vdf=ref_cast(Zone_Cl_PolyMAC_old, zcl);
+  la_zcl=zone_cl_vdf;
+
+}
+void Iterateur_PolyMAC_old_base::associer(const Zone_PolyMAC_old& zone_vdf,
+                                      const Zone_Cl_PolyMAC_old& zone_cl_vdf, const Operateur_base& op)
+{
+  la_zone=zone_vdf;
+  la_zcl=zone_cl_vdf;
+  op_base=op;
+  // completer_();
+}
+

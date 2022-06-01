@@ -14,16 +14,16 @@
 *****************************************************************************/
 //////////////////////////////////////////////////////////////////////////////
 //
-// File:        T_It_PolyMAC_Elem.h
-// Directory:   $TRUST_ROOT/src/PolyMAC/Operateurs/Conv_iterateur
+// File:        T_It_PolyMAC_old_Elem.h
+// Directory:   $TRUST_ROOT/src/PolyMAC_old/Operateurs/Conv_iterateur
 // Version:     /main/43
 //
 //////////////////////////////////////////////////////////////////////////////
 
 
 
-#ifndef T_It_PolyMAC_Elem_included
-#define T_It_PolyMAC_Elem_included
+#ifndef T_It_PolyMAC_old_Elem_included
+#define T_It_PolyMAC_old_Elem_included
 
 #include <Equation_base.h>
 #include <Milieu_base.h>
@@ -33,25 +33,25 @@
 #include <Schema_Temps_base.h>
 #include <Operateur_base.h>
 #include <Operateur_Diff_base.h>
-#include <Op_Conv_PolyMAC_iterateur_base.h>
+#include <Op_Conv_PolyMAC_old_iterateur_base.h>
 #include <EcrFicPartage.h>
 #include <communications.h>
 #include <TRUSTTrav.h>
 
 //////////////////////////////////////////////////////////////////////////////
 //
-// CLASS Iterateur_PolyMAC_Elem
+// CLASS Iterateur_PolyMAC_old_Elem
 //
 //////////////////////////////////////////////////////////////////////////////
 
 template <class _TYPE_>
 
-class T_It_PolyMAC_Elem : public Iterateur_PolyMAC_base
+class T_It_PolyMAC_old_Elem : public Iterateur_PolyMAC_old_base
 {
-  //Declare_instanciable(T_It_PolyMAC_Elem(_TYPE_));
+  //Declare_instanciable(T_It_PolyMAC_old_Elem(_TYPE_));
   inline int duplique() const override
   {
-    T_It_PolyMAC_Elem* xxx = new  T_It_PolyMAC_Elem(*this);
+    T_It_PolyMAC_old_Elem* xxx = new  T_It_PolyMAC_old_Elem(*this);
     if(!xxx)
       {
         Cerr << "Not enough memory " << finl;
@@ -64,10 +64,10 @@ class T_It_PolyMAC_Elem : public Iterateur_PolyMAC_base
     throw;
   };
 public:
-  inline T_It_PolyMAC_Elem() { } ;
-  inline T_It_PolyMAC_Elem(const T_It_PolyMAC_Elem<_TYPE_>& );
-  inline Evaluateur_PolyMAC& evaluateur() override;
-  inline const Evaluateur_PolyMAC& evaluateur() const override;
+  inline T_It_PolyMAC_old_Elem() { } ;
+  inline T_It_PolyMAC_old_Elem(const T_It_PolyMAC_old_Elem<_TYPE_>& );
+  inline Evaluateur_PolyMAC_old& evaluateur() override;
+  inline const Evaluateur_PolyMAC_old& evaluateur() const override;
   DoubleTab& calculer(const DoubleTab& , DoubleTab& ) const override;
   DoubleTab& ajouter(const DoubleTab&, DoubleTab& ) const override;
   void calculer_flux_bord(const DoubleTab&) const override;
@@ -97,42 +97,42 @@ protected:
   IntTab elem;
   mutable SFichier Flux; // Impression .out
 };
-template <class _TYPE_> inline T_It_PolyMAC_Elem<_TYPE_>::T_It_PolyMAC_Elem(const T_It_PolyMAC_Elem<_TYPE_>& iter)
-  :Iterateur_PolyMAC_base(iter),
+template <class _TYPE_> inline T_It_PolyMAC_old_Elem<_TYPE_>::T_It_PolyMAC_old_Elem(const T_It_PolyMAC_old_Elem<_TYPE_>& iter)
+  :Iterateur_PolyMAC_old_base(iter),
    flux_evaluateur(iter.flux_evaluateur)
 {
   elem.ref(iter.elem);
 }
-template <class _TYPE_> inline Evaluateur_PolyMAC& T_It_PolyMAC_Elem<_TYPE_>::evaluateur()
+template <class _TYPE_> inline Evaluateur_PolyMAC_old& T_It_PolyMAC_old_Elem<_TYPE_>::evaluateur()
 {
-  Evaluateur_PolyMAC& eval = (Evaluateur_PolyMAC&) flux_evaluateur;
+  Evaluateur_PolyMAC_old& eval = (Evaluateur_PolyMAC_old&) flux_evaluateur;
   return eval;
 }
-template <class _TYPE_> inline const Evaluateur_PolyMAC& T_It_PolyMAC_Elem<_TYPE_>::evaluateur() const
+template <class _TYPE_> inline const Evaluateur_PolyMAC_old& T_It_PolyMAC_old_Elem<_TYPE_>::evaluateur() const
 {
-  Evaluateur_PolyMAC& eval = (Evaluateur_PolyMAC&) flux_evaluateur;
+  Evaluateur_PolyMAC_old& eval = (Evaluateur_PolyMAC_old&) flux_evaluateur;
   return eval;
 }
 
-//  Implemente_instanciable(T_It_PolyMAC_Elem<_TYPE_>,"Iterateur_PolyMAC_Elem",Iterateur_PolyMAC_base);
-/*Sortie& T_It_PolyMAC_Elem<_TYPE_>::printOn(Sortie& s ) const {
+//  Implemente_instanciable(T_It_PolyMAC_old_Elem<_TYPE_>,"Iterateur_PolyMAC_old_Elem",Iterateur_PolyMAC_old_base);
+/*Sortie& T_It_PolyMAC_old_Elem<_TYPE_>::printOn(Sortie& s ) const {
     return s << que_suis_je() ;
   }
-  Entree& T_It_PolyMAC_Elem<_TYPE_>::readOn(Entree& s ) {
+  Entree& T_It_PolyMAC_old_Elem<_TYPE_>::readOn(Entree& s ) {
     return s ;
   }
 */
-template <class _TYPE_> inline void T_It_PolyMAC_Elem<_TYPE_>::completer_()
+template <class _TYPE_> inline void T_It_PolyMAC_old_Elem<_TYPE_>::completer_()
 {
   elem.ref(la_zone->face_voisins());
 }
 template <class _TYPE_>
-const Milieu_base& T_It_PolyMAC_Elem<_TYPE_>::milieu() const
+const Milieu_base& T_It_PolyMAC_old_Elem<_TYPE_>::milieu() const
 {
   return (la_zcl->equation()).milieu();
 }
 template <class _TYPE_>
-DoubleTab& T_It_PolyMAC_Elem<_TYPE_>::ajouter(const DoubleTab& donne,
+DoubleTab& T_It_PolyMAC_old_Elem<_TYPE_>::ajouter(const DoubleTab& donne,
                                               DoubleTab& resu) const
 {
   ((_TYPE_&) flux_evaluateur).mettre_a_jour();
@@ -166,7 +166,7 @@ DoubleTab& T_It_PolyMAC_Elem<_TYPE_>::ajouter(const DoubleTab& donne,
   modifier_flux() ;
   return resu;
 }
-template <class _TYPE_>  DoubleTab& T_It_PolyMAC_Elem<_TYPE_>::ajouter_bords(const DoubleTab& donnee,
+template <class _TYPE_>  DoubleTab& T_It_PolyMAC_old_Elem<_TYPE_>::ajouter_bords(const DoubleTab& donnee,
                                                                              DoubleTab& resu) const
 {
   int elem1, elem2;
@@ -406,9 +406,9 @@ template <class _TYPE_>  DoubleTab& T_It_PolyMAC_Elem<_TYPE_>::ajouter_bords(con
         case scalaire_impose_paroi :
           break;
           /*
-                                                                            case nouvelle_Cl_PolyMAC :
+                                                                            case nouvelle_Cl_PolyMAC_old :
                                                                             if (flux_evaluateur.calculer_flux_faces_echange_global_impose()){
-                                                                            const Nouvelle_Cl_PolyMAC& cl =(const Nouvelle_Cl_PolyMAC&) (la_cl.valeur());
+                                                                            const Nouvelle_Cl_PolyMAC_old& cl =(const Nouvelle_Cl_PolyMAC_old&) (la_cl.valeur());
                                                                             for (face=ndeb; face<nfin; face++) {
                                                                             if ( (elem1=elem(face,0)) > -1)
                                                                             resu[elem1]+=flux_evaluateur.flux_face(donnee, face, cl, ndeb);
@@ -420,14 +420,14 @@ template <class _TYPE_>  DoubleTab& T_It_PolyMAC_Elem<_TYPE_>::ajouter_bords(con
           */
         default :
           Cerr << "On ne reconnait pas la condition limite : " << la_cl.valeur();
-          Cerr << "Dans T_It_PolyMAC_Elem<_TYPE_>::ajouter_bords"<<finl;
+          Cerr << "Dans T_It_PolyMAC_old_Elem<_TYPE_>::ajouter_bords"<<finl;
           exit();
           break;
         }
     }
   return resu;
 }
-template <class _TYPE_>  void T_It_PolyMAC_Elem<_TYPE_>::calculer_flux_bord(const DoubleTab& donnee) const
+template <class _TYPE_>  void T_It_PolyMAC_old_Elem<_TYPE_>::calculer_flux_bord(const DoubleTab& donnee) const
 {
   ((_TYPE_&) flux_evaluateur).mettre_a_jour();
   assert(donnee.nb_dim() < 3);
@@ -655,9 +655,9 @@ template <class _TYPE_>  void T_It_PolyMAC_Elem<_TYPE_>::calculer_flux_bord(cons
         case scalaire_impose_paroi :
           break;
           /*
-                                                                            case nouvelle_Cl_PolyMAC :
+                                                                            case nouvelle_Cl_PolyMAC_old :
                                                                             if (flux_evaluateur.calculer_flux_faces_echange_global_impose()){
-                                                                            const Nouvelle_Cl_PolyMAC& cl =(const Nouvelle_Cl_PolyMAC&) (la_cl.valeur());
+                                                                            const Nouvelle_Cl_PolyMAC_old& cl =(const Nouvelle_Cl_PolyMAC_old&) (la_cl.valeur());
                                                                             for (face=ndeb; face<nfin; face++) {
                                                                             if ( (int elem1=elem(face,0)) > -1)
                                                                             resu[elem1]+=flux_evaluateur.flux_face(donnee, face, cl, ndeb);
@@ -669,7 +669,7 @@ template <class _TYPE_>  void T_It_PolyMAC_Elem<_TYPE_>::calculer_flux_bord(cons
           */
         default :
           Cerr << "On ne reconnait pas la condition limite : " << la_cl.valeur();
-          Cerr << "Dans T_It_PolyMAC_Elem<_TYPE_>::ajouter_bords"<<finl;
+          Cerr << "Dans T_It_PolyMAC_old_Elem<_TYPE_>::ajouter_bords"<<finl;
           exit();
           break;
         }
@@ -677,7 +677,7 @@ template <class _TYPE_>  void T_It_PolyMAC_Elem<_TYPE_>::calculer_flux_bord(cons
   modifier_flux() ;
 }
 
-template <class _TYPE_>  DoubleTab& T_It_PolyMAC_Elem<_TYPE_>::ajouter_bords(const DoubleTab& donnee,
+template <class _TYPE_>  DoubleTab& T_It_PolyMAC_old_Elem<_TYPE_>::ajouter_bords(const DoubleTab& donnee,
                                                                              DoubleTab& resu,int ncomp) const
 {
   int elem1, elem2;
@@ -938,9 +938,9 @@ template <class _TYPE_>  DoubleTab& T_It_PolyMAC_Elem<_TYPE_>::ajouter_bords(con
             }
           break;
           /*
-                                                                            case nouvelle_Cl_PolyMAC :
+                                                                            case nouvelle_Cl_PolyMAC_old :
                                                                             if (flux_evaluateur.calculer_flux_faces_echange_global_impose()){
-                                                                            const Nouvelle_Cl_PolyMAC& cl =(const Nouvelle_Cl_PolyMAC&) (la_cl.valeur());
+                                                                            const Nouvelle_Cl_PolyMAC_old& cl =(const Nouvelle_Cl_PolyMAC_old&) (la_cl.valeur());
                                                                             for (face=ndeb; face<nfin; face++) {
                                                                             flux_evaluateur.flux_face(donnee, face, cl, ndeb, flux);
                                                                             if ( (elem1=elem(face,0)) > -1)
@@ -962,14 +962,14 @@ template <class _TYPE_>  DoubleTab& T_It_PolyMAC_Elem<_TYPE_>::ajouter_bords(con
   return resu;
 }
 
-template <class _TYPE_>  DoubleTab& T_It_PolyMAC_Elem<_TYPE_>::ajouter_interne(const DoubleTab& donnee,
+template <class _TYPE_>  DoubleTab& T_It_PolyMAC_old_Elem<_TYPE_>::ajouter_interne(const DoubleTab& donnee,
                                                                                DoubleTab& resu) const
 {
-  const Zone_PolyMAC& zone_PolyMAC = la_zone.valeur();
+  const Zone_PolyMAC_old& zone_PolyMAC_old = la_zone.valeur();
   double flux;
   int face;
-  int ndeb = zone_PolyMAC.premiere_face_int();
-  int nfin = zone_PolyMAC.nb_faces();
+  int ndeb = zone_PolyMAC_old.premiere_face_int();
+  int nfin = zone_PolyMAC_old.nb_faces();
   for (face=ndeb; face<nfin; face++)
     {
       flux=flux_evaluateur.flux_faces_interne(donnee, face);
@@ -978,15 +978,15 @@ template <class _TYPE_>  DoubleTab& T_It_PolyMAC_Elem<_TYPE_>::ajouter_interne(c
     }
   return resu;
 }
-template <class _TYPE_>  DoubleTab& T_It_PolyMAC_Elem<_TYPE_>::ajouter_interne(const DoubleTab& donnee,
+template <class _TYPE_>  DoubleTab& T_It_PolyMAC_old_Elem<_TYPE_>::ajouter_interne(const DoubleTab& donnee,
                                                                                DoubleTab& resu,int ncomp) const
 {
-  const Zone_PolyMAC& zone_PolyMAC = la_zone.valeur();
+  const Zone_PolyMAC_old& zone_PolyMAC_old = la_zone.valeur();
   DoubleVect flux(ncomp);
   int face,k;
   int elem0,elem1;
-  int ndeb = zone_PolyMAC.premiere_face_int();
-  int nfin = zone_PolyMAC.nb_faces();
+  int ndeb = zone_PolyMAC_old.premiere_face_int();
+  int nfin = zone_PolyMAC_old.nb_faces();
   for (face=ndeb; face<nfin; face++)
     {
       flux_evaluateur.flux_faces_interne(donnee, face, flux);
@@ -1000,18 +1000,18 @@ template <class _TYPE_>  DoubleTab& T_It_PolyMAC_Elem<_TYPE_>::ajouter_interne(c
     }
   return resu;
 }
-template <class _TYPE_>  DoubleTab& T_It_PolyMAC_Elem<_TYPE_>::calculer(const DoubleTab& inco, DoubleTab& resu) const
+template <class _TYPE_>  DoubleTab& T_It_PolyMAC_old_Elem<_TYPE_>::calculer(const DoubleTab& inco, DoubleTab& resu) const
 {
   operator_egal(resu, 0., VECT_REAL_ITEMS);
   return ajouter(inco,resu);
 }
-template <class _TYPE_>  void  T_It_PolyMAC_Elem<_TYPE_>::modifier_flux() const
+template <class _TYPE_>  void  T_It_PolyMAC_old_Elem<_TYPE_>::modifier_flux() const
 {
   if (op_base->equation().inconnue().le_nom()=="temperature"
       && !( sub_type(Operateur_Diff_base,op_base.valeur()) && ref_cast(Operateur_Diff_base,op_base.valeur()).diffusivite().le_nom() == "conductivite" ) )
     {
       DoubleTab& flux_bords=op_base->flux_bords();
-      const Zone_PolyMAC& la_zone_vdf=ref_cast(Zone_PolyMAC,op_base->equation().zone_dis().valeur());
+      const Zone_PolyMAC_old& la_zone_vdf=ref_cast(Zone_PolyMAC_old,op_base->equation().zone_dis().valeur());
       const Champ_base& rho = (op_base->equation()).milieu().masse_volumique().valeur();
       const Champ_Don& Cp = (op_base->equation()).milieu().capacite_calorifique();
       const IntTab& face_voisins=la_zone_vdf.face_voisins();
@@ -1022,8 +1022,8 @@ template <class _TYPE_>  void  T_It_PolyMAC_Elem<_TYPE_>::modifier_flux() const
         {
           const Operateur_base& op=op_base.valeur();
           is_rho_u=0;
-          if (sub_type(Op_Conv_PolyMAC_iterateur_base,op))
-            if (ref_cast(Op_Conv_PolyMAC_iterateur_base,op).vitesse().le_nom()=="rho_u")
+          if (sub_type(Op_Conv_PolyMAC_old_iterateur_base,op))
+            if (ref_cast(Op_Conv_PolyMAC_old_iterateur_base,op).vitesse().le_nom()=="rho_u")
               is_rho_u=1;
         }
       double Cp_=0,rho_=0;
@@ -1046,10 +1046,10 @@ template <class _TYPE_>  void  T_It_PolyMAC_Elem<_TYPE_>::modifier_flux() const
     }
 }
 
-template <class _TYPE_>  int T_It_PolyMAC_Elem<_TYPE_>::impr(Sortie& os) const
+template <class _TYPE_>  int T_It_PolyMAC_old_Elem<_TYPE_>::impr(Sortie& os) const
 {
   const Zone& mazone=la_zone->zone();
-  const Zone_PolyMAC& zpoly=ref_cast(Zone_PolyMAC,op_base->equation().zone_dis().valeur());
+  const Zone_PolyMAC_old& zpoly=ref_cast(Zone_PolyMAC_old,op_base->equation().zone_dis().valeur());
   const int impr_bord=(mazone.Bords_a_imprimer().est_vide() ? 0:1);
   const Schema_Temps_base& sch = la_zcl->equation().probleme().schema_temps();
   double temps = sch.temps_courant();
@@ -1145,7 +1145,7 @@ template <class _TYPE_>  int T_It_PolyMAC_Elem<_TYPE_>::impr(Sortie& os) const
   return 1;
 }
 
-template <class _TYPE_>  void T_It_PolyMAC_Elem<_TYPE_>::contribuer_au_second_membre(DoubleTab& resu) const
+template <class _TYPE_>  void T_It_PolyMAC_old_Elem<_TYPE_>::contribuer_au_second_membre(DoubleTab& resu) const
 {
   ((_TYPE_&) flux_evaluateur).mettre_a_jour();
   assert(resu.nb_dim() < 3);
@@ -1166,7 +1166,7 @@ template <class _TYPE_>  void T_It_PolyMAC_Elem<_TYPE_>::contribuer_au_second_me
       contribuer_au_second_membre_interne(resu, ncomp) ;
     }
 }
-template <class _TYPE_>  void T_It_PolyMAC_Elem<_TYPE_>::contribuer_au_second_membre_bords(DoubleTab& resu) const
+template <class _TYPE_>  void T_It_PolyMAC_old_Elem<_TYPE_>::contribuer_au_second_membre_bords(DoubleTab& resu) const
 {
   int elem1, elem2;
   int ndeb, nfin;
@@ -1386,9 +1386,9 @@ template <class _TYPE_>  void T_It_PolyMAC_Elem<_TYPE_>::contribuer_au_second_me
         case scalaire_impose_paroi :
           break;
           /*
-                                                                            case nouvelle_Cl_PolyMAC :
+                                                                            case nouvelle_Cl_PolyMAC_old :
                                                                             if (flux_evaluateur.calculer_flux_faces_echange_global_impose()){
-                                                                            const Nouvelle_Cl_PolyMAC& cl =(const Nouvelle_Cl_PolyMAC&) (la_cl.valeur());
+                                                                            const Nouvelle_Cl_PolyMAC_old& cl =(const Nouvelle_Cl_PolyMAC_old&) (la_cl.valeur());
                                                                             for (face=ndeb; face<nfin; face++) {
                                                                             if ( (elem1=elem(face,0)) > -1)
                                                                             resu[elem1]+=flux_evaluateur.secmem_face(face, cl, ndeb);
@@ -1406,7 +1406,7 @@ template <class _TYPE_>  void T_It_PolyMAC_Elem<_TYPE_>::contribuer_au_second_me
     }
 }
 
-template <class _TYPE_>  void T_It_PolyMAC_Elem<_TYPE_>::contribuer_au_second_membre_bords(DoubleTab& resu,int ncomp) const
+template <class _TYPE_>  void T_It_PolyMAC_old_Elem<_TYPE_>::contribuer_au_second_membre_bords(DoubleTab& resu,int ncomp) const
 {
   int elem1, elem2;
   int ndeb, nfin;
@@ -1650,9 +1650,9 @@ template <class _TYPE_>  void T_It_PolyMAC_Elem<_TYPE_>::contribuer_au_second_me
             }
           break;
           /*
-                                                                            case nouvelle_Cl_PolyMAC :
+                                                                            case nouvelle_Cl_PolyMAC_old :
                                                                             if (flux_evaluateur.calculer_flux_faces_echange_global_impose()){
-                                                                            const Nouvelle_Cl_PolyMAC& cl =(const Nouvelle_Cl_PolyMAC&) (la_cl.valeur());
+                                                                            const Nouvelle_Cl_PolyMAC_old& cl =(const Nouvelle_Cl_PolyMAC_old&) (la_cl.valeur());
                                                                             for (face=ndeb; face<nfin; face++) {
                                                                             flux_evaluateur.secmem_face(face, cl, ndeb, flux);
                                                                             if ( (elem1=elem(face,0)) > -1)
@@ -1673,13 +1673,13 @@ template <class _TYPE_>  void T_It_PolyMAC_Elem<_TYPE_>::contribuer_au_second_me
     }
 }
 
-template <class _TYPE_>  void T_It_PolyMAC_Elem<_TYPE_>::contribuer_au_second_membre_interne(DoubleTab& resu) const
+template <class _TYPE_>  void T_It_PolyMAC_old_Elem<_TYPE_>::contribuer_au_second_membre_interne(DoubleTab& resu) const
 {
-  const Zone_PolyMAC& zone_PolyMAC = la_zone.valeur();
+  const Zone_PolyMAC_old& zone_PolyMAC_old = la_zone.valeur();
   double flux;
   int face;
-  int ndeb=zone_PolyMAC.premiere_face_int();
-  int nfin=zone_PolyMAC.nb_faces();
+  int ndeb=zone_PolyMAC_old.premiere_face_int();
+  int nfin=zone_PolyMAC_old.nb_faces();
   for (face=ndeb; face<nfin; face++)
     {
       flux=flux_evaluateur.secmem_faces_interne(face);
@@ -1687,14 +1687,14 @@ template <class _TYPE_>  void T_It_PolyMAC_Elem<_TYPE_>::contribuer_au_second_me
       resu[elem(face,1)]-=flux;
     }
 }
-template <class _TYPE_>  void T_It_PolyMAC_Elem<_TYPE_>::contribuer_au_second_membre_interne( DoubleTab& resu,int ncomp) const
+template <class _TYPE_>  void T_It_PolyMAC_old_Elem<_TYPE_>::contribuer_au_second_membre_interne( DoubleTab& resu,int ncomp) const
 {
-  const Zone_PolyMAC& zone_PolyMAC = la_zone.valeur();
+  const Zone_PolyMAC_old& zone_PolyMAC_old = la_zone.valeur();
   DoubleVect flux(ncomp);
   int face,k;
   int elem0,elem1;
-  int ndeb=zone_PolyMAC.premiere_face_int();
-  int nfin=zone_PolyMAC.nb_faces();
+  int ndeb=zone_PolyMAC_old.premiere_face_int();
+  int nfin=zone_PolyMAC_old.nb_faces();
   for (face=ndeb; face<nfin; face++)
     {
       flux_evaluateur.secmem_faces_interne(face, flux);
@@ -1708,7 +1708,7 @@ template <class _TYPE_>  void T_It_PolyMAC_Elem<_TYPE_>::contribuer_au_second_me
     }
 }
 
-template <class _TYPE_>  void T_It_PolyMAC_Elem<_TYPE_>::ajouter_contribution(const DoubleTab& inco, Matrice_Morse& matrice) const
+template <class _TYPE_>  void T_It_PolyMAC_old_Elem<_TYPE_>::ajouter_contribution(const DoubleTab& inco, Matrice_Morse& matrice) const
 {
   ((_TYPE_&) flux_evaluateur).mettre_a_jour();
   assert(inco.nb_dim() < 3);
@@ -1731,7 +1731,7 @@ template <class _TYPE_>  void T_It_PolyMAC_Elem<_TYPE_>::ajouter_contribution(co
       ajouter_contribution_interne(inco, matrice, ncomp) ;
     }
 }
-template <class _TYPE_>  void T_It_PolyMAC_Elem<_TYPE_>::ajouter_contribution_bords(const DoubleTab& inco, Matrice_Morse& matrice ) const
+template <class _TYPE_>  void T_It_PolyMAC_old_Elem<_TYPE_>::ajouter_contribution_bords(const DoubleTab& inco, Matrice_Morse& matrice ) const
 {
   int elem1, elem2;
   double aii=0, ajj=0;
@@ -1944,7 +1944,7 @@ template <class _TYPE_>  void T_It_PolyMAC_Elem<_TYPE_>::ajouter_contribution_bo
     }
 }
 
-template <class _TYPE_>  void T_It_PolyMAC_Elem<_TYPE_>::ajouter_contribution_bords(const DoubleTab& inco, Matrice_Morse& matrice ,int ncomp) const
+template <class _TYPE_>  void T_It_PolyMAC_old_Elem<_TYPE_>::ajouter_contribution_bords(const DoubleTab& inco, Matrice_Morse& matrice ,int ncomp) const
 {
   int elem1, elem2;
   DoubleVect aii(ncomp), ajj(ncomp);
@@ -2242,14 +2242,14 @@ template <class _TYPE_>  void T_It_PolyMAC_Elem<_TYPE_>::ajouter_contribution_bo
     }
 }
 
-template <class _TYPE_>  void T_It_PolyMAC_Elem<_TYPE_>::ajouter_contribution_interne(const DoubleTab& inco, Matrice_Morse& matrice ) const
+template <class _TYPE_>  void T_It_PolyMAC_old_Elem<_TYPE_>::ajouter_contribution_interne(const DoubleTab& inco, Matrice_Morse& matrice ) const
 {
-  const Zone_PolyMAC& zone_PolyMAC = la_zone.valeur();
+  const Zone_PolyMAC_old& zone_PolyMAC_old = la_zone.valeur();
   int face;
   double aii=0, ajj=0;
   int elem1,elem2;
-  int ndeb=zone_PolyMAC.premiere_face_int();
-  int nfin=zone_PolyMAC.nb_faces();
+  int ndeb=zone_PolyMAC_old.premiere_face_int();
+  int nfin=zone_PolyMAC_old.nb_faces();
   for (face=ndeb; face<nfin; face++)
     {
       elem1 = elem(face,0);
@@ -2261,14 +2261,14 @@ template <class _TYPE_>  void T_It_PolyMAC_Elem<_TYPE_>::ajouter_contribution_in
       matrice(elem2,elem1)-=aii;
     }
 }
-template <class _TYPE_>  void T_It_PolyMAC_Elem<_TYPE_>::ajouter_contribution_interne(const DoubleTab& inco, Matrice_Morse& matrice ,int ncomp) const
+template <class _TYPE_>  void T_It_PolyMAC_old_Elem<_TYPE_>::ajouter_contribution_interne(const DoubleTab& inco, Matrice_Morse& matrice ,int ncomp) const
 {
-  const Zone_PolyMAC& zone_PolyMAC = la_zone.valeur();
+  const Zone_PolyMAC_old& zone_PolyMAC_old = la_zone.valeur();
   int face,i;
   DoubleVect aii(ncomp), ajj(ncomp);
   int elem1,elem2;
-  int ndeb=zone_PolyMAC.premiere_face_int();
-  int nfin=zone_PolyMAC.nb_faces();
+  int ndeb=zone_PolyMAC_old.premiere_face_int();
+  int nfin=zone_PolyMAC_old.nb_faces();
   for (face=ndeb; face<nfin; face++)
     {
       elem1 = elem(face,0);
@@ -2285,7 +2285,7 @@ template <class _TYPE_>  void T_It_PolyMAC_Elem<_TYPE_>::ajouter_contribution_in
     }
 }
 
-template <class _TYPE_>  void T_It_PolyMAC_Elem<_TYPE_>::ajouter_contribution_vitesse(const DoubleTab& inco, Matrice_Morse& matrice) const
+template <class _TYPE_>  void T_It_PolyMAC_old_Elem<_TYPE_>::ajouter_contribution_vitesse(const DoubleTab& inco, Matrice_Morse& matrice) const
 {
   ((_TYPE_&) flux_evaluateur).mettre_a_jour();
   assert(inco.nb_dim() < 3);
@@ -2310,12 +2310,12 @@ template <class _TYPE_>  void T_It_PolyMAC_Elem<_TYPE_>::ajouter_contribution_vi
     }
 }
 
-template <class _TYPE_>  void T_It_PolyMAC_Elem<_TYPE_>::ajouter_contribution_interne_vitesse(const DoubleTab& inco, Matrice_Morse& matrice) const
+template <class _TYPE_>  void T_It_PolyMAC_old_Elem<_TYPE_>::ajouter_contribution_interne_vitesse(const DoubleTab& inco, Matrice_Morse& matrice) const
 {
-  const Zone_PolyMAC& zone_PolyMAC = la_zone.valeur();
+  const Zone_PolyMAC_old& zone_PolyMAC_old = la_zone.valeur();
   double aef = 0;
-  const int ndeb = zone_PolyMAC.premiere_face_int();
-  const int nfin = zone_PolyMAC.nb_faces();
+  const int ndeb = zone_PolyMAC_old.premiere_face_int();
+  const int nfin = zone_PolyMAC_old.nb_faces();
   for (int f = ndeb; f < nfin; f++)
     {
       const int e1 = elem(f, 0);
@@ -2326,7 +2326,7 @@ template <class _TYPE_>  void T_It_PolyMAC_Elem<_TYPE_>::ajouter_contribution_in
     }
 }
 
-template <class _TYPE_>  void T_It_PolyMAC_Elem<_TYPE_>::ajouter_contribution_bords_vitesse(const DoubleTab& inco, Matrice_Morse& matrice ) const
+template <class _TYPE_>  void T_It_PolyMAC_old_Elem<_TYPE_>::ajouter_contribution_bords_vitesse(const DoubleTab& inco, Matrice_Morse& matrice ) const
 {
   int e1, e2;
   double aef=0;

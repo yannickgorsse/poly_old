@@ -14,43 +14,23 @@
 *****************************************************************************/
 //////////////////////////////////////////////////////////////////////////////
 //
-// File:        Evaluateur_PolyMAC.cpp
-// Directory:   $TRUST_ROOT/src/PolyMAC/Operateurs/Conv_iterateur
-// Version:     /main/8
+// File:        Op_Conv_PolyMAC_old.h
+// Directory:   $TRUST_ROOT/src/PolyMAC_old/Operateurs/Conv_iterateur
+// Version:     /main/6
 //
 //////////////////////////////////////////////////////////////////////////////
 
-#include <Evaluateur_PolyMAC.h>
-#include <Zone_PolyMAC.h>
+#ifndef Op_Conv_PolyMAC_old_H
+#define Op_Conv_PolyMAC_old_H
 
-Evaluateur_PolyMAC::Evaluateur_PolyMAC(const Evaluateur_PolyMAC& eval)
-  :
-  la_zone(eval.la_zone),la_zcl(eval.la_zcl),dimension(eval.dimension),premiere_face_bord(eval.premiere_face_bord)
-{
-  surface.ref(eval.surface);
-  elem_.ref(eval.elem_);
-  porosite.ref(eval.porosite);
-  volume_entrelaces.ref(eval.volume_entrelaces);
-  xv.ref(eval.xv);
-
-}
-
-void Evaluateur_PolyMAC::associer_zones(const Zone_PolyMAC& zone_vdf,
-                                        const Zone_Cl_PolyMAC& zone_cl_vdf)
-{
-  la_zone = zone_vdf;
-  la_zcl = zone_cl_vdf;
-  dimension = Objet_U::dimension;
-  premiere_face_bord = zone_vdf.premiere_face_bord();
-  surface.ref(zone_vdf.face_surfaces());
-  elem_.ref(zone_vdf.face_voisins());
-  porosite.ref(zone_vdf.porosite_face());
-  volume_entrelaces.ref(zone_vdf.volumes_entrelaces());
-  xv.ref(zone_vdf.xv());
-}
-
-void Evaluateur_PolyMAC::associer_porosite(const DoubleVect& poro)
-{
-  porosite.ref(poro);
-}
-
+#include <Op_Conv_Amont_PolyMAC_old_Elem.h>
+#include <Op_Conv_Quick_PolyMAC_old_Elem.h>
+#include <Op_Conv_Amont_PolyMAC_old_Face.h>
+#include <Op_Conv_Quick_PolyMAC_old_Face.h>
+#include <OpPolyMAC_oldFaQuiPe.h>
+#include <OpPolyMAC_oldElQuiPe.h>
+#include <Op_Conv_Centre_PolyMAC_old_Face.h>
+#include <Op_Conv_centre4_PolyMAC_old_Face.h>
+#include <Op_Conv_centre4_PolyMAC_old_Elem.h>
+#include <Op_Conv_centre_PolyMAC_old_Elem.h>
+#endif

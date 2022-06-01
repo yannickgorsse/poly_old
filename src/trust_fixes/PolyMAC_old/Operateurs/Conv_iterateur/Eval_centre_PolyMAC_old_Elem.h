@@ -1,5 +1,5 @@
 /****************************************************************************
-* Copyright (c) 2015 - 2016, CEA
+* Copyright (c) 2022, CEA
 * All rights reserved.
 *
 * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -14,41 +14,41 @@
 *****************************************************************************/
 //////////////////////////////////////////////////////////////////////////////
 //
-// File:        Eval_centre_PolyMAC_Elem.h
-// Directory:   $TRUST_ROOT/src/PolyMAC/Operateurs/Evaluateurs
+// File:        Eval_centre_PolyMAC_old_Elem.h
+// Directory:   $TRUST_ROOT/src/PolyMAC_old/Operateurs/Conv_iterateur
 // Version:     /main/8
 //
 //////////////////////////////////////////////////////////////////////////////
 
 
 
-#ifndef Eval_centre_PolyMAC_Elem_included
-#define Eval_centre_PolyMAC_Elem_included
+#ifndef Eval_centre_PolyMAC_old_Elem_included
+#define Eval_centre_PolyMAC_old_Elem_included
 
-#include <Eval_Conv_PolyMAC.h>
-#include <Eval_PolyMAC_Elem.h>
-#include <Zone_PolyMAC.h>
-#include <Champ_P0_PolyMAC.h>
+#include <Eval_Conv_PolyMAC_old.h>
+#include <Eval_PolyMAC_old_Elem.h>
+#include <Zone_PolyMAC_old.h>
+#include <Champ_P0_PolyMAC_old.h>
 //
-// .DESCRIPTION class Eval_centre_PolyMAC_Elem
+// .DESCRIPTION class Eval_centre_PolyMAC_old_Elem
 //
-// Evaluateur PolyMAC pour la convection
-// Le champ convecte est scalaire (Champ_P0_PolyMAC)
+// Evaluateur PolyMAC_old pour la convection
+// Le champ convecte est scalaire (Champ_P0_PolyMAC_old)
 // Schema de convection Centre
 // Rq:Les evaluateurs de flux convectifs calculent en fait le terme
 // convectif qui figure au second membre de l'equation d'evolution
 // c.a.d l'oppose du flux convectif
 
 //
-// .SECTION voir aussi Eval_Conv_PolyMAC
+// .SECTION voir aussi Eval_Conv_PolyMAC_old
 
 
-class Eval_centre_PolyMAC_Elem : public Eval_Conv_PolyMAC, public Eval_PolyMAC_Elem
+class Eval_centre_PolyMAC_old_Elem : public Eval_Conv_PolyMAC_old, public Eval_PolyMAC_old_Elem
 {
 
 public:
 
-  inline Eval_centre_PolyMAC_Elem();
+  inline Eval_centre_PolyMAC_old_Elem();
 
   inline int calculer_flux_faces_echange_externe_impose() const override;
   inline int calculer_flux_faces_echange_global_impose() const override;
@@ -59,7 +59,7 @@ public:
   inline int calculer_flux_faces_paroi_fixe() const override;
   inline int calculer_flux_faces_sortie_libre() const override;
   inline int calculer_flux_faces_symetrie() const override;
-  inline int calculer_flux_faces_periodique() const override ;
+  inline int calculer_flux_faces_periodique() const override;
 
   // Fonctions qui servent a calculer le flux de grandeurs scalaires
   // Elles sont de type double et renvoient le flux
@@ -148,7 +148,7 @@ public:
   inline void coeffs_face(int, int,const Echange_global_impose&, DoubleVect& aii, DoubleVect& ajj ) const override;
   inline void coeffs_face(int, int,const Periodique&, DoubleVect& aii, DoubleVect& ajj ) const override;
 
-  //virtual void coeffs_face(const DoubleTab&, int ,int, const Nouvelle_Cl_PolyMAC&, int,
+  //virtual void coeffs_face(const DoubleTab&, int ,int, const Nouvelle_Cl_PolyMAC_old&, int,
   //                           DoubleVect& aii, DoubleVect& ajj ) const;
 
   inline void coeffs_faces_interne(int, DoubleVect& aii, DoubleVect& ajj ) const override;
@@ -170,24 +170,21 @@ public:
 
 protected:
 
-  inline double dim_elem(int , int ) const;
-  inline double dist_elem(int , int, int ) const;
   inline int amont_amont(int , int ) const;
-  inline double dist_face_elem1(int,int) const;
-  inline double qcentre(const double&, const int,
+  inline double qcentre(const double, const int,
                         const int, const int, const int,
                         const int, const DoubleTab& ) const;
-  inline void qcentre(const double&, const int,
+  inline void qcentre(const double, const int,
                       const int, const int, const int,
                       const int, const DoubleTab&, ArrOfDouble& ) const;
 
 };
 
 /////////////////////////////////////////////////////////////
-// Fonctions inline de la classe Eval_centre_PolyMAC_Elem
+// Fonctions inline de la classe Eval_centre_PolyMAC_old_Elem
 ////////////////////////////////////////////////////////////
 
-inline Eval_centre_PolyMAC_Elem::Eval_centre_PolyMAC_Elem()
+inline Eval_centre_PolyMAC_old_Elem::Eval_centre_PolyMAC_old_Elem()
 {
 }
 
@@ -195,7 +192,7 @@ inline Eval_centre_PolyMAC_Elem::Eval_centre_PolyMAC_Elem()
 //// calculer_flux_faces_echange_externe_impose
 //
 
-inline int Eval_centre_PolyMAC_Elem::calculer_flux_faces_echange_externe_impose() const
+inline int Eval_centre_PolyMAC_old_Elem::calculer_flux_faces_echange_externe_impose() const
 {
   return 0;
 }
@@ -204,7 +201,7 @@ inline int Eval_centre_PolyMAC_Elem::calculer_flux_faces_echange_externe_impose(
 //// calculer_flux_faces_echange_global_impose
 //
 
-inline int Eval_centre_PolyMAC_Elem::calculer_flux_faces_echange_global_impose() const
+inline int Eval_centre_PolyMAC_old_Elem::calculer_flux_faces_echange_global_impose() const
 {
   return 0;
 }
@@ -213,7 +210,7 @@ inline int Eval_centre_PolyMAC_Elem::calculer_flux_faces_echange_global_impose()
 //// calculer_flux_faces_entree_fluide
 //
 
-inline int Eval_centre_PolyMAC_Elem::calculer_flux_faces_entree_fluide() const
+inline int Eval_centre_PolyMAC_old_Elem::calculer_flux_faces_entree_fluide() const
 {
   return 1;
 }
@@ -222,7 +219,7 @@ inline int Eval_centre_PolyMAC_Elem::calculer_flux_faces_entree_fluide() const
 //// calculer_flux_faces_paroi
 //
 
-inline int Eval_centre_PolyMAC_Elem::calculer_flux_faces_paroi() const
+inline int Eval_centre_PolyMAC_old_Elem::calculer_flux_faces_paroi() const
 {
   return 0;
 }
@@ -231,7 +228,7 @@ inline int Eval_centre_PolyMAC_Elem::calculer_flux_faces_paroi() const
 //// calculer_flux_faces_paroi_adiabatique
 //
 
-inline int Eval_centre_PolyMAC_Elem::calculer_flux_faces_paroi_adiabatique() const
+inline int Eval_centre_PolyMAC_old_Elem::calculer_flux_faces_paroi_adiabatique() const
 {
   return 0;
 }
@@ -240,7 +237,7 @@ inline int Eval_centre_PolyMAC_Elem::calculer_flux_faces_paroi_adiabatique() con
 //// calculer_flux_faces_paroi_defilante
 //
 
-inline int Eval_centre_PolyMAC_Elem::calculer_flux_faces_paroi_defilante() const
+inline int Eval_centre_PolyMAC_old_Elem::calculer_flux_faces_paroi_defilante() const
 {
   return 0;
 }
@@ -249,7 +246,7 @@ inline int Eval_centre_PolyMAC_Elem::calculer_flux_faces_paroi_defilante() const
 //// calculer_flux_faces_paroi_fixe
 //
 
-inline int Eval_centre_PolyMAC_Elem::calculer_flux_faces_paroi_fixe() const
+inline int Eval_centre_PolyMAC_old_Elem::calculer_flux_faces_paroi_fixe() const
 {
   return 0;
 }
@@ -258,7 +255,7 @@ inline int Eval_centre_PolyMAC_Elem::calculer_flux_faces_paroi_fixe() const
 //// calculer_flux_faces_sortie_libre
 //
 
-inline int Eval_centre_PolyMAC_Elem::calculer_flux_faces_sortie_libre() const
+inline int Eval_centre_PolyMAC_old_Elem::calculer_flux_faces_sortie_libre() const
 {
   return 1;
 }
@@ -267,7 +264,7 @@ inline int Eval_centre_PolyMAC_Elem::calculer_flux_faces_sortie_libre() const
 //// calculer_flux_faces_symetrie
 //
 
-inline int Eval_centre_PolyMAC_Elem::calculer_flux_faces_symetrie() const
+inline int Eval_centre_PolyMAC_old_Elem::calculer_flux_faces_symetrie() const
 {
   return 0;
 }
@@ -275,11 +272,10 @@ inline int Eval_centre_PolyMAC_Elem::calculer_flux_faces_symetrie() const
 //// calculer_flux_faces_periodique
 //
 
-inline int Eval_centre_PolyMAC_Elem::calculer_flux_faces_periodique() const
+inline int Eval_centre_PolyMAC_old_Elem::calculer_flux_faces_periodique() const
 {
   return 1;
 }
-
 
 //////////////////////////////////////////////////////////////
 //  Fonctions de calcul des flux pour une grandeur scalaire
@@ -288,7 +284,7 @@ inline int Eval_centre_PolyMAC_Elem::calculer_flux_faces_periodique() const
 //// flux_face avec Dirichlet_entree_fluide
 //
 
-inline double Eval_centre_PolyMAC_Elem::flux_face(const DoubleTab& inco, int face,
+inline double Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab& inco, int face,
                                                   const Dirichlet_entree_fluide& la_cl,
                                                   int num1) const
 {
@@ -317,7 +313,7 @@ inline double Eval_centre_PolyMAC_Elem::flux_face(const DoubleTab& inco, int fac
 //// coeffs_face avec Dirichlet_entree_fluide
 //
 
-inline void Eval_centre_PolyMAC_Elem::coeffs_face(int face, int num1,const Dirichlet_entree_fluide& la_cl,
+inline void Eval_centre_PolyMAC_old_Elem::coeffs_face(int face, int num1,const Dirichlet_entree_fluide& la_cl,
                                                   double& aii, double& ajj) const
 {
   int i = elem_(face,0);
@@ -339,7 +335,7 @@ inline void Eval_centre_PolyMAC_Elem::coeffs_face(int face, int num1,const Diric
 //// secmem_face avec Dirichlet_entree_fluide
 //
 
-inline double Eval_centre_PolyMAC_Elem::secmem_face(int face, const Dirichlet_entree_fluide& la_cl,
+inline double Eval_centre_PolyMAC_old_Elem::secmem_face(int face, const Dirichlet_entree_fluide& la_cl,
                                                     int num1) const
 {
   int i = elem_(face,0);
@@ -363,7 +359,7 @@ inline double Eval_centre_PolyMAC_Elem::secmem_face(int face, const Dirichlet_en
 //// flux_face avec Dirichlet_paroi_defilante
 //
 
-inline double Eval_centre_PolyMAC_Elem::flux_face(const DoubleTab&, int ,
+inline double Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab&, int ,
                                                   const Dirichlet_paroi_defilante&, int ) const
 {
   return 0;
@@ -373,7 +369,7 @@ inline double Eval_centre_PolyMAC_Elem::flux_face(const DoubleTab&, int ,
 //// coeffs_face avec Dirichlet_paroi_defilante
 //
 
-inline void Eval_centre_PolyMAC_Elem::coeffs_face(int,int, const Dirichlet_paroi_defilante&, double&, double&) const
+inline void Eval_centre_PolyMAC_old_Elem::coeffs_face(int,int, const Dirichlet_paroi_defilante&, double&, double&) const
 {
   ;
 }
@@ -381,7 +377,7 @@ inline void Eval_centre_PolyMAC_Elem::coeffs_face(int,int, const Dirichlet_paroi
 //// secmem_face avec Dirichlet_paroi_defilante
 //
 
-inline double Eval_centre_PolyMAC_Elem::secmem_face(int, const Dirichlet_paroi_defilante&, int ) const
+inline double Eval_centre_PolyMAC_old_Elem::secmem_face(int, const Dirichlet_paroi_defilante&, int ) const
 {
   return 0;
 }
@@ -389,7 +385,7 @@ inline double Eval_centre_PolyMAC_Elem::secmem_face(int, const Dirichlet_paroi_d
 //// flux_face avec Dirichlet_paroi_fixe
 //
 
-inline double Eval_centre_PolyMAC_Elem::flux_face(const DoubleTab&, int ,
+inline double Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab&, int ,
                                                   const Dirichlet_paroi_fixe&, int ) const
 {
   return 0;
@@ -398,7 +394,7 @@ inline double Eval_centre_PolyMAC_Elem::flux_face(const DoubleTab&, int ,
 //// coeffs_face avec Dirichlet_paroi_fixe
 //
 
-inline void Eval_centre_PolyMAC_Elem::coeffs_face(int ,int,const Dirichlet_paroi_fixe&, double&, double&) const
+inline void Eval_centre_PolyMAC_old_Elem::coeffs_face(int ,int,const Dirichlet_paroi_fixe&, double&, double&) const
 {
   ;
 }
@@ -406,7 +402,7 @@ inline void Eval_centre_PolyMAC_Elem::coeffs_face(int ,int,const Dirichlet_paroi
 //// secmem_face avec Dirichlet_paroi_fixe
 //
 
-inline double Eval_centre_PolyMAC_Elem::secmem_face(int ,const Dirichlet_paroi_fixe&, int ) const
+inline double Eval_centre_PolyMAC_old_Elem::secmem_face(int ,const Dirichlet_paroi_fixe&, int ) const
 {
   return 0;
 }
@@ -415,7 +411,7 @@ inline double Eval_centre_PolyMAC_Elem::secmem_face(int ,const Dirichlet_paroi_f
 //// flux_face avec Echange_externe_impose
 //
 
-inline double Eval_centre_PolyMAC_Elem::flux_face(const DoubleTab&, int , int, int,
+inline double Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab&, int , int, int,
                                                   const Echange_externe_impose&, int ) const
 {
   return 0;
@@ -424,7 +420,7 @@ inline double Eval_centre_PolyMAC_Elem::flux_face(const DoubleTab&, int , int, i
 //// coeffs_face avec Echange_externe_impose
 //
 
-inline void Eval_centre_PolyMAC_Elem::coeffs_face(int,int,int,int, const Echange_externe_impose&, double&, double&) const
+inline void Eval_centre_PolyMAC_old_Elem::coeffs_face(int,int,int,int, const Echange_externe_impose&, double&, double&) const
 {
   ;
 }
@@ -432,7 +428,7 @@ inline void Eval_centre_PolyMAC_Elem::coeffs_face(int,int,int,int, const Echange
 //// secmem_face avec Echange_externe_impose
 //
 
-inline double Eval_centre_PolyMAC_Elem::secmem_face(int,int,int, const Echange_externe_impose&, int ) const
+inline double Eval_centre_PolyMAC_old_Elem::secmem_face(int,int,int, const Echange_externe_impose&, int ) const
 {
   return 0;
 }
@@ -440,7 +436,7 @@ inline double Eval_centre_PolyMAC_Elem::secmem_face(int,int,int, const Echange_e
 //// flux_face avec Echange_global_impose
 //
 
-inline double Eval_centre_PolyMAC_Elem::flux_face(const DoubleTab&, int ,
+inline double Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab&, int ,
                                                   const Echange_global_impose&, int ) const
 {
   return 0;
@@ -449,7 +445,7 @@ inline double Eval_centre_PolyMAC_Elem::flux_face(const DoubleTab&, int ,
 //// coeffs_face avec Echange_global_impose
 //
 
-inline void Eval_centre_PolyMAC_Elem::coeffs_face(int, int,const Echange_global_impose&, double&, double&) const
+inline void Eval_centre_PolyMAC_old_Elem::coeffs_face(int, int,const Echange_global_impose&, double&, double&) const
 {
   ;
 }
@@ -457,7 +453,7 @@ inline void Eval_centre_PolyMAC_Elem::coeffs_face(int, int,const Echange_global_
 //// secmem_face avec Echange_global_impose
 //
 
-inline double Eval_centre_PolyMAC_Elem::secmem_face(int, const Echange_global_impose&, int ) const
+inline double Eval_centre_PolyMAC_old_Elem::secmem_face(int, const Echange_global_impose&, int ) const
 {
   return 0;
 }
@@ -465,7 +461,7 @@ inline double Eval_centre_PolyMAC_Elem::secmem_face(int, const Echange_global_im
 //// flux_face avec Neumann_paroi
 //
 
-inline double Eval_centre_PolyMAC_Elem::flux_face(const DoubleTab&, int ,
+inline double Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab&, int ,
                                                   const Neumann_paroi&, int ) const
 {
   return 0;
@@ -474,7 +470,7 @@ inline double Eval_centre_PolyMAC_Elem::flux_face(const DoubleTab&, int ,
 //// coeffs_face avec Neumann_paroi
 //
 
-inline void Eval_centre_PolyMAC_Elem::coeffs_face(int , int,const Neumann_paroi&, double&, double&) const
+inline void Eval_centre_PolyMAC_old_Elem::coeffs_face(int , int,const Neumann_paroi&, double&, double&) const
 {
   ;
 }
@@ -482,7 +478,7 @@ inline void Eval_centre_PolyMAC_Elem::coeffs_face(int , int,const Neumann_paroi&
 //// secmem_face avec Neumann_paroi
 //
 
-inline double Eval_centre_PolyMAC_Elem::secmem_face(int, const Neumann_paroi&, int ) const
+inline double Eval_centre_PolyMAC_old_Elem::secmem_face(int, const Neumann_paroi&, int ) const
 {
   return 0;
 }
@@ -490,7 +486,7 @@ inline double Eval_centre_PolyMAC_Elem::secmem_face(int, const Neumann_paroi&, i
 //// flux_face avec Neumann_paroi_adiabatique
 //
 
-inline double Eval_centre_PolyMAC_Elem::flux_face(const DoubleTab&, int ,
+inline double Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab&, int ,
                                                   const Neumann_paroi_adiabatique&, int ) const
 {
   return 0;
@@ -499,7 +495,7 @@ inline double Eval_centre_PolyMAC_Elem::flux_face(const DoubleTab&, int ,
 //// coeffs_face avec Neumann_paroi_adiabatique
 //
 
-inline void Eval_centre_PolyMAC_Elem::coeffs_face(int,int, const Neumann_paroi_adiabatique&, double&, double&) const
+inline void Eval_centre_PolyMAC_old_Elem::coeffs_face(int,int, const Neumann_paroi_adiabatique&, double&, double&) const
 {
   ;
 }
@@ -507,7 +503,7 @@ inline void Eval_centre_PolyMAC_Elem::coeffs_face(int,int, const Neumann_paroi_a
 //// secmem_face avec Neumann_paroi_adiabatique
 //
 
-inline double Eval_centre_PolyMAC_Elem::secmem_face(int, const Neumann_paroi_adiabatique&, int ) const
+inline double Eval_centre_PolyMAC_old_Elem::secmem_face(int, const Neumann_paroi_adiabatique&, int ) const
 {
   return 0;
 }
@@ -515,7 +511,7 @@ inline double Eval_centre_PolyMAC_Elem::secmem_face(int, const Neumann_paroi_adi
 //// flux_face avec Neumann_sortie_libre
 //
 
-inline double Eval_centre_PolyMAC_Elem::flux_face(const DoubleTab& inco, int face,
+inline double Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab& inco, int face,
                                                   const Neumann_sortie_libre& la_cl, int num1) const
 {
   int n0 = elem_(face,0);
@@ -542,7 +538,7 @@ inline double Eval_centre_PolyMAC_Elem::flux_face(const DoubleTab& inco, int fac
 //// coeffs_face avec Neumann_sortie_libre
 //
 
-inline void Eval_centre_PolyMAC_Elem::coeffs_face(int face,int num1, const Neumann_sortie_libre& la_cl,
+inline void Eval_centre_PolyMAC_old_Elem::coeffs_face(int face,int num1, const Neumann_sortie_libre& la_cl,
                                                   double& aii, double& ajj) const
 {
   int i = elem_(face,0);
@@ -563,7 +559,7 @@ inline void Eval_centre_PolyMAC_Elem::coeffs_face(int face,int num1, const Neuma
 //// secmem_face avec Neumann_sortie_libre
 //
 
-inline double Eval_centre_PolyMAC_Elem::secmem_face(int face, const Neumann_sortie_libre& la_cl, int num1) const
+inline double Eval_centre_PolyMAC_old_Elem::secmem_face(int face, const Neumann_sortie_libre& la_cl, int num1) const
 {
   double flux=0;
   int i = elem_(face,0);
@@ -585,7 +581,7 @@ inline double Eval_centre_PolyMAC_Elem::secmem_face(int face, const Neumann_sort
 //// flux_face avec Symetrie
 //
 
-inline double Eval_centre_PolyMAC_Elem::flux_face(const DoubleTab&, int ,
+inline double Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab&, int ,
                                                   const Symetrie&, int ) const
 {
   return 0;
@@ -595,7 +591,7 @@ inline double Eval_centre_PolyMAC_Elem::flux_face(const DoubleTab&, int ,
 //// coeffs_face avec Symetrie
 //
 
-inline void Eval_centre_PolyMAC_Elem::coeffs_face(int, int,const Symetrie&, double&, double&) const
+inline void Eval_centre_PolyMAC_old_Elem::coeffs_face(int, int,const Symetrie&, double&, double&) const
 {
   ;
 }
@@ -603,16 +599,15 @@ inline void Eval_centre_PolyMAC_Elem::coeffs_face(int, int,const Symetrie&, doub
 //// secmem_face avec Symetrie
 //
 
-inline double Eval_centre_PolyMAC_Elem::secmem_face(int, const Symetrie&, int ) const
+inline double Eval_centre_PolyMAC_old_Elem::secmem_face(int, const Symetrie&, int ) const
 {
   return 0;
 }
 
-
 //// flux_face avec Periodique
 //
 
-inline double Eval_centre_PolyMAC_Elem::flux_face(const DoubleTab& inco, int face,
+inline double Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab& inco, int face,
                                                   const Periodique& la_cl, int ) const
 {
   // 30/05/2002 : Codage Periodicite.
@@ -631,7 +626,7 @@ inline double Eval_centre_PolyMAC_Elem::flux_face(const DoubleTab& inco, int fac
 
 //// coeffs_face avec Periodique
 //
-inline void Eval_centre_PolyMAC_Elem::coeffs_face(int face, int,const Periodique& la_cl, double& aii, double& ajj) const
+inline void Eval_centre_PolyMAC_old_Elem::coeffs_face(int face, int,const Periodique& la_cl, double& aii, double& ajj) const
 {
   // 30/05/2002 : Codage Periodicite.
   // // ALEX C.
@@ -651,7 +646,7 @@ inline void Eval_centre_PolyMAC_Elem::coeffs_face(int face, int,const Periodique
 //// secmem_face avec Periodique
 //
 
-inline double Eval_centre_PolyMAC_Elem::secmem_face(int, const Periodique&, int ) const
+inline double Eval_centre_PolyMAC_old_Elem::secmem_face(int, const Periodique&, int ) const
 {
   return 0;
 }
@@ -659,7 +654,7 @@ inline double Eval_centre_PolyMAC_Elem::secmem_face(int, const Periodique&, int 
 //// flux_faces_interne
 //
 
-inline double Eval_centre_PolyMAC_Elem::flux_faces_interne(const DoubleTab& inco, int face) const
+inline double Eval_centre_PolyMAC_old_Elem::flux_faces_interne(const DoubleTab& inco, int face) const
 {
   double flux;
   double psc = dt_vitesse[face]*surface(face)*porosite(face);
@@ -675,7 +670,7 @@ inline double Eval_centre_PolyMAC_Elem::flux_faces_interne(const DoubleTab& inco
 //// coeffs_faces_interne
 //
 
-inline void Eval_centre_PolyMAC_Elem::coeffs_faces_interne(int face, double& aii, double& ajj ) const
+inline void Eval_centre_PolyMAC_old_Elem::coeffs_faces_interne(int face, double& aii, double& ajj ) const
 {
   int i = elem_(face,0);
   int j = elem_(face,1);
@@ -699,7 +694,7 @@ inline void Eval_centre_PolyMAC_Elem::coeffs_faces_interne(int face, double& aii
 //// secmem_faces_interne
 //
 
-inline double Eval_centre_PolyMAC_Elem::secmem_faces_interne(int) const
+inline double Eval_centre_PolyMAC_old_Elem::secmem_faces_interne(int) const
 {
   return 0;
 }
@@ -712,7 +707,7 @@ inline double Eval_centre_PolyMAC_Elem::secmem_faces_interne(int) const
 //// flux_face avec Dirichlet_entree_fluide
 //
 
-inline void Eval_centre_PolyMAC_Elem::flux_face(const DoubleTab& inco, int face,
+inline void Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab& inco, int face,
                                                 const Dirichlet_entree_fluide& la_cl,
                                                 int num1, DoubleVect& flux) const
 {
@@ -744,7 +739,7 @@ inline void Eval_centre_PolyMAC_Elem::flux_face(const DoubleTab& inco, int face,
 //// coeffs_face avec Dirichlet_entree_fluide
 //
 
-inline void Eval_centre_PolyMAC_Elem::coeffs_face(int face, int num1,const Dirichlet_entree_fluide& la_cl,
+inline void Eval_centre_PolyMAC_old_Elem::coeffs_face(int face, int num1,const Dirichlet_entree_fluide& la_cl,
                                                   DoubleVect& aii, DoubleVect& ajj) const
 {
   int k;
@@ -768,7 +763,7 @@ inline void Eval_centre_PolyMAC_Elem::coeffs_face(int face, int num1,const Diric
 //// secmem_face avec Dirichlet_entree_fluide
 //
 
-inline void Eval_centre_PolyMAC_Elem::secmem_face(int face, const Dirichlet_entree_fluide& la_cl, int num1, DoubleVect& flux) const
+inline void Eval_centre_PolyMAC_old_Elem::secmem_face(int face, const Dirichlet_entree_fluide& la_cl, int num1, DoubleVect& flux) const
 {
   int k;
   int i = elem_(face,0);
@@ -791,7 +786,7 @@ inline void Eval_centre_PolyMAC_Elem::secmem_face(int face, const Dirichlet_entr
 //// flux_face avec Dirichlet_paroi_defilante
 //
 
-inline void Eval_centre_PolyMAC_Elem::flux_face(const DoubleTab&, int ,
+inline void Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab&, int ,
                                                 const Dirichlet_paroi_defilante&,
                                                 int , DoubleVect& ) const
 {
@@ -801,7 +796,7 @@ inline void Eval_centre_PolyMAC_Elem::flux_face(const DoubleTab&, int ,
 //// coeffs_face avec Dirichlet_paroi_defilante
 //
 
-inline void Eval_centre_PolyMAC_Elem::coeffs_face(int , int,const Dirichlet_paroi_defilante&, DoubleVect& , DoubleVect& ) const
+inline void Eval_centre_PolyMAC_old_Elem::coeffs_face(int , int,const Dirichlet_paroi_defilante&, DoubleVect& , DoubleVect& ) const
 {
   ;
 }
@@ -809,7 +804,7 @@ inline void Eval_centre_PolyMAC_Elem::coeffs_face(int , int,const Dirichlet_paro
 //// secmem_face avec Dirichlet_paroi_defilante
 //
 
-inline void Eval_centre_PolyMAC_Elem::secmem_face(int , const Dirichlet_paroi_defilante& ,
+inline void Eval_centre_PolyMAC_old_Elem::secmem_face(int , const Dirichlet_paroi_defilante& ,
                                                   int, DoubleVect& ) const
 {
   ;
@@ -818,7 +813,7 @@ inline void Eval_centre_PolyMAC_Elem::secmem_face(int , const Dirichlet_paroi_de
 //// flux_face avec Dirichlet_paroi_fixe
 //
 
-inline void Eval_centre_PolyMAC_Elem::flux_face(const DoubleTab&, int ,
+inline void Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab&, int ,
                                                 const Dirichlet_paroi_fixe&,
                                                 int , DoubleVect& ) const
 {
@@ -828,7 +823,7 @@ inline void Eval_centre_PolyMAC_Elem::flux_face(const DoubleTab&, int ,
 //// coeffs_face avec Dirichlet_paroi_fixe
 //
 
-inline void Eval_centre_PolyMAC_Elem::coeffs_face(int,int, const Dirichlet_paroi_fixe&, DoubleVect& , DoubleVect& ) const
+inline void Eval_centre_PolyMAC_old_Elem::coeffs_face(int,int, const Dirichlet_paroi_fixe&, DoubleVect& , DoubleVect& ) const
 {
   ;
 }
@@ -836,7 +831,7 @@ inline void Eval_centre_PolyMAC_Elem::coeffs_face(int,int, const Dirichlet_paroi
 //// secmem_face avec Dirichlet_paroi_fixe
 //
 
-inline void Eval_centre_PolyMAC_Elem::secmem_face(int, const Dirichlet_paroi_fixe& ,
+inline void Eval_centre_PolyMAC_old_Elem::secmem_face(int, const Dirichlet_paroi_fixe& ,
                                                   int, DoubleVect& ) const
 {
   ;
@@ -845,7 +840,7 @@ inline void Eval_centre_PolyMAC_Elem::secmem_face(int, const Dirichlet_paroi_fix
 //// flux_face avec Echange_externe_impose
 //
 
-inline void Eval_centre_PolyMAC_Elem::flux_face(const DoubleTab&, int , int, int,
+inline void Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab&, int , int, int,
                                                 const Echange_externe_impose&,
                                                 int , DoubleVect& ) const
 {
@@ -855,7 +850,7 @@ inline void Eval_centre_PolyMAC_Elem::flux_face(const DoubleTab&, int , int, int
 //// coeffs_face avec Echange_externe_impose
 //
 
-inline void Eval_centre_PolyMAC_Elem::coeffs_face(int, int, int, int, const Echange_externe_impose&, DoubleVect& , DoubleVect& ) const
+inline void Eval_centre_PolyMAC_old_Elem::coeffs_face(int, int, int, int, const Echange_externe_impose&, DoubleVect& , DoubleVect& ) const
 {
   ;
 }
@@ -863,7 +858,7 @@ inline void Eval_centre_PolyMAC_Elem::coeffs_face(int, int, int, int, const Echa
 //// secmem_face avec Echange_externe_impose
 //
 
-inline void Eval_centre_PolyMAC_Elem::secmem_face(int , int, int, const Echange_externe_impose& ,
+inline void Eval_centre_PolyMAC_old_Elem::secmem_face(int , int, int, const Echange_externe_impose& ,
                                                   int, DoubleVect& ) const
 {
   ;
@@ -872,7 +867,7 @@ inline void Eval_centre_PolyMAC_Elem::secmem_face(int , int, int, const Echange_
 //// flux_face avec Echange_global_impose
 //
 
-inline void Eval_centre_PolyMAC_Elem::flux_face(const DoubleTab&, int ,
+inline void Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab&, int ,
                                                 const Echange_global_impose&,
                                                 int , DoubleVect& ) const
 {
@@ -882,7 +877,7 @@ inline void Eval_centre_PolyMAC_Elem::flux_face(const DoubleTab&, int ,
 //// coeffs_face avec Echange_global_impose
 //
 
-inline void Eval_centre_PolyMAC_Elem::coeffs_face(int , int,const Echange_global_impose&, DoubleVect& , DoubleVect& ) const
+inline void Eval_centre_PolyMAC_old_Elem::coeffs_face(int , int,const Echange_global_impose&, DoubleVect& , DoubleVect& ) const
 {
   ;
 }
@@ -890,7 +885,7 @@ inline void Eval_centre_PolyMAC_Elem::coeffs_face(int , int,const Echange_global
 //// secmem_face avec Echange_global_impose
 //
 
-inline void Eval_centre_PolyMAC_Elem::secmem_face(int , const Echange_global_impose& ,
+inline void Eval_centre_PolyMAC_old_Elem::secmem_face(int , const Echange_global_impose& ,
                                                   int, DoubleVect& ) const
 {
   ;
@@ -899,7 +894,7 @@ inline void Eval_centre_PolyMAC_Elem::secmem_face(int , const Echange_global_imp
 //// flux_face avec Neumann_paroi
 //
 
-inline void Eval_centre_PolyMAC_Elem::flux_face(const DoubleTab&, int ,
+inline void Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab&, int ,
                                                 const Neumann_paroi&,
                                                 int , DoubleVect& ) const
 {
@@ -909,7 +904,7 @@ inline void Eval_centre_PolyMAC_Elem::flux_face(const DoubleTab&, int ,
 //// coeffs_face avec Neumann_paroi
 //
 
-inline void Eval_centre_PolyMAC_Elem::coeffs_face(int, int,const Neumann_paroi&, DoubleVect& , DoubleVect& ) const
+inline void Eval_centre_PolyMAC_old_Elem::coeffs_face(int, int,const Neumann_paroi&, DoubleVect& , DoubleVect& ) const
 {
   ;
 }
@@ -917,7 +912,7 @@ inline void Eval_centre_PolyMAC_Elem::coeffs_face(int, int,const Neumann_paroi&,
 //// secmem_face avec Neumann_paroi
 //
 
-inline void Eval_centre_PolyMAC_Elem::secmem_face(int, const Neumann_paroi& ,
+inline void Eval_centre_PolyMAC_old_Elem::secmem_face(int, const Neumann_paroi& ,
                                                   int, DoubleVect& ) const
 {
   ;
@@ -926,7 +921,7 @@ inline void Eval_centre_PolyMAC_Elem::secmem_face(int, const Neumann_paroi& ,
 //// flux_face avec Neumann_paroi_adiabatique
 //
 
-inline void Eval_centre_PolyMAC_Elem::flux_face(const DoubleTab&, int ,
+inline void Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab&, int ,
                                                 const Neumann_paroi_adiabatique&,
                                                 int , DoubleVect& ) const
 {
@@ -936,7 +931,7 @@ inline void Eval_centre_PolyMAC_Elem::flux_face(const DoubleTab&, int ,
 //// coeffs_face avec Neumann_paroi_adiabatique
 //
 
-inline void Eval_centre_PolyMAC_Elem::coeffs_face(int, int,const Neumann_paroi_adiabatique&, DoubleVect& , DoubleVect& ) const
+inline void Eval_centre_PolyMAC_old_Elem::coeffs_face(int, int,const Neumann_paroi_adiabatique&, DoubleVect& , DoubleVect& ) const
 {
   ;
 }
@@ -944,7 +939,7 @@ inline void Eval_centre_PolyMAC_Elem::coeffs_face(int, int,const Neumann_paroi_a
 //// secmem_face avec Neumann_paroi_adiabatique
 //
 
-inline void Eval_centre_PolyMAC_Elem::secmem_face(int , const Neumann_paroi_adiabatique& ,
+inline void Eval_centre_PolyMAC_old_Elem::secmem_face(int , const Neumann_paroi_adiabatique& ,
                                                   int, DoubleVect& ) const
 {
   ;
@@ -953,7 +948,7 @@ inline void Eval_centre_PolyMAC_Elem::secmem_face(int , const Neumann_paroi_adia
 //// flux_face avec Neumann_sortie_libre
 //
 
-inline void Eval_centre_PolyMAC_Elem::flux_face(const DoubleTab& inco, int face,
+inline void Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab& inco, int face,
                                                 const Neumann_sortie_libre& la_cl,
                                                 int num1, DoubleVect& flux) const
 {
@@ -984,7 +979,7 @@ inline void Eval_centre_PolyMAC_Elem::flux_face(const DoubleTab& inco, int face,
 //// coeffs_face avec Neumann_sortie_libre
 //
 
-inline void Eval_centre_PolyMAC_Elem::coeffs_face(int face,int num1, const Neumann_sortie_libre& la_cl,
+inline void Eval_centre_PolyMAC_old_Elem::coeffs_face(int face,int num1, const Neumann_sortie_libre& la_cl,
                                                   DoubleVect& aii, DoubleVect& ajj) const
 {
   int k;
@@ -1008,7 +1003,7 @@ inline void Eval_centre_PolyMAC_Elem::coeffs_face(int face,int num1, const Neuma
 //// secmem_face avec Neumann_sortie_libre
 //
 
-inline void Eval_centre_PolyMAC_Elem::secmem_face(int face, const Neumann_sortie_libre& la_cl, int num1, DoubleVect& flux) const
+inline void Eval_centre_PolyMAC_old_Elem::secmem_face(int face, const Neumann_sortie_libre& la_cl, int num1, DoubleVect& flux) const
 {
   int k;
   int i = elem_(face,0);
@@ -1031,7 +1026,7 @@ inline void Eval_centre_PolyMAC_Elem::secmem_face(int face, const Neumann_sortie
 //// flux_face avec Symetrie
 //
 
-inline void Eval_centre_PolyMAC_Elem::flux_face(const DoubleTab&, int ,
+inline void Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab&, int ,
                                                 const Symetrie&,
                                                 int , DoubleVect& ) const
 {
@@ -1041,7 +1036,7 @@ inline void Eval_centre_PolyMAC_Elem::flux_face(const DoubleTab&, int ,
 //// coeffs_face avec Symetrie
 //
 
-inline void Eval_centre_PolyMAC_Elem::coeffs_face(int , int,const Symetrie&, DoubleVect&, DoubleVect& ) const
+inline void Eval_centre_PolyMAC_old_Elem::coeffs_face(int , int,const Symetrie&, DoubleVect&, DoubleVect& ) const
 {
   ;
 }
@@ -1049,17 +1044,16 @@ inline void Eval_centre_PolyMAC_Elem::coeffs_face(int , int,const Symetrie&, Dou
 //// secmem_face avec Symetrie
 //
 
-inline void Eval_centre_PolyMAC_Elem::secmem_face(int , const Symetrie& ,
+inline void Eval_centre_PolyMAC_old_Elem::secmem_face(int , const Symetrie& ,
                                                   int, DoubleVect& ) const
 {
   ;
 }
 
-
 //// flux_face avec Periodique
 //
 
-inline void Eval_centre_PolyMAC_Elem::flux_face(const DoubleTab& inco, int face,
+inline void Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab& inco, int face,
                                                 const Periodique& la_cl,
                                                 int, DoubleVect& flux) const
 {
@@ -1080,7 +1074,7 @@ inline void Eval_centre_PolyMAC_Elem::flux_face(const DoubleTab& inco, int face,
 //// coeffs_face avec Periodique
 //
 
-inline void Eval_centre_PolyMAC_Elem::coeffs_face(int face,int, const Periodique& la_cl,
+inline void Eval_centre_PolyMAC_old_Elem::coeffs_face(int face,int, const Periodique& la_cl,
                                                   DoubleVect& aii, DoubleVect& ajj) const
 {
   int k;
@@ -1095,16 +1089,16 @@ inline void Eval_centre_PolyMAC_Elem::coeffs_face(int face,int, const Periodique
   qcentre(psc,i,j,i0_0,j1_1,face,inconnue->valeurs(),flux);
   if (psc > 0)
     for (k=0; k<aii.size(); k++)
-      aii(k) = -flux(k);
+      aii(k) = -flux[k];
   else
     for (k=0; k<ajj.size(); k++)
-      ajj(k) = -flux(k);
+      ajj(k) = -flux[k];
 }
 
 //// secmem_face avec Periodique
 //
 
-inline void Eval_centre_PolyMAC_Elem::secmem_face(int, const Periodique&,
+inline void Eval_centre_PolyMAC_old_Elem::secmem_face(int, const Periodique&,
                                                   int, DoubleVect&) const
 {
   ;
@@ -1113,7 +1107,7 @@ inline void Eval_centre_PolyMAC_Elem::secmem_face(int, const Periodique&,
 //// flux_faces_interne
 //
 
-inline void Eval_centre_PolyMAC_Elem::flux_faces_interne(const DoubleTab& inco,
+inline void Eval_centre_PolyMAC_old_Elem::flux_faces_interne(const DoubleTab& inco,
                                                          int face,DoubleVect& flux) const
 {
   int k;
@@ -1141,7 +1135,7 @@ inline void Eval_centre_PolyMAC_Elem::flux_faces_interne(const DoubleTab& inco,
 //// coeffs_faces_interne
 //
 
-inline void Eval_centre_PolyMAC_Elem::coeffs_faces_interne(int face, DoubleVect& aii, DoubleVect& ajj ) const
+inline void Eval_centre_PolyMAC_old_Elem::coeffs_faces_interne(int face, DoubleVect& aii, DoubleVect& ajj ) const
 {
   int k;
   int i = elem_(face,0);
@@ -1164,10 +1158,10 @@ inline void Eval_centre_PolyMAC_Elem::coeffs_faces_interne(int face, DoubleVect&
   qcentre(psc,i,j,i0_0,j1_1,face,inconnue->valeurs(),flux);
   if (psc > 0)
     for (k=0; k<aii.size(); k++)
-      aii(k) = -flux(k);
+      aii(k) = -flux[k];
   else
     for (k=0; k<ajj.size(); k++)
-      ajj(k) = -flux(k);
+      ajj(k) = -flux[k];
   /*     } */
 }
 
@@ -1175,7 +1169,7 @@ inline void Eval_centre_PolyMAC_Elem::coeffs_faces_interne(int face, DoubleVect&
 //// secmem_faces_interne
 //
 
-inline void Eval_centre_PolyMAC_Elem::secmem_faces_interne(int, DoubleVect& ) const
+inline void Eval_centre_PolyMAC_old_Elem::secmem_faces_interne(int, DoubleVect& ) const
 {
   ;
 }
@@ -1202,16 +1196,16 @@ inline void Eval_centre_PolyMAC_Elem::secmem_faces_interne(int, DoubleVect& ) co
 //// amont_amont
 //
 
-inline int Eval_centre_PolyMAC_Elem::amont_amont(int face, int i) const
+inline int Eval_centre_PolyMAC_old_Elem::amont_amont(int face, int i) const
 {
-  return la_zone->amont_amont(face, i);
+  return 0;//la_zone->amont_amont(face, i);
 }
 
 
 //// qcentre pour un champ transporte scalaire
 //
 
-inline double Eval_centre_PolyMAC_Elem::qcentre(const double& psc, const int num0, const int num1,
+inline double Eval_centre_PolyMAC_old_Elem::qcentre(const double psc, const int num0, const int num1,
                                                 const int num0_0, const int num1_1, const int face,
                                                 const DoubleTab& transporte) const
 {
@@ -1237,18 +1231,13 @@ inline double Eval_centre_PolyMAC_Elem::qcentre(const double& psc, const int num
 //// qcentre pour un champ transporte vectoriel
 //
 
-inline void Eval_centre_PolyMAC_Elem::qcentre(const double& psc, const int num0, const int num1,
+inline void Eval_centre_PolyMAC_old_Elem::qcentre(const double psc, const int num0, const int num1,
                                               const int num0_0, const int num1_1, const int face,
                                               const DoubleTab& transporte,ArrOfDouble& flux) const
 {
 
   int k;
   int ncomp = flux.size_array();
-
-  //int ori = orientation(face);
-  //double dx = dist_elem(num0, num1, ori);
-  //double dxam=dist_elem(num0_0, num0, ori);
-  //double dxav=dist_elem(num1, num1_1, ori);
 
   ArrOfDouble T0(ncomp);
   ArrOfDouble T0_0(ncomp);
@@ -1257,10 +1246,10 @@ inline void Eval_centre_PolyMAC_Elem::qcentre(const double& psc, const int num0,
 
   for (k=0; k<ncomp; k++)
     {
-      T0(k) = transporte(num0,k);
-      T0_0(k) = transporte(num0_0,k);
-      T1(k) = transporte(num1,k);
-      T1_1(k) = transporte(num1_1,k);
+      T0[k] = transporte(num0,k);
+      T0_0[k] = transporte(num0_0,k);
+      T1[k] = transporte(num1,k);
+      T1_1[k] = transporte(num1_1,k);
     }
 
   //double g1 = -dx*dx*(dx/2+dxav)/(4*(dx+dxam+dxav)*(dx+dxam)*dxam);
@@ -1270,7 +1259,7 @@ inline void Eval_centre_PolyMAC_Elem::qcentre(const double& psc, const int num0,
 
   for (k=0; k<ncomp; k++)
     {
-      flux(k) =0.5*(  T0(k) + T1(k))   *   psc ;
+      flux[k] =0.5*(  T0[k] + T1[k])   *   psc ;
     }
 
   // On applique le filtre Fram4:
@@ -1279,22 +1268,6 @@ inline void Eval_centre_PolyMAC_Elem::qcentre(const double& psc, const int num0,
   // {
   //    fr = Fram4(T0_0(k),T0(k),T1(k),T1_1(k));
   // flux(k) = ((1.-fr)*flux(k) + fr*trans_amont(k))*psc;
-}
-
-inline double Eval_centre_PolyMAC_Elem::dim_elem(int n1, int k) const
-{
-  return la_zone->dim_elem(n1,k);
-}
-
-
-inline double Eval_centre_PolyMAC_Elem::dist_elem(int n1, int n2, int k) const
-{
-  return la_zone->dist_elem(n1,n2,k);
-}
-
-inline double Eval_centre_PolyMAC_Elem::dist_face_elem1(int num_face,int n1) const
-{
-  return la_zone->dist_face_elem1(num_face, n1);
 }
 
 #endif

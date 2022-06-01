@@ -14,18 +14,26 @@
 *****************************************************************************/
 //////////////////////////////////////////////////////////////////////////////
 //
-// File:        Eval_PolyMAC_Elem.cpp
-// Directory:   $TRUST_ROOT/src/PolyMAC/Operateurs/Conv_iterateur
-// Version:     /main/4
+// File:        ItPolyMAC_oldEl.h
+// Directory:   $TRUST_ROOT/src/PolyMAC_old/Operateurs/Conv_iterateur
+// Version:     /main/5
 //
 //////////////////////////////////////////////////////////////////////////////
-#include <Champ_P0_PolyMAC.h>
-#include <Eval_PolyMAC_Elem.h>
 
-void Eval_PolyMAC_Elem::associer_inconnue(const Champ_base& inco)
-{
-  assert(sub_type(Champ_P0_PolyMAC,inco));
-  inconnue=inco;
-}
+#ifndef It_PolyMAC_oldEl_H
+#define It_PolyMAC_oldEl_H
 
+#include <Config_Template_Version_PolyMAC_old_Operateur.h>
+#define It_PolyMAC_old_Elem(_TYPE_) name2(Iterateur_PolyMAC_old_Elem, _TYPE_)
 
+#ifdef Template_Version_PolyMAC_old
+#include <T_It_PolyMAC_old_Elem.h>
+#define declare_It_PolyMAC_old_Elem(_TYPE_)
+
+#define implemente_It_PolyMAC_old_Elem(_TYPE_) \
+  typedef T_It_PolyMAC_old_Elem<_TYPE_> It_PolyMAC_old_Elem(_TYPE_);
+#else
+#include <MItPolyMAC_oldEl.h>
+#endif
+
+#endif
