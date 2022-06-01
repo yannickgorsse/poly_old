@@ -42,7 +42,7 @@ Entree& Champ_Fonc_Tabule_P0_PolyMAC_old::readOn(Entree& s)
 }
 
 void Champ_Fonc_Tabule_P0_PolyMAC_old::associer_param(const VECT(REF(Champ_base))& les_champs,
-                                                  const Table& une_table)
+                                                      const Table& une_table)
 {
   les_ch_param = les_champs;
   la_table = une_table;

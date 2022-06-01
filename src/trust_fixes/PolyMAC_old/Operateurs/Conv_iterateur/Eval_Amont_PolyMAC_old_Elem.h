@@ -298,8 +298,8 @@ inline int Eval_Amont_PolyMAC_old_Elem::calculer_flux_faces_periodique() const
 //
 
 inline double Eval_Amont_PolyMAC_old_Elem::flux_face(const DoubleTab& inco, int face,
-                                                 const Dirichlet_entree_fluide& la_cl,
-                                                 int num1) const
+                                                     const Dirichlet_entree_fluide& la_cl,
+                                                     int num1) const
 {
   int n0 = elem_(face,0);
   int n1 = elem_(face,1);
@@ -330,7 +330,7 @@ inline double Eval_Amont_PolyMAC_old_Elem::flux_face(const DoubleTab& inco, int 
 //
 
 inline void Eval_Amont_PolyMAC_old_Elem::coeffs_face(int face, int, const Dirichlet_entree_fluide& la_cl,
-                                                 double& aii, double& ajj) const
+                                                     double& aii, double& ajj) const
 {
   int i = elem_(face,0);
   //  int j = elem(face,1);
@@ -365,8 +365,8 @@ inline void Eval_Amont_PolyMAC_old_Elem::coeffs_face(int face, int, const Dirich
 }
 
 inline double Eval_Amont_PolyMAC_old_Elem::coeffs_face_bloc_vitesse(const DoubleTab& inco, int face,
-                                                                const Dirichlet_entree_fluide& la_cl,
-                                                                int num1) const
+                                                                    const Dirichlet_entree_fluide& la_cl,
+                                                                    int num1) const
 {
   int n0 = elem_(face,0);
   int n1 = elem_(face,1);
@@ -397,7 +397,7 @@ inline double Eval_Amont_PolyMAC_old_Elem::coeffs_face_bloc_vitesse(const Double
 //
 
 inline double Eval_Amont_PolyMAC_old_Elem::secmem_face(int face, const Dirichlet_entree_fluide& la_cl,
-                                                   int num1) const
+                                                       int num1) const
 {
   int i = elem_(face,0);
   //  int j = elem(face,1);
@@ -425,7 +425,7 @@ inline double Eval_Amont_PolyMAC_old_Elem::secmem_face(int face, const Dirichlet
 //
 
 inline double Eval_Amont_PolyMAC_old_Elem::flux_face(const DoubleTab&, int ,
-                                                 const Dirichlet_paroi_defilante&, int ) const
+                                                     const Dirichlet_paroi_defilante&, int ) const
 {
   return 0;
 }
@@ -439,7 +439,7 @@ inline void Eval_Amont_PolyMAC_old_Elem::coeffs_face(int, int,const Dirichlet_pa
 }
 
 inline double Eval_Amont_PolyMAC_old_Elem::coeffs_face_bloc_vitesse(const DoubleTab&, int ,
-                                                                const Dirichlet_paroi_defilante&, int ) const
+                                                                    const Dirichlet_paroi_defilante&, int ) const
 {
   return 0;
 }
@@ -457,7 +457,7 @@ inline double Eval_Amont_PolyMAC_old_Elem::secmem_face(int, const Dirichlet_paro
 //
 
 inline double Eval_Amont_PolyMAC_old_Elem::flux_face(const DoubleTab&, int ,
-                                                 const Dirichlet_paroi_fixe&, int ) const
+                                                     const Dirichlet_paroi_fixe&, int ) const
 {
   return 0;
 }
@@ -471,7 +471,7 @@ inline void Eval_Amont_PolyMAC_old_Elem::coeffs_face(int ,int,const Dirichlet_pa
 }
 
 inline double Eval_Amont_PolyMAC_old_Elem::coeffs_face_bloc_vitesse(const DoubleTab&, int ,
-                                                                const Dirichlet_paroi_fixe&, int ) const
+                                                                    const Dirichlet_paroi_fixe&, int ) const
 {
   return 0;
 }
@@ -489,7 +489,7 @@ inline double Eval_Amont_PolyMAC_old_Elem::secmem_face(int ,const Dirichlet_paro
 //
 
 inline double Eval_Amont_PolyMAC_old_Elem::flux_face(const DoubleTab&, int , int, int,
-                                                 const Echange_externe_impose&, int ) const
+                                                     const Echange_externe_impose&, int ) const
 {
   return 0;
 }
@@ -503,7 +503,7 @@ inline void Eval_Amont_PolyMAC_old_Elem::coeffs_face(int, int, int, int, const E
 }
 
 inline double Eval_Amont_PolyMAC_old_Elem::coeffs_face_bloc_vitesse(const DoubleTab&, int , int, int,
-                                                                const Echange_externe_impose&, int ) const
+                                                                    const Echange_externe_impose&, int ) const
 {
   return 0;
 }
@@ -520,7 +520,7 @@ inline double Eval_Amont_PolyMAC_old_Elem::secmem_face(int, int, int, const Echa
 //
 
 inline double Eval_Amont_PolyMAC_old_Elem::flux_face(const DoubleTab&, int ,
-                                                 const Echange_global_impose&, int ) const
+                                                     const Echange_global_impose&, int ) const
 {
   return 0;
 }
@@ -534,7 +534,7 @@ inline void Eval_Amont_PolyMAC_old_Elem::coeffs_face(int,int, const Echange_glob
 }
 
 inline double Eval_Amont_PolyMAC_old_Elem::coeffs_face_bloc_vitesse(const DoubleTab&, int ,
-                                                                const Echange_global_impose&, int ) const
+                                                                    const Echange_global_impose&, int ) const
 {
   return 0;
 }
@@ -552,7 +552,7 @@ inline double Eval_Amont_PolyMAC_old_Elem::secmem_face(int, const Echange_global
 //
 
 inline double Eval_Amont_PolyMAC_old_Elem::flux_face(const DoubleTab&, int ,
-                                                 const Neumann_paroi&, int ) const
+                                                     const Neumann_paroi&, int ) const
 {
   return 0;
 }
@@ -566,7 +566,7 @@ inline void Eval_Amont_PolyMAC_old_Elem::coeffs_face(int , int,const Neumann_par
 }
 
 inline double Eval_Amont_PolyMAC_old_Elem::coeffs_face_bloc_vitesse(const DoubleTab&, int ,
-                                                                const Neumann_paroi&, int ) const
+                                                                    const Neumann_paroi&, int ) const
 {
   return 0;
 }
@@ -583,7 +583,7 @@ inline double Eval_Amont_PolyMAC_old_Elem::secmem_face(int, const Neumann_paroi&
 //
 
 inline double Eval_Amont_PolyMAC_old_Elem::flux_face(const DoubleTab&, int ,
-                                                 const Neumann_paroi_adiabatique&, int ) const
+                                                     const Neumann_paroi_adiabatique&, int ) const
 {
   return 0;
 }
@@ -597,7 +597,7 @@ inline void Eval_Amont_PolyMAC_old_Elem::coeffs_face(int, int,const Neumann_paro
 }
 
 inline double Eval_Amont_PolyMAC_old_Elem::coeffs_face_bloc_vitesse(const DoubleTab&, int ,
-                                                                const Neumann_paroi_adiabatique&, int ) const
+                                                                    const Neumann_paroi_adiabatique&, int ) const
 {
   return 0;
 }
@@ -614,7 +614,7 @@ inline double Eval_Amont_PolyMAC_old_Elem::secmem_face(int, const Neumann_paroi_
 //
 
 inline double Eval_Amont_PolyMAC_old_Elem::flux_face(const DoubleTab& inco, int face,
-                                                 const Neumann_sortie_libre& la_cl, int num1) const
+                                                     const Neumann_sortie_libre& la_cl, int num1) const
 {
   double flux;
   int n0 = elem_(face,0);
@@ -644,7 +644,7 @@ inline double Eval_Amont_PolyMAC_old_Elem::flux_face(const DoubleTab& inco, int 
 //
 
 inline void Eval_Amont_PolyMAC_old_Elem::coeffs_face(int face, int,const Neumann_sortie_libre& la_cl,
-                                                 double& aii, double& ajj) const
+                                                     double& aii, double& ajj) const
 {
   int i = elem_(face,0);
   //  int j = elem(face,1);
@@ -679,7 +679,7 @@ inline void Eval_Amont_PolyMAC_old_Elem::coeffs_face(int face, int,const Neumann
 }
 
 inline double Eval_Amont_PolyMAC_old_Elem::coeffs_face_bloc_vitesse(const DoubleTab& inco, int face,
-                                                                const Neumann_sortie_libre& la_cl, int num1) const
+                                                                    const Neumann_sortie_libre& la_cl, int num1) const
 {
   double flux;
   int n0 = elem_(face,0);
@@ -735,7 +735,7 @@ inline double Eval_Amont_PolyMAC_old_Elem::secmem_face(int face, const Neumann_s
 //
 
 inline double Eval_Amont_PolyMAC_old_Elem::flux_face(const DoubleTab&, int ,
-                                                 const Symetrie&, int ) const
+                                                     const Symetrie&, int ) const
 {
   return 0;
 }
@@ -749,7 +749,7 @@ inline void Eval_Amont_PolyMAC_old_Elem::coeffs_face(int,int, const Symetrie&, d
 }
 
 inline double Eval_Amont_PolyMAC_old_Elem::coeffs_face_bloc_vitesse(const DoubleTab&, int ,
-                                                                const Symetrie&, int ) const
+                                                                    const Symetrie&, int ) const
 {
   return 0;
 }
@@ -767,7 +767,7 @@ inline double Eval_Amont_PolyMAC_old_Elem::secmem_face(int, const Symetrie&, int
 //
 
 inline double Eval_Amont_PolyMAC_old_Elem::flux_face(const DoubleTab& inco, int face,
-                                                 const Periodique& la_cl, int  ) const
+                                                     const Periodique& la_cl, int  ) const
 {
   double psc = dt_vitesse[face]*surface(face)*porosite(face);
   double flux;
@@ -801,7 +801,7 @@ inline void Eval_Amont_PolyMAC_old_Elem::coeffs_face(int face, int,const Periodi
 }
 
 inline double Eval_Amont_PolyMAC_old_Elem::coeffs_face_bloc_vitesse(const DoubleTab& inco, int face,
-                                                                const Periodique& la_cl, int  ) const
+                                                                    const Periodique& la_cl, int  ) const
 {
   double psc = surface(face)*porosite(face);
   double flux;
@@ -885,8 +885,8 @@ inline double Eval_Amont_PolyMAC_old_Elem::secmem_faces_interne(int) const
 //
 
 inline void Eval_Amont_PolyMAC_old_Elem::flux_face(const DoubleTab& ,
-                                               int , const Symetrie& ,
-                                               int, DoubleVect& ) const
+                                                   int , const Symetrie& ,
+                                                   int, DoubleVect& ) const
 {
   ;
 }
@@ -903,7 +903,7 @@ inline void Eval_Amont_PolyMAC_old_Elem::coeffs_face(int , int,const Symetrie&, 
 //
 
 inline void Eval_Amont_PolyMAC_old_Elem::secmem_face(int , const Symetrie& ,
-                                                 int, DoubleVect& ) const
+                                                     int, DoubleVect& ) const
 {
   ;
 }
@@ -912,8 +912,8 @@ inline void Eval_Amont_PolyMAC_old_Elem::secmem_face(int , const Symetrie& ,
 //
 
 inline void Eval_Amont_PolyMAC_old_Elem::flux_face(const DoubleTab& inco, int face,
-                                               const Periodique& la_cl,
-                                               int num1, DoubleVect& flux) const
+                                                   const Periodique& la_cl,
+                                                   int num1, DoubleVect& flux) const
 {
   int k;
   double psc = dt_vitesse[face]*surface(face)*porosite(face);
@@ -932,7 +932,7 @@ inline void Eval_Amont_PolyMAC_old_Elem::flux_face(const DoubleTab& inco, int fa
 //
 
 inline void Eval_Amont_PolyMAC_old_Elem::coeffs_face(int face, int,const Periodique& la_cl,
-                                                 DoubleVect& aii, DoubleVect& ajj ) const
+                                                     DoubleVect& aii, DoubleVect& ajj ) const
 {
   int k;
   double psc = dt_vitesse[face]*surface(face)*porosite(face);
@@ -959,7 +959,7 @@ inline void Eval_Amont_PolyMAC_old_Elem::coeffs_face(int face, int,const Periodi
 //
 
 inline void Eval_Amont_PolyMAC_old_Elem::secmem_face(int , const Periodique& ,
-                                                 int , DoubleVect& ) const
+                                                     int , DoubleVect& ) const
 {
   ;
 }
@@ -969,8 +969,8 @@ inline void Eval_Amont_PolyMAC_old_Elem::secmem_face(int , const Periodique& ,
 //
 
 inline void Eval_Amont_PolyMAC_old_Elem::flux_face(const DoubleTab& inco,
-                                               int face, const Neumann_sortie_libre& la_cl,
-                                               int num1, DoubleVect& flux) const
+                                                   int face, const Neumann_sortie_libre& la_cl,
+                                                   int num1, DoubleVect& flux) const
 {
   int k;
   int n0 = elem_(face,0);
@@ -1000,7 +1000,7 @@ inline void Eval_Amont_PolyMAC_old_Elem::flux_face(const DoubleTab& inco,
 //
 
 inline void Eval_Amont_PolyMAC_old_Elem::coeffs_face(int face,int, const Neumann_sortie_libre& la_cl,
-                                                 DoubleVect& aii, DoubleVect& ajj) const
+                                                     DoubleVect& aii, DoubleVect& ajj) const
 {
   int k;
   int i = elem_(face,0);
@@ -1076,8 +1076,8 @@ inline void Eval_Amont_PolyMAC_old_Elem::secmem_face(int face, const Neumann_sor
 //
 
 inline void Eval_Amont_PolyMAC_old_Elem::flux_face(const DoubleTab& inco,
-                                               int face, const Dirichlet_entree_fluide& la_cl,
-                                               int num1, DoubleVect& flux) const
+                                                   int face, const Dirichlet_entree_fluide& la_cl,
+                                                   int num1, DoubleVect& flux) const
 {
   int k;
   int n0 = elem_(face,0);
@@ -1107,7 +1107,7 @@ inline void Eval_Amont_PolyMAC_old_Elem::flux_face(const DoubleTab& inco,
 //
 
 inline void Eval_Amont_PolyMAC_old_Elem::coeffs_face(int face,int, const Dirichlet_entree_fluide& la_cl,
-                                                 DoubleVect& aii, DoubleVect& ajj) const
+                                                     DoubleVect& aii, DoubleVect& ajj) const
 {
   int k;
   int i = elem_(face,0);
@@ -1183,8 +1183,8 @@ inline void Eval_Amont_PolyMAC_old_Elem::secmem_face(int face, const Dirichlet_e
 //
 
 inline void Eval_Amont_PolyMAC_old_Elem::flux_face(const DoubleTab& ,
-                                               int , const Dirichlet_paroi_fixe& ,
-                                               int, DoubleVect& ) const
+                                                   int , const Dirichlet_paroi_fixe& ,
+                                                   int, DoubleVect& ) const
 {
   ;
 }
@@ -1201,7 +1201,7 @@ inline void Eval_Amont_PolyMAC_old_Elem::coeffs_face(int, int, const Dirichlet_p
 //
 
 inline void Eval_Amont_PolyMAC_old_Elem::secmem_face(int, const Dirichlet_paroi_fixe& ,
-                                                 int, DoubleVect& ) const
+                                                     int, DoubleVect& ) const
 {
   ;
 }
@@ -1210,8 +1210,8 @@ inline void Eval_Amont_PolyMAC_old_Elem::secmem_face(int, const Dirichlet_paroi_
 //
 
 inline void Eval_Amont_PolyMAC_old_Elem::flux_face(const DoubleTab& ,
-                                               int , const Dirichlet_paroi_defilante& ,
-                                               int, DoubleVect& ) const
+                                                   int , const Dirichlet_paroi_defilante& ,
+                                                   int, DoubleVect& ) const
 {
   ;
 }
@@ -1229,7 +1229,7 @@ inline void Eval_Amont_PolyMAC_old_Elem::coeffs_face(int , int,const Dirichlet_p
 //
 
 inline void Eval_Amont_PolyMAC_old_Elem::secmem_face(int , const Dirichlet_paroi_defilante& ,
-                                                 int, DoubleVect& ) const
+                                                     int, DoubleVect& ) const
 {
   ;
 }
@@ -1238,8 +1238,8 @@ inline void Eval_Amont_PolyMAC_old_Elem::secmem_face(int , const Dirichlet_paroi
 //
 
 inline void Eval_Amont_PolyMAC_old_Elem::flux_face(const DoubleTab& ,
-                                               int , const Neumann_paroi_adiabatique& ,
-                                               int, DoubleVect& ) const
+                                                   int , const Neumann_paroi_adiabatique& ,
+                                                   int, DoubleVect& ) const
 {
   ;
 }
@@ -1256,7 +1256,7 @@ inline void Eval_Amont_PolyMAC_old_Elem::coeffs_face(int, int,const Neumann_paro
 //
 
 inline void Eval_Amont_PolyMAC_old_Elem::secmem_face(int , const Neumann_paroi_adiabatique& ,
-                                                 int, DoubleVect& ) const
+                                                     int, DoubleVect& ) const
 {
   ;
 }
@@ -1265,8 +1265,8 @@ inline void Eval_Amont_PolyMAC_old_Elem::secmem_face(int , const Neumann_paroi_a
 //
 
 inline void Eval_Amont_PolyMAC_old_Elem::flux_face(const DoubleTab& ,
-                                               int , const Neumann_paroi& ,
-                                               int, DoubleVect& ) const
+                                                   int , const Neumann_paroi& ,
+                                                   int, DoubleVect& ) const
 {
   ;
 }
@@ -1283,7 +1283,7 @@ inline void Eval_Amont_PolyMAC_old_Elem::coeffs_face(int,int, const Neumann_paro
 //
 
 inline void Eval_Amont_PolyMAC_old_Elem::secmem_face(int, const Neumann_paroi& ,
-                                                 int, DoubleVect& ) const
+                                                     int, DoubleVect& ) const
 {
   ;
 }
@@ -1292,8 +1292,8 @@ inline void Eval_Amont_PolyMAC_old_Elem::secmem_face(int, const Neumann_paroi& ,
 //
 
 inline void Eval_Amont_PolyMAC_old_Elem::flux_face(const DoubleTab& ,
-                                               int , int, int,  const Echange_externe_impose& ,
-                                               int, DoubleVect& ) const
+                                                   int , int, int,  const Echange_externe_impose& ,
+                                                   int, DoubleVect& ) const
 {
   ;
 }
@@ -1310,7 +1310,7 @@ inline void Eval_Amont_PolyMAC_old_Elem::coeffs_face(int, int, int, int, const E
 //
 
 inline void Eval_Amont_PolyMAC_old_Elem::secmem_face(int , int, int, const Echange_externe_impose& ,
-                                                 int, DoubleVect& ) const
+                                                     int, DoubleVect& ) const
 {
   ;
 }
@@ -1320,8 +1320,8 @@ inline void Eval_Amont_PolyMAC_old_Elem::secmem_face(int , int, int, const Echan
 //
 
 inline void Eval_Amont_PolyMAC_old_Elem::flux_face(const DoubleTab& ,
-                                               int , const Echange_global_impose& ,
-                                               int, DoubleVect& ) const
+                                                   int , const Echange_global_impose& ,
+                                                   int, DoubleVect& ) const
 {
   ;
 }
@@ -1338,7 +1338,7 @@ inline void Eval_Amont_PolyMAC_old_Elem::coeffs_face(int,int, const Echange_glob
 //
 
 inline void Eval_Amont_PolyMAC_old_Elem::secmem_face(int , const Echange_global_impose& ,
-                                                 int, DoubleVect& ) const
+                                                     int, DoubleVect& ) const
 {
   ;
 }
@@ -1347,8 +1347,8 @@ inline void Eval_Amont_PolyMAC_old_Elem::secmem_face(int , const Echange_global_
 //
 
 inline void Eval_Amont_PolyMAC_old_Elem::flux_faces_interne(const DoubleTab& inco,
-                                                        int face,
-                                                        DoubleVect& flux) const
+                                                            int face,
+                                                            DoubleVect& flux) const
 {
   int k;
   int n0 = elem_(face,0);

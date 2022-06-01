@@ -60,7 +60,7 @@ Entree& Iterateur_PolyMAC_old::readOn(Entree& s )
 
 
 void Iterateur_PolyMAC_old_base::associer(const Zone_dis& z,
-                                      const Zone_Cl_dis& zcl, const Operateur_base& op)
+                                          const Zone_Cl_dis& zcl, const Operateur_base& op)
 {
   const Zone_PolyMAC_old& zone_vdf=ref_cast(Zone_PolyMAC_old, z.valeur());
   const Zone_Cl_PolyMAC_old& zone_cl_vdf=ref_cast(Zone_Cl_PolyMAC_old, zcl.valeur());
@@ -73,7 +73,7 @@ void Iterateur_PolyMAC_old_base::associer_zone_cl_dis(const Zone_Cl_dis_base& zc
 
 }
 void Iterateur_PolyMAC_old_base::associer(const Zone_PolyMAC_old& zone_vdf,
-                                      const Zone_Cl_PolyMAC_old& zone_cl_vdf, const Operateur_base& op)
+                                          const Zone_Cl_PolyMAC_old& zone_cl_vdf, const Operateur_base& op)
 {
   la_zone=zone_vdf;
   la_zcl=zone_cl_vdf;

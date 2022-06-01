@@ -45,10 +45,10 @@ Entree& Segment_PolyMAC_old::readOn(Entree& s )
 // Description:
 // remplit le tableau face_normales dans la Zone_PolyMAC_old
 void Segment_PolyMAC_old::normale(int num_Face,DoubleTab& Face_normales,
-                              const  IntTab& Face_sommets,
-                              const IntTab& Face_voisins,
-                              const IntTab& elem_faces,
-                              const Zone& zone_geom) const
+                                  const  IntTab& Face_sommets,
+                                  const IntTab& Face_voisins,
+                                  const IntTab& elem_faces,
+                                  const Zone& zone_geom) const
 {
   // pas de sens simple a normale
   Face_normales(num_Face,0) = 1;
@@ -139,8 +139,8 @@ void Segment_PolyMAC_old::normale(int num_Face,DoubleTab& Face_normales,
 // Description:
 //
 void Segment_PolyMAC_old::calcul_vc(const ArrOfInt& Face,ArrOfDouble& vc,
-                                const ArrOfDouble& vs,const DoubleTab& vsom,
-                                const Champ_Inc_base& vitesse,int type_cl) const
+                                    const ArrOfDouble& vs,const DoubleTab& vsom,
+                                    const Champ_Inc_base& vitesse,int type_cl) const
 {
   const Zone_PolyMAC_old& zone_PolyMAC_old = ref_cast(Zone_PolyMAC_old,vitesse.zone_dis_base());
   const DoubleVect& porosite_face = zone_PolyMAC_old.porosite_face();
@@ -211,7 +211,7 @@ void Segment_PolyMAC_old::calcul_vc(const ArrOfInt& Face,ArrOfDouble& vc,
 // calcule aussi idirichlet=nb de faces de Dirichlet de l'element
 // si idirichlet=2, n1 est le numero du sommet confondu avec G
 void Segment_PolyMAC_old::calcul_xg(DoubleVect& xg, const DoubleTab& x,
-                                const int type_elem_Cl,int& idirichlet,int& n1,int& ,int& ) const
+                                    const int type_elem_Cl,int& idirichlet,int& n1,int& ,int& ) const
 {
   int j,dim=xg.size();
   switch(type_elem_Cl)

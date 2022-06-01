@@ -61,8 +61,8 @@ Entree& Op_Grad_PolyMAC_old_Face::readOn(Entree& s)
 
 // Description:
 void Op_Grad_PolyMAC_old_Face::associer(const Zone_dis& zone_dis,
-                                    const Zone_Cl_dis& zone_Cl_dis,
-                                    const Champ_Inc& )
+                                        const Zone_Cl_dis& zone_Cl_dis,
+                                        const Champ_Inc& )
 {
   const Zone_PolyMAC_old& zpolymac = ref_cast(Zone_PolyMAC_old, zone_dis.valeur());
   const Zone_Cl_PolyMAC_old& zclpolymac = ref_cast(Zone_Cl_PolyMAC_old, zone_Cl_dis.valeur());

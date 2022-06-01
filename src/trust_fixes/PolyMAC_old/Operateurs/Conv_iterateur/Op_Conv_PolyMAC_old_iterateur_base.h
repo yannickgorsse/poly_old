@@ -93,13 +93,13 @@ inline DoubleTab& Op_Conv_PolyMAC_old_iterateur_base::ajouter(const DoubleTab& i
 //on assemble la matrice.
 
 inline void Op_Conv_PolyMAC_old_iterateur_base::contribuer_a_avec(const DoubleTab& inco,
-                                                              Matrice_Morse& matrice) const
+                                                                  Matrice_Morse& matrice) const
 {
   iter.ajouter_contribution(inco, matrice);
 }
 
 inline void Op_Conv_PolyMAC_old_iterateur_base::contribuer_bloc_vitesse(const DoubleTab& inco,
-                                                                    Matrice_Morse& matrice) const
+                                                                        Matrice_Morse& matrice) const
 {
   iter.ajouter_contribution_vitesse(inco, matrice);
 }

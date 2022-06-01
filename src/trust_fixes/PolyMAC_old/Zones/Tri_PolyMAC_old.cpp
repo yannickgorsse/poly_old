@@ -47,10 +47,10 @@ Tri_PolyMAC_old::Tri_PolyMAC_old()
 // Description:
 // remplit le tableau face_normales dans la Zone_PolyMAC_old
 void Tri_PolyMAC_old::normale(int num_Face,DoubleTab& Face_normales,
-                          const  IntTab& Face_sommets,
-                          const IntTab& Face_voisins,
-                          const IntTab& elem_faces,
-                          const Zone& zone_geom) const
+                              const  IntTab& Face_sommets,
+                              const IntTab& Face_voisins,
+                              const IntTab& elem_faces,
+                              const Zone& zone_geom) const
 {
   const DoubleTab& les_coords = zone_geom.domaine().coord_sommets();
 

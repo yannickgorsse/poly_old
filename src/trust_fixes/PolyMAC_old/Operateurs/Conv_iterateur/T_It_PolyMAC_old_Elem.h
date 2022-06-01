@@ -133,7 +133,7 @@ const Milieu_base& T_It_PolyMAC_old_Elem<_TYPE_>::milieu() const
 }
 template <class _TYPE_>
 DoubleTab& T_It_PolyMAC_old_Elem<_TYPE_>::ajouter(const DoubleTab& donne,
-                                              DoubleTab& resu) const
+                                                  DoubleTab& resu) const
 {
   ((_TYPE_&) flux_evaluateur).mettre_a_jour();
   assert(donne.nb_dim() < 3);
@@ -167,7 +167,7 @@ DoubleTab& T_It_PolyMAC_old_Elem<_TYPE_>::ajouter(const DoubleTab& donne,
   return resu;
 }
 template <class _TYPE_>  DoubleTab& T_It_PolyMAC_old_Elem<_TYPE_>::ajouter_bords(const DoubleTab& donnee,
-                                                                             DoubleTab& resu) const
+                                                                                 DoubleTab& resu) const
 {
   int elem1, elem2;
   int ndeb, nfin;
@@ -678,7 +678,7 @@ template <class _TYPE_>  void T_It_PolyMAC_old_Elem<_TYPE_>::calculer_flux_bord(
 }
 
 template <class _TYPE_>  DoubleTab& T_It_PolyMAC_old_Elem<_TYPE_>::ajouter_bords(const DoubleTab& donnee,
-                                                                             DoubleTab& resu,int ncomp) const
+                                                                                 DoubleTab& resu,int ncomp) const
 {
   int elem1, elem2;
   int ndeb, nfin;
@@ -963,7 +963,7 @@ template <class _TYPE_>  DoubleTab& T_It_PolyMAC_old_Elem<_TYPE_>::ajouter_bords
 }
 
 template <class _TYPE_>  DoubleTab& T_It_PolyMAC_old_Elem<_TYPE_>::ajouter_interne(const DoubleTab& donnee,
-                                                                               DoubleTab& resu) const
+                                                                                   DoubleTab& resu) const
 {
   const Zone_PolyMAC_old& zone_PolyMAC_old = la_zone.valeur();
   double flux;
@@ -979,7 +979,7 @@ template <class _TYPE_>  DoubleTab& T_It_PolyMAC_old_Elem<_TYPE_>::ajouter_inter
   return resu;
 }
 template <class _TYPE_>  DoubleTab& T_It_PolyMAC_old_Elem<_TYPE_>::ajouter_interne(const DoubleTab& donnee,
-                                                                               DoubleTab& resu,int ncomp) const
+                                                                                   DoubleTab& resu,int ncomp) const
 {
   const Zone_PolyMAC_old& zone_PolyMAC_old = la_zone.valeur();
   DoubleVect flux(ncomp);

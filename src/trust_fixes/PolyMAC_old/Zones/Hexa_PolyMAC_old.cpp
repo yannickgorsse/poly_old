@@ -49,10 +49,10 @@ Hexa_PolyMAC_old::Hexa_PolyMAC_old()
 // remplit le tableau face_normales dans la Zone_PolyMAC_old
 
 void Hexa_PolyMAC_old::normale(int num_Face,DoubleTab& Face_normales,
-                           const  IntTab& Face_sommets,
-                           const IntTab& Face_voisins,
-                           const IntTab& elem_faces,
-                           const Zone& zone_geom) const
+                               const  IntTab& Face_sommets,
+                               const IntTab& Face_voisins,
+                               const IntTab& elem_faces,
+                               const Zone& zone_geom) const
 {
   const DoubleTab& les_coords = zone_geom.domaine().coord_sommets();
 
@@ -182,8 +182,8 @@ void Hexa_PolyMAC_old::normale(int num_Face,DoubleTab& Face_normales,
 // Description:
 //
 void Hexa_PolyMAC_old::calcul_vc(const ArrOfInt& Face,ArrOfDouble& vc,
-                             const ArrOfDouble& vs,const DoubleTab& vsom,
-                             const Champ_Inc_base& vitesse,int type_cl) const
+                                 const ArrOfDouble& vs,const DoubleTab& vsom,
+                                 const Champ_Inc_base& vitesse,int type_cl) const
 {
 
   vc[0] = vs[0]/6;
@@ -196,7 +196,7 @@ void Hexa_PolyMAC_old::calcul_vc(const ArrOfInt& Face,ArrOfDouble& vc,
 // calcule aussi idirichlet=nb de faces de Dirichlet de l'element
 // si idirichlet=2, n1 est le numero du sommet confondu avec G
 void Hexa_PolyMAC_old::calcul_xg(DoubleVect& xg, const DoubleTab& x,
-                             const int type_elem_Cl,int& idirichlet,int& n1,int& ,int& ) const
+                                 const int type_elem_Cl,int& idirichlet,int& n1,int& ,int& ) const
 {
   int j,dim=xg.size();
   for (j=0; j<dim; j++)

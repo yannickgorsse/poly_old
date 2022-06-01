@@ -36,7 +36,7 @@ Evaluateur_PolyMAC_old::Evaluateur_PolyMAC_old(const Evaluateur_PolyMAC_old& eva
 }
 
 void Evaluateur_PolyMAC_old::associer_zones(const Zone_PolyMAC_old& zone_vdf,
-                                        const Zone_Cl_PolyMAC_old& zone_cl_vdf)
+                                            const Zone_Cl_PolyMAC_old& zone_cl_vdf)
 {
   la_zone = zone_vdf;
   la_zcl = zone_cl_vdf;

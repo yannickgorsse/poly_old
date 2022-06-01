@@ -46,7 +46,7 @@ Entree& Terme_Boussinesq_PolyMAC_old_Face::readOn(Entree& s )
 }
 
 void Terme_Boussinesq_PolyMAC_old_Face::associer_zones(const Zone_dis& zone_dis,
-                                                   const Zone_Cl_dis& zone_Cl_dis)
+                                                       const Zone_Cl_dis& zone_Cl_dis)
 {
   la_zone_PolyMAC_old = ref_cast(Zone_PolyMAC_old, zone_dis.valeur());
   la_zone_Cl_PolyMAC_old = ref_cast(Zone_Cl_PolyMAC_old, zone_Cl_dis.valeur());

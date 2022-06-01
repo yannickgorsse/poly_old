@@ -146,8 +146,8 @@ double Champ_Fonc_Face_PolyMAC_old::valeur_a_elem_compo(const DoubleVect& positi
 }
 
 DoubleTab& Champ_Fonc_Face_PolyMAC_old::valeur_aux_elems(const DoubleTab& positions,
-                                                     const IntVect& les_polys,
-                                                     DoubleTab& val) const
+                                                         const IntVect& les_polys,
+                                                         DoubleTab& val) const
 {
   const Champ_base& cha=le_champ();
   int nb_compo=cha.nb_comp();

@@ -42,10 +42,10 @@ Entree& Polyedre_PolyMAC_old::readOn(Entree& s )
 }
 
 void Polyedre_PolyMAC_old::normale(int num_Face,DoubleTab& Face_normales,
-                               const IntTab& Face_sommets,
-                               const IntTab& Face_voisins,
-                               const IntTab& elem_faces,
-                               const Zone& zone_geom) const
+                                   const IntTab& Face_sommets,
+                                   const IntTab& Face_voisins,
+                                   const IntTab& elem_faces,
+                                   const Zone& zone_geom) const
 {
 
   //Cerr << " num_Face " << num_Face << finl;

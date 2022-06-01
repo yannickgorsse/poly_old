@@ -168,7 +168,7 @@ Entree& Perte_Charge_Anisotrope_PolyMAC_old_Face::readOn(Entree& s )
 ////////////////////////////////////////////////////////////////
 
 void Perte_Charge_Anisotrope_PolyMAC_old_Face::coeffs_perte_charge(const DoubleVect& u, const DoubleVect& pos,
-                                                               double t, double norme_u, double dh, double nu, double reynolds, double& coeff_ortho, double& coeff_long,double& u_l, DoubleVect& v_valeur) const
+                                                                   double t, double norme_u, double dh, double nu, double reynolds, double& coeff_ortho, double& coeff_long,double& u_l, DoubleVect& v_valeur) const
 {
 
   // Calcul de lambda

@@ -83,7 +83,7 @@ void Terme_Puissance_Thermique_Echange_Impose_P0_PolyMAC_old::mettre_a_jour(doub
 ////////////////////////////////////////////////////////////////////
 
 void Terme_Puissance_Thermique_Echange_Impose_P0_PolyMAC_old::associer_zones(const Zone_dis& zone_dis,
-                                                                         const Zone_Cl_dis& zone_Cl_dis)
+                                                                             const Zone_Cl_dis& zone_Cl_dis)
 {
   la_zone_PolyMAC_old = ref_cast(Zone_PolyMAC_old, zone_dis.valeur());
   la_zone_Cl_PolyMAC_old = ref_cast(Zone_Cl_PolyMAC_old, zone_Cl_dis.valeur());

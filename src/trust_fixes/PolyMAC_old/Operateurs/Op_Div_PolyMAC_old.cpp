@@ -57,8 +57,8 @@ Entree& Op_Div_PolyMAC_old::readOn(Entree& s)
 
 // Description:
 void Op_Div_PolyMAC_old::associer(const Zone_dis& zone_dis,
-                              const Zone_Cl_dis& zone_Cl_dis,
-                              const Champ_Inc&)
+                                  const Zone_Cl_dis& zone_Cl_dis,
+                                  const Champ_Inc&)
 {
   const Zone_PolyMAC_old& zPolyMAC_old = ref_cast(Zone_PolyMAC_old, zone_dis.valeur());
   const Zone_Cl_PolyMAC_old& zclPolyMAC_old = ref_cast(Zone_Cl_PolyMAC_old, zone_Cl_dis.valeur());

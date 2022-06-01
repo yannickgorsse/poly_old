@@ -175,7 +175,7 @@ void Perte_Charge_PolyMAC_old::associer_pb(const Probleme_base& pb)
 }
 
 void Perte_Charge_PolyMAC_old::associer_zones(const Zone_dis& zone_dis,
-                                          const Zone_Cl_dis& zone_Cl_dis)
+                                              const Zone_Cl_dis& zone_Cl_dis)
 {
   la_Zone_PolyMAC_old = ref_cast(Zone_PolyMAC_old, zone_dis.valeur());
   la_Zone_Cl_PolyMAC_old = ref_cast(Zone_Cl_PolyMAC_old, zone_Cl_dis.valeur());

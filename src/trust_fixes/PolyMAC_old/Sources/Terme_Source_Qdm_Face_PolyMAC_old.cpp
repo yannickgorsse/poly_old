@@ -63,7 +63,7 @@ void Terme_Source_Qdm_Face_PolyMAC_old::associer_pb(const Probleme_base& )
 }
 
 void Terme_Source_Qdm_Face_PolyMAC_old::associer_zones(const Zone_dis& zone_dis,
-                                                   const Zone_Cl_dis& zone_Cl_dis)
+                                                       const Zone_Cl_dis& zone_Cl_dis)
 {
   la_zone_PolyMAC_old = ref_cast(Zone_PolyMAC_old, zone_dis.valeur());
   la_zone_Cl_PolyMAC_old = ref_cast(Zone_Cl_PolyMAC_old, zone_Cl_dis.valeur());

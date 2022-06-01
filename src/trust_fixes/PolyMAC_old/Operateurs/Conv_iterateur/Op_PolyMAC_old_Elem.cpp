@@ -31,8 +31,8 @@
 #include <Array_tools.h>
 
 void Op_PolyMAC_old_Elem::dimensionner(const Zone_PolyMAC_old& la_zone,
-                                   const Zone_Cl_PolyMAC_old& la_zone_cl,
-                                   Matrice_Morse& la_matrice) const
+                                       const Zone_Cl_PolyMAC_old& la_zone_cl,
+                                       Matrice_Morse& la_matrice) const
 {
   // Dimensionnement de la matrice qui devra recevoir les coefficients provenant de
   // la convection, de la diffusion pour le cas des elements.
@@ -186,8 +186,8 @@ void Op_PolyMAC_old_Elem::dimensionner(const Zone_PolyMAC_old& la_zone,
 }
 
 void Op_PolyMAC_old_Elem::dimensionner_bloc_vitesse(const Zone_PolyMAC_old& la_zone,
-                                                const Zone_Cl_PolyMAC_old& la_zone_cl,
-                                                Matrice_Morse& matrice) const
+                                                    const Zone_Cl_PolyMAC_old& la_zone_cl,
+                                                    Matrice_Morse& matrice) const
 {
 
   int nb_faces=la_zone.nb_faces();
@@ -219,8 +219,8 @@ void Op_PolyMAC_old_Elem::dimensionner_bloc_vitesse(const Zone_PolyMAC_old& la_z
 
 
 void Op_PolyMAC_old_Elem:: modifier_pour_Cl(const Zone_PolyMAC_old& la_zone,
-                                        const Zone_Cl_PolyMAC_old& la_zone_cl,
-                                        Matrice_Morse& la_matrice, DoubleTab& secmem) const
+                                            const Zone_Cl_PolyMAC_old& la_zone_cl,
+                                            Matrice_Morse& la_matrice, DoubleTab& secmem) const
 {
   // Dimensionnement de la matrice qui devra recevoir les coefficients provenant de
   // la convection, de la diffusion pour le cas des faces.

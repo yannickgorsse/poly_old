@@ -285,8 +285,8 @@ inline int Eval_centre_PolyMAC_old_Elem::calculer_flux_faces_periodique() const
 //
 
 inline double Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab& inco, int face,
-                                                  const Dirichlet_entree_fluide& la_cl,
-                                                  int num1) const
+                                                      const Dirichlet_entree_fluide& la_cl,
+                                                      int num1) const
 {
   int n0 = elem_(face,0);
   int n1 = elem_(face,1);
@@ -314,7 +314,7 @@ inline double Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab& inco, int
 //
 
 inline void Eval_centre_PolyMAC_old_Elem::coeffs_face(int face, int num1,const Dirichlet_entree_fluide& la_cl,
-                                                  double& aii, double& ajj) const
+                                                      double& aii, double& ajj) const
 {
   int i = elem_(face,0);
   //int j = elem(face,1);
@@ -336,7 +336,7 @@ inline void Eval_centre_PolyMAC_old_Elem::coeffs_face(int face, int num1,const D
 //
 
 inline double Eval_centre_PolyMAC_old_Elem::secmem_face(int face, const Dirichlet_entree_fluide& la_cl,
-                                                    int num1) const
+                                                        int num1) const
 {
   int i = elem_(face,0);
   //int j = elem(face,1);
@@ -360,7 +360,7 @@ inline double Eval_centre_PolyMAC_old_Elem::secmem_face(int face, const Dirichle
 //
 
 inline double Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab&, int ,
-                                                  const Dirichlet_paroi_defilante&, int ) const
+                                                      const Dirichlet_paroi_defilante&, int ) const
 {
   return 0;
 }
@@ -386,7 +386,7 @@ inline double Eval_centre_PolyMAC_old_Elem::secmem_face(int, const Dirichlet_par
 //
 
 inline double Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab&, int ,
-                                                  const Dirichlet_paroi_fixe&, int ) const
+                                                      const Dirichlet_paroi_fixe&, int ) const
 {
   return 0;
 }
@@ -412,7 +412,7 @@ inline double Eval_centre_PolyMAC_old_Elem::secmem_face(int ,const Dirichlet_par
 //
 
 inline double Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab&, int , int, int,
-                                                  const Echange_externe_impose&, int ) const
+                                                      const Echange_externe_impose&, int ) const
 {
   return 0;
 }
@@ -437,7 +437,7 @@ inline double Eval_centre_PolyMAC_old_Elem::secmem_face(int,int,int, const Echan
 //
 
 inline double Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab&, int ,
-                                                  const Echange_global_impose&, int ) const
+                                                      const Echange_global_impose&, int ) const
 {
   return 0;
 }
@@ -462,7 +462,7 @@ inline double Eval_centre_PolyMAC_old_Elem::secmem_face(int, const Echange_globa
 //
 
 inline double Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab&, int ,
-                                                  const Neumann_paroi&, int ) const
+                                                      const Neumann_paroi&, int ) const
 {
   return 0;
 }
@@ -487,7 +487,7 @@ inline double Eval_centre_PolyMAC_old_Elem::secmem_face(int, const Neumann_paroi
 //
 
 inline double Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab&, int ,
-                                                  const Neumann_paroi_adiabatique&, int ) const
+                                                      const Neumann_paroi_adiabatique&, int ) const
 {
   return 0;
 }
@@ -512,7 +512,7 @@ inline double Eval_centre_PolyMAC_old_Elem::secmem_face(int, const Neumann_paroi
 //
 
 inline double Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab& inco, int face,
-                                                  const Neumann_sortie_libre& la_cl, int num1) const
+                                                      const Neumann_sortie_libre& la_cl, int num1) const
 {
   int n0 = elem_(face,0);
   int n1 = elem_(face,1);
@@ -539,7 +539,7 @@ inline double Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab& inco, int
 //
 
 inline void Eval_centre_PolyMAC_old_Elem::coeffs_face(int face,int num1, const Neumann_sortie_libre& la_cl,
-                                                  double& aii, double& ajj) const
+                                                      double& aii, double& ajj) const
 {
   int i = elem_(face,0);
   //int j = elem(face,1);
@@ -582,7 +582,7 @@ inline double Eval_centre_PolyMAC_old_Elem::secmem_face(int face, const Neumann_
 //
 
 inline double Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab&, int ,
-                                                  const Symetrie&, int ) const
+                                                      const Symetrie&, int ) const
 {
   return 0;
 }
@@ -608,7 +608,7 @@ inline double Eval_centre_PolyMAC_old_Elem::secmem_face(int, const Symetrie&, in
 //
 
 inline double Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab& inco, int face,
-                                                  const Periodique& la_cl, int ) const
+                                                      const Periodique& la_cl, int ) const
 {
   // 30/05/2002 : Codage Periodicite.
   // ALEX C.
@@ -708,8 +708,8 @@ inline double Eval_centre_PolyMAC_old_Elem::secmem_faces_interne(int) const
 //
 
 inline void Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab& inco, int face,
-                                                const Dirichlet_entree_fluide& la_cl,
-                                                int num1, DoubleVect& flux) const
+                                                    const Dirichlet_entree_fluide& la_cl,
+                                                    int num1, DoubleVect& flux) const
 {
   int k;
   int n0 = elem_(face,0);
@@ -740,7 +740,7 @@ inline void Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab& inco, int f
 //
 
 inline void Eval_centre_PolyMAC_old_Elem::coeffs_face(int face, int num1,const Dirichlet_entree_fluide& la_cl,
-                                                  DoubleVect& aii, DoubleVect& ajj) const
+                                                      DoubleVect& aii, DoubleVect& ajj) const
 {
   int k;
   int i = elem_(face,0);
@@ -787,8 +787,8 @@ inline void Eval_centre_PolyMAC_old_Elem::secmem_face(int face, const Dirichlet_
 //
 
 inline void Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab&, int ,
-                                                const Dirichlet_paroi_defilante&,
-                                                int , DoubleVect& ) const
+                                                    const Dirichlet_paroi_defilante&,
+                                                    int , DoubleVect& ) const
 {
   ;
 }
@@ -805,7 +805,7 @@ inline void Eval_centre_PolyMAC_old_Elem::coeffs_face(int , int,const Dirichlet_
 //
 
 inline void Eval_centre_PolyMAC_old_Elem::secmem_face(int , const Dirichlet_paroi_defilante& ,
-                                                  int, DoubleVect& ) const
+                                                      int, DoubleVect& ) const
 {
   ;
 }
@@ -814,8 +814,8 @@ inline void Eval_centre_PolyMAC_old_Elem::secmem_face(int , const Dirichlet_paro
 //
 
 inline void Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab&, int ,
-                                                const Dirichlet_paroi_fixe&,
-                                                int , DoubleVect& ) const
+                                                    const Dirichlet_paroi_fixe&,
+                                                    int , DoubleVect& ) const
 {
   ;
 }
@@ -832,7 +832,7 @@ inline void Eval_centre_PolyMAC_old_Elem::coeffs_face(int,int, const Dirichlet_p
 //
 
 inline void Eval_centre_PolyMAC_old_Elem::secmem_face(int, const Dirichlet_paroi_fixe& ,
-                                                  int, DoubleVect& ) const
+                                                      int, DoubleVect& ) const
 {
   ;
 }
@@ -841,8 +841,8 @@ inline void Eval_centre_PolyMAC_old_Elem::secmem_face(int, const Dirichlet_paroi
 //
 
 inline void Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab&, int , int, int,
-                                                const Echange_externe_impose&,
-                                                int , DoubleVect& ) const
+                                                    const Echange_externe_impose&,
+                                                    int , DoubleVect& ) const
 {
   ;
 }
@@ -859,7 +859,7 @@ inline void Eval_centre_PolyMAC_old_Elem::coeffs_face(int, int, int, int, const 
 //
 
 inline void Eval_centre_PolyMAC_old_Elem::secmem_face(int , int, int, const Echange_externe_impose& ,
-                                                  int, DoubleVect& ) const
+                                                      int, DoubleVect& ) const
 {
   ;
 }
@@ -868,8 +868,8 @@ inline void Eval_centre_PolyMAC_old_Elem::secmem_face(int , int, int, const Echa
 //
 
 inline void Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab&, int ,
-                                                const Echange_global_impose&,
-                                                int , DoubleVect& ) const
+                                                    const Echange_global_impose&,
+                                                    int , DoubleVect& ) const
 {
   ;
 }
@@ -886,7 +886,7 @@ inline void Eval_centre_PolyMAC_old_Elem::coeffs_face(int , int,const Echange_gl
 //
 
 inline void Eval_centre_PolyMAC_old_Elem::secmem_face(int , const Echange_global_impose& ,
-                                                  int, DoubleVect& ) const
+                                                      int, DoubleVect& ) const
 {
   ;
 }
@@ -895,8 +895,8 @@ inline void Eval_centre_PolyMAC_old_Elem::secmem_face(int , const Echange_global
 //
 
 inline void Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab&, int ,
-                                                const Neumann_paroi&,
-                                                int , DoubleVect& ) const
+                                                    const Neumann_paroi&,
+                                                    int , DoubleVect& ) const
 {
   ;
 }
@@ -913,7 +913,7 @@ inline void Eval_centre_PolyMAC_old_Elem::coeffs_face(int, int,const Neumann_par
 //
 
 inline void Eval_centre_PolyMAC_old_Elem::secmem_face(int, const Neumann_paroi& ,
-                                                  int, DoubleVect& ) const
+                                                      int, DoubleVect& ) const
 {
   ;
 }
@@ -922,8 +922,8 @@ inline void Eval_centre_PolyMAC_old_Elem::secmem_face(int, const Neumann_paroi& 
 //
 
 inline void Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab&, int ,
-                                                const Neumann_paroi_adiabatique&,
-                                                int , DoubleVect& ) const
+                                                    const Neumann_paroi_adiabatique&,
+                                                    int , DoubleVect& ) const
 {
   ;
 }
@@ -940,7 +940,7 @@ inline void Eval_centre_PolyMAC_old_Elem::coeffs_face(int, int,const Neumann_par
 //
 
 inline void Eval_centre_PolyMAC_old_Elem::secmem_face(int , const Neumann_paroi_adiabatique& ,
-                                                  int, DoubleVect& ) const
+                                                      int, DoubleVect& ) const
 {
   ;
 }
@@ -949,8 +949,8 @@ inline void Eval_centre_PolyMAC_old_Elem::secmem_face(int , const Neumann_paroi_
 //
 
 inline void Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab& inco, int face,
-                                                const Neumann_sortie_libre& la_cl,
-                                                int num1, DoubleVect& flux) const
+                                                    const Neumann_sortie_libre& la_cl,
+                                                    int num1, DoubleVect& flux) const
 {
   int k;
   int n0 = elem_(face,0);
@@ -980,7 +980,7 @@ inline void Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab& inco, int f
 //
 
 inline void Eval_centre_PolyMAC_old_Elem::coeffs_face(int face,int num1, const Neumann_sortie_libre& la_cl,
-                                                  DoubleVect& aii, DoubleVect& ajj) const
+                                                      DoubleVect& aii, DoubleVect& ajj) const
 {
   int k;
   int i = elem_(face,0);
@@ -1027,8 +1027,8 @@ inline void Eval_centre_PolyMAC_old_Elem::secmem_face(int face, const Neumann_so
 //
 
 inline void Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab&, int ,
-                                                const Symetrie&,
-                                                int , DoubleVect& ) const
+                                                    const Symetrie&,
+                                                    int , DoubleVect& ) const
 {
   ;
 }
@@ -1045,7 +1045,7 @@ inline void Eval_centre_PolyMAC_old_Elem::coeffs_face(int , int,const Symetrie&,
 //
 
 inline void Eval_centre_PolyMAC_old_Elem::secmem_face(int , const Symetrie& ,
-                                                  int, DoubleVect& ) const
+                                                      int, DoubleVect& ) const
 {
   ;
 }
@@ -1054,8 +1054,8 @@ inline void Eval_centre_PolyMAC_old_Elem::secmem_face(int , const Symetrie& ,
 //
 
 inline void Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab& inco, int face,
-                                                const Periodique& la_cl,
-                                                int, DoubleVect& flux) const
+                                                    const Periodique& la_cl,
+                                                    int, DoubleVect& flux) const
 {
   int k;
   double psc = dt_vitesse[face]*surface(face)*porosite(face);
@@ -1075,7 +1075,7 @@ inline void Eval_centre_PolyMAC_old_Elem::flux_face(const DoubleTab& inco, int f
 //
 
 inline void Eval_centre_PolyMAC_old_Elem::coeffs_face(int face,int, const Periodique& la_cl,
-                                                  DoubleVect& aii, DoubleVect& ajj) const
+                                                      DoubleVect& aii, DoubleVect& ajj) const
 {
   int k;
   int i = elem_(face,0);
@@ -1099,7 +1099,7 @@ inline void Eval_centre_PolyMAC_old_Elem::coeffs_face(int face,int, const Period
 //
 
 inline void Eval_centre_PolyMAC_old_Elem::secmem_face(int, const Periodique&,
-                                                  int, DoubleVect&) const
+                                                      int, DoubleVect&) const
 {
   ;
 }
@@ -1108,7 +1108,7 @@ inline void Eval_centre_PolyMAC_old_Elem::secmem_face(int, const Periodique&,
 //
 
 inline void Eval_centre_PolyMAC_old_Elem::flux_faces_interne(const DoubleTab& inco,
-                                                         int face,DoubleVect& flux) const
+                                                             int face,DoubleVect& flux) const
 {
   int k;
   double psc = dt_vitesse[face]*surface(face)*porosite(face);
@@ -1206,8 +1206,8 @@ inline int Eval_centre_PolyMAC_old_Elem::amont_amont(int face, int i) const
 //
 
 inline double Eval_centre_PolyMAC_old_Elem::qcentre(const double psc, const int num0, const int num1,
-                                                const int num0_0, const int num1_1, const int face,
-                                                const DoubleTab& transporte) const
+                                                    const int num0_0, const int num1_1, const int face,
+                                                    const DoubleTab& transporte) const
 {
   double flux;
   //int ori = orientation(face);
@@ -1232,8 +1232,8 @@ inline double Eval_centre_PolyMAC_old_Elem::qcentre(const double psc, const int 
 //
 
 inline void Eval_centre_PolyMAC_old_Elem::qcentre(const double psc, const int num0, const int num1,
-                                              const int num0_0, const int num1_1, const int face,
-                                              const DoubleTab& transporte,ArrOfDouble& flux) const
+                                                  const int num0_0, const int num1_1, const int face,
+                                                  const DoubleTab& transporte,ArrOfDouble& flux) const
 {
 
   int k;

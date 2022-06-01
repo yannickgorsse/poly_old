@@ -231,13 +231,13 @@ inline void Iterateur_PolyMAC_old::ajouter_contribution_vitesse(const DoubleTab&
 }
 
 inline void Iterateur_PolyMAC_old::associer(const Zone_PolyMAC_old& zone_vdf,
-                                        const Zone_Cl_PolyMAC_old& zone_cl_vdf, const Operateur_base& op)
+                                            const Zone_Cl_PolyMAC_old& zone_cl_vdf, const Operateur_base& op)
 {
   valeur().associer(zone_vdf,zone_cl_vdf,op);
 }
 
 inline void Iterateur_PolyMAC_old::associer(const Zone_dis& zone_dis,
-                                        const Zone_Cl_dis& zone_cl_dis, const Operateur_base& op)
+                                            const Zone_Cl_dis& zone_cl_dis, const Operateur_base& op)
 {
   valeur().associer(zone_dis,zone_cl_dis,op);
 }

@@ -165,10 +165,10 @@ void PolyMAC_old_discretisation::discretiser_champ(
 // Description:
 // Idem que PolyMAC_old_discretisation::discretiser_champ(... , Champ_Inc)
 void PolyMAC_old_discretisation::discretiser_champ(const Motcle& directive, const Zone_dis_base& z,
-                                               Nature_du_champ nature,
-                                               const Noms& noms, const Noms& unites,
-                                               int nb_comp, double temps,
-                                               Champ_Don& champ) const
+                                                   Nature_du_champ nature,
+                                                   const Noms& noms, const Noms& unites,
+                                                   int nb_comp, double temps,
+                                                   Champ_Don& champ) const
 {
   discretiser_champ_fonc_don(directive, z,
                              nature, noms, unites,
@@ -291,7 +291,7 @@ void PolyMAC_old_discretisation::discretiser_champ_fonc_don(
 
 
 void PolyMAC_old_discretisation::distance_paroi(const Schema_Temps_base& sch,
-                                            Zone_dis& z, Champ_Fonc& ch) const
+                                                Zone_dis& z, Champ_Fonc& ch) const
 {
   Cerr << "Discretisation de la distance paroi" << finl;
   Zone_PolyMAC_old& zone_PolyMAC_old=ref_cast(Zone_PolyMAC_old, z.valeur());
@@ -308,7 +308,7 @@ void PolyMAC_old_discretisation::distance_paroi(const Schema_Temps_base& sch,
 
 
 void PolyMAC_old_discretisation::vorticite(Zone_dis& z,const Champ_Inc& ch_vitesse,
-                                       Champ_Fonc& ch) const
+                                           Champ_Fonc& ch) const
 {
 #ifdef dependance
   Cerr << "Discretisation de la vorticite " << finl;
@@ -365,8 +365,8 @@ void PolyMAC_old_discretisation::vorticite(Zone_dis& z,const Champ_Inc& ch_vites
 }
 
 void PolyMAC_old_discretisation::creer_champ_vorticite(const Schema_Temps_base& sch,
-                                                   const Champ_Inc& ch_vitesse,
-                                                   Champ_Fonc& ch) const
+                                                       const Champ_Inc& ch_vitesse,
+                                                       Champ_Fonc& ch) const
 {
 
 #ifdef dependance
@@ -454,7 +454,7 @@ void PolyMAC_old_discretisation::creer_champ_vorticite(const Schema_Temps_base& 
 // Effets de bord:
 // Postcondition: la methode ne modifie pas l'objet
 void PolyMAC_old_discretisation::proprietes_physiques_fluide_Ostwald(const Zone_dis& z, Fluide_Ostwald& le_fluide,
-                                                                 const Navier_Stokes_std& eqn_hydr, const Champ_Inc& ch_temper ) const
+                                                                     const Navier_Stokes_std& eqn_hydr, const Champ_Inc& ch_temper ) const
 {
 
 #ifdef dependance
@@ -490,7 +490,7 @@ void PolyMAC_old_discretisation::proprietes_physiques_fluide_Ostwald(const Zone_
 
 
 void PolyMAC_old_discretisation::zone_Cl_dis(Zone_dis& z,
-                                         Zone_Cl_dis& zcl) const
+                                             Zone_Cl_dis& zcl) const
 {
   Cerr << "discretisation des conditions limites" << finl;
   assert(z.non_nul());

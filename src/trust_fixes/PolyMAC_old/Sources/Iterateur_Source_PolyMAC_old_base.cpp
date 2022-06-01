@@ -46,7 +46,7 @@ Entree& Iterateur_Source_PolyMAC_old_base::readOn(Entree& s )
 
 
 void Iterateur_Source_PolyMAC_old_base::associer_zones(const Zone_PolyMAC_old& zone_vdf,
-                                                   const Zone_Cl_PolyMAC_old& zone_cl_vdf)
+                                                       const Zone_Cl_PolyMAC_old& zone_cl_vdf)
 {
   la_zone = zone_vdf;
   la_zcl = zone_cl_vdf;

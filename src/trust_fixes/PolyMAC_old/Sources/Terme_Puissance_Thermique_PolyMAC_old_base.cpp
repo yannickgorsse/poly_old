@@ -46,7 +46,7 @@ Entree& Terme_Puissance_Thermique_PolyMAC_old_base::readOn(Entree& s )
 }
 
 void Terme_Puissance_Thermique_PolyMAC_old_base::associer_zones(const Zone_dis& zone_dis,
-                                                            const Zone_Cl_dis& zone_cl_dis)
+                                                                const Zone_Cl_dis& zone_cl_dis)
 {
   const Zone_PolyMAC_old& zvdf = ref_cast(Zone_PolyMAC_old,zone_dis.valeur());
   const Zone_Cl_PolyMAC_old& zclvdf = ref_cast(Zone_Cl_PolyMAC_old,zone_cl_dis.valeur());

@@ -91,7 +91,7 @@ DoubleTab& Source_Generique_Face_PolyMAC_old::ajouter(DoubleTab& resu) const
 }
 
 void Source_Generique_Face_PolyMAC_old::associer_zones(const Zone_dis& zone_dis,
-                                                   const Zone_Cl_dis& zcl_dis)
+                                                       const Zone_Cl_dis& zcl_dis)
 {
   la_zone_PolyMAC_old = ref_cast(Zone_PolyMAC_old,zone_dis.valeur());
   la_zcl_PolyMAC_old = ref_cast(Zone_Cl_PolyMAC_old,zcl_dis.valeur());

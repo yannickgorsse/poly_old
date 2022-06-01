@@ -49,10 +49,10 @@ Tetra_PolyMAC_old::Tetra_PolyMAC_old()
 }
 
 void Tetra_PolyMAC_old::normale(int num_Face,DoubleTab& Face_normales,
-                            const IntTab& Face_sommets,
-                            const IntTab& Face_voisins,
-                            const IntTab& elem_faces,
-                            const Zone& zone_geom) const
+                                const IntTab& Face_sommets,
+                                const IntTab& Face_voisins,
+                                const IntTab& elem_faces,
+                                const Zone& zone_geom) const
 {
 
   //Cerr << " num_Face " << num_Face << finl;
@@ -118,8 +118,8 @@ void Tetra_PolyMAC_old::normale(int num_Face,DoubleTab& Face_normales,
 }
 
 void Tetra_PolyMAC_old::calcul_vc(const ArrOfInt& Face,ArrOfDouble& vc,
-                              const ArrOfDouble& vs,const DoubleTab& vsom,
-                              const Champ_Inc_base& vitesse,int type_cl) const
+                                  const ArrOfDouble& vs,const DoubleTab& vsom,
+                                  const Champ_Inc_base& vitesse,int type_cl) const
 {
   int comp;
   const Zone_PolyMAC_old& zone_PolyMAC_old = ref_cast(Zone_PolyMAC_old,vitesse.zone_dis_base());
@@ -239,7 +239,7 @@ void Tetra_PolyMAC_old::calcul_vc(const ArrOfInt& Face,ArrOfDouble& vc,
 // calcule les coord xg du centre d'un element non standard
 // calcule aussi idirichlet=nb de faces de Dirichlet de l'element
 void Tetra_PolyMAC_old::calcul_xg(DoubleVect& xg,const DoubleTab& x, const int type_elem_Cl,
-                              int& idirichlet,int& n1,int& n2,int& n3) const
+                                  int& idirichlet,int& n1,int& n2,int& n3) const
 {
   int j,dim=xg.size();
 
