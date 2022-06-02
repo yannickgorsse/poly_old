@@ -187,6 +187,15 @@ Entree& Interprete_bloc::interpreter_bloc(Entree& is,
               Journal(jlevel) << "Interprete_bloc: reading " << motlu
                               << " => trying to instanciate object" << finl;
               DerObjU objet;
+              ///////////////////////////////////////////////////////
+              //// HACK for PolyMAC_old
+              ///////////////////////////////////////////////////////
+              if (Motcle(motlu) == Motcle("PolyMAC"))
+                motlu = "PolyMAC_old";
+              else if (Motcle(motlu) == Motcle("PolyMAC_P0P1nc"))
+                motlu = "PolyMAC";
+              ///////////////////////////////////////////////////////
+              ///////////////////////////////////////////////////////
               objet.typer(motlu);
 
               if (sub_type(Interprete, objet.valeur()))
