@@ -26,6 +26,7 @@
 #include <Zone_Cl_dis.h>
 #include <Champ_Face_PolyMAC_old.h>
 #include <Equation_base.h>
+#include <Milieu_base.h>
 
 Implemente_instanciable(Source_Generique_Face_PolyMAC_old, "Source_Generique_Face_PolyMAC_old", Source_Generique_base);
 
@@ -62,7 +63,7 @@ DoubleTab& Source_Generique_Face_PolyMAC_old::ajouter(DoubleTab& resu) const
   const Champ_base& la_source = ch_source_->get_champ(espace_stockage); // Aux faces
   const Zone_PolyMAC_old& zone = la_zone_PolyMAC_old.valeur();
   const Zone_Cl_PolyMAC_old& zone_Cl_PolyMAC_old = la_zcl_PolyMAC_old.valeur();
-  const DoubleVect& pf = zone.porosite_face();
+  const DoubleVect& pf = equation().milieu().porosite_face();
   const DoubleVect& fs = zone.face_surfaces();
   const IntTab& f_e = zone.face_voisins();
   const DoubleTab& xv = zone.xv(), &xp = zone.xp();
@@ -84,7 +85,8 @@ DoubleTab& Source_Generique_Face_PolyMAC_old::ajouter(DoubleTab& resu) const
   for (int f = zone.premiere_face_int(); f < zone.nb_faces(); f++)
     {
       double fac = pf(f) * fs(f);
-      for (int i = 0; i < 2; i++) for (int r = 0, e = f_e(f, i); r < dimension; r++)
+      for (int i = 0; i < 2; i++)
+        for (int r = 0, e = f_e(f, i); r < dimension; r++)
           resu(f) += fac * la_source.valeurs()(f) * (xv(f, r) - xp(e, r)) * (i ? -1 : 1);
     }
   return resu;

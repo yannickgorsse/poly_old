@@ -22,6 +22,8 @@
 
 #include <Evaluateur_Source_PolyMAC_old_Elem.h>
 #include <Zone_PolyMAC_old.h>
+#include <Equation_base.h>
+#include <Milieu_base.h>
 
 Evaluateur_Source_PolyMAC_old_Elem::Evaluateur_Source_PolyMAC_old_Elem(const Evaluateur_Source_PolyMAC_old_Elem& eval)
   : Evaluateur_Source_PolyMAC_old(eval)
@@ -34,5 +36,5 @@ void Evaluateur_Source_PolyMAC_old_Elem::completer()
 {
   Cerr << "Evaluateur_Source_PolyMAC_old_Elem::completer()" << finl;
   volumes.ref(la_zone->volumes());
-  porosite_vol.ref(la_zone->porosite_elem());
+  porosite_vol.ref(la_zcl->equation().milieu().porosite_elem());
 }

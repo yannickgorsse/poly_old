@@ -357,14 +357,17 @@ static inline DoubleTab prod(DoubleTab a, DoubleTab b)
   int i, j, k, m = a.dimension(0), n = a.dimension(1), p = b.dimension(1);
   assert(n == b.dimension(0));
   DoubleTab r(m, p);
-  for (i = 0; i < m; i++) for (j = 0; j < n; j++) for (k = 0; k < p; k++) r(i, k) += a(i, j) * b(j, k);
+  for (i = 0; i < m; i++)
+    for (j = 0; j < n; j++)
+      for (k = 0; k < p; k++) r(i, k) += a(i, j) * b(j, k);
   return r;
 }
 static inline DoubleTab transp(DoubleTab a)
 {
   int i, j, m = a.dimension(0), n = a.dimension(1);
   DoubleTab r(n, m);
-  for (i = 0; i < m; i++) for (j = 0; j < n; j++) r(j, i) = a(i, j);
+  for (i = 0; i < m; i++)
+    for (j = 0; j < n; j++) r(j, i) = a(i, j);
   return r;
 }
 
@@ -380,11 +383,14 @@ static inline double kersol(const DoubleTab& M, DoubleTab& b, double eps, Double
   F77NAME(dgesvd)(&a, &a, &n, &m, A.addr(), &n, S.addr(), Vt.addr(), &n, U.addr(), &m, W.addr(), &w, &info);
   for (i = 0, nk = n; i < k && S(i) > eps * S(0); i++) nk--;
   if (P) P->resize(n, nk);
-  for (i = 0, jP = -1; i < n; i++) if (i < k && S(i) > eps * S(0)) iS(i, i) = 1 / S(i); //terme diagonal de iS
-    else if (P) for (iP = 0, jP++; iP < n; iP++) (*P)(iP, jP) = Vt(i, iP); //colonne de V -> colonne de P
+  for (i = 0, jP = -1; i < n; i++)
+    if (i < k && S(i) > eps * S(0)) iS(i, i) = 1 / S(i); //terme diagonal de iS
+    else if (P)
+      for (iP = 0, jP++; iP < n; iP++) (*P)(iP, jP) = Vt(i, iP); //colonne de V -> colonne de P
   x = prod(transp(Vt), prod(iS, prod(transp(U), b)));
   DoubleTab res = prod(M, x);
-  for (i = 0; i < m; i++) for (j = 0; j < b.dimension(1); j++) res2 += std::pow(res(i, j) - b(i, j), 2);
+  for (i = 0; i < m; i++)
+    for (j = 0; j < b.dimension(1); j++) res2 += std::pow(res(i, j) - b(i, j), 2);
   return sqrt(res2);
 }
 

@@ -134,7 +134,8 @@ void Op_Diff_PolyMAC_old_Elem::update_delta_int() const
       for (i = 0, j = zone.m2d(e); j < zone.m2d(e + 1); i++, j++)
         {
           //partie 'face-face'
-          for (f = e_f(e, i), k = zone.w2i(j); k < zone.w2i(j + 1); k++) for (fb = e_f(e, l = zone.w2j(k)), fac = fs(f) * fs(fb) / ve(e) * zone.w2c(k), n = 0; n < N; n++)
+          for (f = e_f(e, i), k = zone.w2i(j); k < zone.w2i(j + 1); k++)
+            for (fb = e_f(e, l = zone.w2j(k)), fac = fs(f) * fs(fb) / ve(e) * zone.w2c(k), n = 0; n < N; n++)
               {
                 fac_n = fac * nu_ef(l, n) * (inco(ne_tot + fb, n) - inco(e, n));
                 de_num(n) += fac_n, delta_f_int(f, n, 0) += fac_n;
@@ -164,10 +165,12 @@ void Op_Diff_PolyMAC_old_Elem::update_delta() const
 
   //prerequis : delta_int interne + dans les CL Echange_contact
   update_delta_int();
-  for (i = 0; i < cls.size(); i++) if (sub_type(Echange_contact_PolyMAC_old, cls[i].valeur()))
+  for (i = 0; i < cls.size(); i++)
+    if (sub_type(Echange_contact_PolyMAC_old, cls[i].valeur()))
       ref_cast_non_const(Echange_contact_PolyMAC_old, cls[i].valeur()).update_coeffs();
   //calcul final de delta_f
-  for (f = 0; f < zone.nb_faces_tot(); f++) for (n = 0; n < N; n++)
+  for (f = 0; f < zone.nb_faces_tot(); f++)
+    for (n = 0; n < N; n++)
       {
         double n_d[2] = { delta_f_int(f, n, 0), delta_f_int(f, n, 1) };
         //contribution de l'autre probleme par des CL de type Echange_contact
@@ -193,12 +196,15 @@ void Op_Diff_PolyMAC_old_Elem::dimensionner(Matrice_Morse& mat) const
   for (e = 0; e < zone.nb_elem_tot(); e++)
     {
       //dependance en les Te : diagonale -> faces autour de chaque element
-      if (e < zone.nb_elem()) for (n = 0; n < N; n++) stencil.append_line(N * e + n, N * e + n);
-      for (i = 0; i < e_f.dimension(1) && (f = e_f(e, i)) >= 0; i++) for (n = 0; f < zone.nb_faces() && n < N; n++)
+      if (e < zone.nb_elem())
+        for (n = 0; n < N; n++) stencil.append_line(N * e + n, N * e + n);
+      for (i = 0; i < e_f.dimension(1) && (f = e_f(e, i)) >= 0; i++)
+        for (n = 0; f < zone.nb_faces() && n < N; n++)
           stencil.append_line(N * (ne_tot + f) + n, N * e + n);
 
       //dependence en les Tf
-      for (j = 0, k = zone.m2d(e); k < zone.m2d(e + 1); j++, k++) for (f = e_f(e, j), l = zone.w2i(k); l < zone.w2i(k + 1); l++)
+      for (j = 0, k = zone.m2d(e); k < zone.m2d(e + 1); j++, k++)
+        for (f = e_f(e, j), l = zone.w2i(k); l < zone.w2i(k + 1); l++)
           {
             //blocs superieurs : divergence
             for (n = 0; e < zone.nb_elem() && n < N; n++) stencil.append_line(N * e + n, N * (ne_tot + e_f(e, zone.w2j(l))) + n);
@@ -221,7 +227,8 @@ void Op_Diff_PolyMAC_old_Elem::dimensionner_termes_croises(Matrice_Morse& matric
 
   IntTab stencil(0, 2);
   stencil.set_smart_resize(1);
-  for (i = 0; i < cls.size(); i++) if (sub_type(Echange_contact_PolyMAC_old, cls[i].valeur()))
+  for (i = 0; i < cls.size(); i++)
+    if (sub_type(Echange_contact_PolyMAC_old, cls[i].valeur()))
       {
         const Echange_contact_PolyMAC_old& cl = ref_cast(Echange_contact_PolyMAC_old, cls[i].valeur());
         if (cl.nom_autre_pb() != autre_pb.le_nom()) continue; //not our problem
@@ -246,10 +253,12 @@ void Op_Diff_PolyMAC_old_Elem::ajouter_termes_croises(const DoubleTab& inco, con
 
   //prerequis : nu, delta en interne + coeffs/delta dans les CL Echange_contact
   update_nu(), update_delta();
-  for (i = 0; i < cls.size(); i++) if (sub_type(Echange_contact_PolyMAC_old, cls[i].valeur()))
+  for (i = 0; i < cls.size(); i++)
+    if (sub_type(Echange_contact_PolyMAC_old, cls[i].valeur()))
       ref_cast_non_const(Echange_contact_PolyMAC_old, cls[i].valeur()).update_coeffs(), ref_cast(Echange_contact_PolyMAC_old, cls[i].valeur()).update_delta();
 
-  for (i = 0; i < cls.size(); i++) if (sub_type(Echange_contact_PolyMAC_old, cls[i].valeur()))
+  for (i = 0; i < cls.size(); i++)
+    if (sub_type(Echange_contact_PolyMAC_old, cls[i].valeur()))
       {
         const Echange_contact_PolyMAC_old& cl = ref_cast(Echange_contact_PolyMAC_old, cls[i].valeur());
         if (cl.nom_autre_pb() != autre_pb.le_nom()) continue; //not our problem
@@ -258,7 +267,8 @@ void Op_Diff_PolyMAC_old_Elem::ajouter_termes_croises(const DoubleTab& inco, con
           {
             f = fvf.num_face(j);
             for (n = 0; n < N; n++) resu(ne_tot + f, n) -= cl.coeff(j, 0, n) * inco(ne_tot + f, n); //terme de la face elle-meme
-            for (k = 0; k < cl.item.dimension(1) && (l = cl.item(j, k)) >= 0; k++) for (n = 0; n < N; n++)
+            for (k = 0; k < cl.item.dimension(1) && (l = cl.item(j, k)) >= 0; k++)
+              for (n = 0; n < N; n++)
                 {
                   //operateur
                   resu(ne_tot + f, n) -= cl.coeff(j, k + 1, n) * autre_inco(l, n);
@@ -278,16 +288,19 @@ void Op_Diff_PolyMAC_old_Elem::contribuer_termes_croises(const DoubleTab& inco, 
 
   //prerequis : nu, delta en interne + coeffs/delta dans les CL Echange_contact
   update_nu(), update_delta();
-  for (i = 0; i < cls.size(); i++) if (sub_type(Echange_contact_PolyMAC_old, cls[i].valeur()))
+  for (i = 0; i < cls.size(); i++)
+    if (sub_type(Echange_contact_PolyMAC_old, cls[i].valeur()))
       ref_cast_non_const(Echange_contact_PolyMAC_old, cls[i].valeur()).update_coeffs(), ref_cast(Echange_contact_PolyMAC_old, cls[i].valeur()).update_delta();
 
-  for (i = 0; i < cls.size(); i++) if (sub_type(Echange_contact_PolyMAC_old, cls[i].valeur()))
+  for (i = 0; i < cls.size(); i++)
+    if (sub_type(Echange_contact_PolyMAC_old, cls[i].valeur()))
       {
         const Echange_contact_PolyMAC_old& cl = ref_cast(Echange_contact_PolyMAC_old, cls[i].valeur());
         if (cl.nom_autre_pb() != autre_pb.le_nom()) continue; //not our problem
         const Front_VF& fvf = ref_cast(Front_VF, cl.frontiere_dis());
         for (j = 0; j < fvf.nb_faces(); j++) //on peut remplir tous les coeffs, sauf celui de la face elle-meme (rempli par contribuer_a_avec)
-          for (k = 0, f = fvf.num_face(j); k < cl.item.dimension(1) && (l = cl.item(j, k)) >= 0; k++) for (n = 0; n < N; n++)
+          for (k = 0, f = fvf.num_face(j); k < cl.item.dimension(1) && (l = cl.item(j, k)) >= 0; k++)
+            for (n = 0; n < N; n++)
               matrice(N * (ne_tot + f) + n, N * l + n) += cl.coeff(j, k + 1, n) - (stab_ ? std::max(delta_f(f, n), cl.delta(j, k, n)) : 0); //operateur + correction non lineaire
       }
 }
@@ -312,7 +325,8 @@ DoubleTab& Op_Diff_PolyMAC_old_Elem::ajouter(const DoubleTab& inco,  DoubleTab& 
 
   //prerequis : nu, delta en interne + coeffs/delta dans les CL Echange_contact
   update_nu(), update_delta();
-  for (i = 0; i < cls.size(); i++) if (sub_type(Echange_contact_PolyMAC_old, cls[i].valeur()))
+  for (i = 0; i < cls.size(); i++)
+    if (sub_type(Echange_contact_PolyMAC_old, cls[i].valeur()))
       ref_cast_non_const(Echange_contact_PolyMAC_old, cls[i].valeur()).update_coeffs(), ref_cast(Echange_contact_PolyMAC_old, cls[i].valeur()).update_delta();
   flux_bords_ = 0;
 
@@ -338,7 +352,8 @@ DoubleTab& Op_Diff_PolyMAC_old_Elem::ajouter(const DoubleTab& inco,  DoubleTab& 
           for (n = 0; f < zone.premiere_face_int() && n < N; n++) flux_bords_(f, n) += mfe(n) * inco(e, n);
 
           //Echange_impose_base
-          if (ch.icl(f, 0) > 0 && ch.icl(f, 0) < 2 && f < zone.nb_faces()) for (n = 0; n < N; n++)
+          if (ch.icl(f, 0) > 0 && ch.icl(f, 0) < 2 && f < zone.nb_faces())
+            for (n = 0; n < N; n++)
               resu(ne_tot + f, n) -= fs(f) * ref_cast(Echange_impose_base, cls[ch.icl(f, 1)].valeur()).h_imp(ch.icl(f, 2), n)
                                      * (inco(ch.icl(f, 0) == 1 ? ne_tot + f : e, n) - ref_cast(Echange_impose_base, cls[ch.icl(f, 1)].valeur()).T_ext(ch.icl(f, 2), n));
 
@@ -369,7 +384,8 @@ void Op_Diff_PolyMAC_old_Elem::contribuer_a_avec(const DoubleTab& inco, Matrice_
 
   //prerequis : nu, delta en interne + coeffs/delta dans les CL Echange_contact
   update_nu(), update_delta();
-  for (i = 0; i < cls.size(); i++) if (sub_type(Echange_contact_PolyMAC_old, cls[i].valeur()))
+  for (i = 0; i < cls.size(); i++)
+    if (sub_type(Echange_contact_PolyMAC_old, cls[i].valeur()))
       ref_cast_non_const(Echange_contact_PolyMAC_old, cls[i].valeur()).update_coeffs(), ref_cast(Echange_contact_PolyMAC_old, cls[i].valeur()).update_delta();
 
   /* operateur : divergence pour les lignes aux elements, continuite pour les lignes aux faces */
@@ -386,19 +402,22 @@ void Op_Diff_PolyMAC_old_Elem::contribuer_a_avec(const DoubleTab& inco, Matrice_
               for (n = 0; e < zone.nb_elem() && ch.icl(fb, 0) < 6 && n < N; n++) matrice(N * e + n, N * (ne_tot + fb) + n) -= mff(n);
 
               //correction non lineaire : partie "faces/faces"
-              for (n = 0; stab_ && ch.icl(f, 0) < 4 && f < zone.nb_faces() && n < N; n++) for (k = 0, fac = std::max(delta_f(f, n), delta_f(fb, n)); k < 2; k++)
+              for (n = 0; stab_ && ch.icl(f, 0) < 4 && f < zone.nb_faces() && n < N; n++)
+                for (k = 0, fac = std::max(delta_f(f, n), delta_f(fb, n)); k < 2; k++)
                   matrice(N * (ne_tot + f) + n, N * (ne_tot + (k ? fb : f)) + n) += (k ? -1 : 1) * fac;
             }
           for (n = 0; f < zone.nb_faces() && ch.icl(f, 0) < 6 && n < N; n++) matrice(N * (ne_tot + f) + n, N * e + n) -= mfe(n);
 
           //Echange_impose_base
-          if (ch.icl(f, 0) > 0 && ch.icl(f, 0) < 2 && f < zone.nb_faces()) for (n = 0; n < N; n++)
+          if (ch.icl(f, 0) > 0 && ch.icl(f, 0) < 2 && f < zone.nb_faces())
+            for (n = 0; n < N; n++)
               matrice(N * (ne_tot + f) + n, N * (ch.icl(f, 0) == 1 ? ne_tot + f : e) + n) += fs(f) * ref_cast(Echange_impose_base, cls[ch.icl(f, 1)].valeur()).h_imp(ch.icl(f, 2), n);
           else if (ch.icl(f, 0) == 3 && f < zone.nb_faces()) //paroi_contact gere en monolithique -> ajout du coeff a la face issu de l'autre cote
             {
               const Echange_contact_PolyMAC_old& cl = ref_cast(Echange_contact_PolyMAC_old, cls[ch.icl(f, 1)].valeur());
               for (j = ch.icl(f, 2), n = 0; n < N; n++) matrice(N * (ne_tot + f) + n, N * (ne_tot + f) + n) += cl.coeff(j, 0, n); //coeff de la face elle-meme
-              for (k = 0; stab_ && k < cl.item.dimension(1) && cl.item(j, k) >= 0; k++) for (n = 0; n < N; n++) //correction non lineaire
+              for (k = 0; stab_ && k < cl.item.dimension(1) && cl.item(j, k) >= 0; k++)
+                for (n = 0; n < N; n++) //correction non lineaire
                   matrice(N * (ne_tot + f) + n, N * (ne_tot + f) + n) += std::max(delta_f(f, n), cl.delta(j, k, n));
             }
 
@@ -406,7 +425,8 @@ void Op_Diff_PolyMAC_old_Elem::contribuer_a_avec(const DoubleTab& inco, Matrice_
           for (n = 0; stab_ && ch.icl(f, 0) < 4 && n < N; n++) //non appliquee aux CLs de Dirichlet ou Neumann
             {
               double corr = std::max(delta_e(e, n), delta_f(f, n));
-              for (k = 0; k < 2; k++) for (l = 0; (k ? (f < zone.nb_faces()) : (e < zone.nb_elem())) && l < 2; l++)
+              for (k = 0; k < 2; k++)
+                for (l = 0; (k ? (f < zone.nb_faces()) : (e < zone.nb_elem())) && l < 2; l++)
                   matrice(N * (k ? ne_tot + f : e) + n, N * (l ? ne_tot + f : e) + n) += (k == l ? 1 : -1) * corr;
             }
         }

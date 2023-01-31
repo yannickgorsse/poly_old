@@ -21,7 +21,10 @@
 //////////////////////////////////////////////////////////////////////////////
 
 #include <Evaluateur_PolyMAC_old.h>
+#include <Zone_Cl_PolyMAC_old.h>
 #include <Zone_PolyMAC_old.h>
+#include <Equation_base.h>
+#include <Milieu_base.h>
 
 Evaluateur_PolyMAC_old::Evaluateur_PolyMAC_old(const Evaluateur_PolyMAC_old& eval)
   :
@@ -44,7 +47,7 @@ void Evaluateur_PolyMAC_old::associer_zones(const Zone_PolyMAC_old& zone_vdf,
   premiere_face_bord = zone_vdf.premiere_face_bord();
   surface.ref(zone_vdf.face_surfaces());
   elem_.ref(zone_vdf.face_voisins());
-  porosite.ref(zone_vdf.porosite_face());
+  porosite.ref(la_zcl->equation().milieu().porosite_face());
   volume_entrelaces.ref(zone_vdf.volumes_entrelaces());
   xv.ref(zone_vdf.xv());
 }

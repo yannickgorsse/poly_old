@@ -123,8 +123,9 @@ int Echange_contact_PolyMAC_old::initialiser(double temps)
 
   //remplissage
   item.resize(fvf.nb_faces(), c_max), item = -1;
-  for (i = 0; i < fvf.nb_faces(); i++) for (j = 0; j < c_max && l_item(i, j) >= 0; j++)
-      if (proc(i, j) == Process::me()) item(i, j) = l_item(i, j);                     //item local (reel)
+  for (i = 0; i < fvf.nb_faces(); i++)
+    for (j = 0; j < c_max && l_item(i, j) >= 0; j++)
+      if (proc(i, j) == Process::me()) item(i, j) = (int)std::lrint(l_item(i, j));                     //item local (reel)
       else
         {
           if (o_zone.virt_ef_map.count({{ (int) proc(i, j), (int) l_item(i, j) }}))   //item local (virtuel)
@@ -172,7 +173,8 @@ void Echange_contact_PolyMAC_old::update_coeffs()
   for (int i = 0; i < o_fvf.nb_faces(); i++)
     {
       int f = o_fvf.num_face(i), e = o_zone.face_voisins(f, 0), fb, j, k, n, i_f = 0, idx;
-      for (j = 0; j < e_f.dimension(1) && (fb = e_f(e, j)) >= 0; j++) if (fb == f) i_f = j; //numero de la face f dans l'element e
+      for (j = 0; j < e_f.dimension(1) && (fb = e_f(e, j)) >= 0; j++)
+        if (fb == f) i_f = j; //numero de la face f dans l'element e
       o_op_diff.remplir_nu_ef(e, nu_ef);
 
       /* construction du flux de chaleur sortant, en mettant la partie en T_f dans H_imp et le reste dans T_ext */
@@ -189,8 +191,10 @@ void Echange_contact_PolyMAC_old::update_coeffs()
                 o_Text(f, n) += fac * o_inc.valeurs()(e, n);
               }
           }
-      for (n = 0; stab_ && monolithic && n < N; n++) for (k = 0; k < 2; k++) o_delta_int(f, n, k) = o_op_diff.delta_f_int(f, n, k);
-      for (n = 0; !monolithic && n < N; n++) if (o_Himp(f, n) > 1e-10) o_Text(f, n) /= o_Himp(f, n); //passage au vrai T_ext
+      for (n = 0; stab_ && monolithic && n < N; n++)
+        for (k = 0; k < 2; k++) o_delta_int(f, n, k) = o_op_diff.delta_f_int(f, n, k);
+      for (n = 0; !monolithic && n < N; n++)
+        if (o_Himp(f, n) > 1e-10) o_Text(f, n) /= o_Himp(f, n); //passage au vrai T_ext
       for (n = 0; h_paroi < 1e9 && n < N; n++) //prise en compte de la resistance de la paroi
         {
           double fac = h_paroi / (h_paroi + (monolithic ? o_coeff(f, 0, n) / fs(f) : o_Himp(f, n)));
@@ -240,7 +244,8 @@ void Echange_contact_PolyMAC_old::update_delta() const
   for (i = 0; i < o_fvf.nb_faces(); i++)
     {
       int f = o_fvf.num_face(i), fb, e = o_zone.face_voisins(f, 0), i_f = 0, idx;
-      for (j = 0; j < e_f.dimension(1) && (fb = e_f(e, j)) >= 0; j++) if (fb == f) i_f = j; //numero de la face f dans l'element e
+      for (j = 0; j < e_f.dimension(1) && (fb = e_f(e, j)) >= 0; j++)
+        if (fb == f) i_f = j; //numero de la face f dans l'element e
       for (n = 0; n < N; n++) o_delta(f, 0, n) = o_op_diff.delta_e(e, n);
       for (j = o_zone.w2i(o_zone.m2d(e) + i_f) + 1, idx = 1; j < o_zone.w2i(o_zone.m2d(e) + i_f + 1); j++, idx++) //on saute le premier coeff (diagonale)
         for (n = 0; n < N; n++) o_delta(f, idx, n) = o_op_diff.delta_f(e_f(e, o_zone.w2j(j)), n);

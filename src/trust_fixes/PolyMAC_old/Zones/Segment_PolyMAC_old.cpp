@@ -26,6 +26,9 @@
 #include <Champ_P1_PolyMAC_old.h>
 // Tri pour voire si champ_P1...
 #include <Tri_PolyMAC_old.h>
+#include <Equation_base.h>
+#include <Milieu_base.h>
+
 Implemente_instanciable(Segment_PolyMAC_old,"Segment_PolyMAC_old",Elem_PolyMAC_old_base);
 
 // printOn et readOn
@@ -142,8 +145,8 @@ void Segment_PolyMAC_old::calcul_vc(const ArrOfInt& Face,ArrOfDouble& vc,
                                     const ArrOfDouble& vs,const DoubleTab& vsom,
                                     const Champ_Inc_base& vitesse,int type_cl) const
 {
-  const Zone_PolyMAC_old& zone_PolyMAC_old = ref_cast(Zone_PolyMAC_old,vitesse.zone_dis_base());
-  const DoubleVect& porosite_face = zone_PolyMAC_old.porosite_face();
+  const DoubleVect& porosite_face = vitesse.equation().milieu().porosite_face();
+
   //Cerr << " type_cl " <<  type_cl << finl;
   switch(type_cl)
     {

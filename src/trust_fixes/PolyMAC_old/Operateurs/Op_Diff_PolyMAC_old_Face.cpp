@@ -81,7 +81,8 @@ void Op_Diff_PolyMAC_old_Face::dimensionner(Matrice_Morse& mat) const
   IntTab stencil(0, 2);
   stencil.set_smart_resize(1);
   //partie vitesses : m2 Rf
-  for (e = 0; e < zone.nb_elem_tot(); e++) for (i = zone.m2d(e), idx = 0; i < zone.m2d(e + 1); i++, idx++)
+  for (e = 0; e < zone.nb_elem_tot(); e++)
+    for (i = zone.m2d(e), idx = 0; i < zone.m2d(e + 1); i++, idx++)
       for (f = e_f(e, idx), j = zone.m2i(i); f < zone.nb_faces() && ch.icl(f, 0) < 2 && j < zone.m2i(i + 1); j++)
         for (fb = e_f(e, zone.m2j(j)), k = zone.rfdeb(fb); k < zone.rfdeb(fb + 1); k++) stencil.append_line(f, nf_tot + zone.rfji(k));
 
@@ -104,12 +105,13 @@ inline DoubleTab& Op_Diff_PolyMAC_old_Face::ajouter(const DoubleTab& inco, Doubl
   const IntTab& f_e = zone.face_voisins(), &e_f = zone.elem_faces();
   const Champ_Face_PolyMAC_old& ch = ref_cast(Champ_Face_PolyMAC_old, equation().inconnue().valeur());
   const Conds_lim& cls = la_zcl_poly_.valeur().les_conditions_limites();
-  const DoubleVect& pe = zone.porosite_elem(), &ve = zone.volumes();
+  const DoubleVect& pe = equation().milieu().porosite_elem(), &ve = zone.volumes();
   int i, j, k, e, f, fb, a, nf_tot = zone.nb_faces_tot(), idx;
 
   update_nu();
   //partie vitesses : m2 Rf
-  for (e = 0; e < zone.nb_elem_tot(); e++) for (i = zone.m2d(e), idx = 0; i < zone.m2d(e + 1); i++, idx++)
+  for (e = 0; e < zone.nb_elem_tot(); e++)
+    for (i = zone.m2d(e), idx = 0; i < zone.m2d(e + 1); i++, idx++)
       for (f = e_f(e, idx), j = zone.m2i(i); f < zone.nb_faces() && ch.icl(f, 0) < 2 && j < zone.m2i(i + 1); j++)
         for (fb = e_f(e, zone.m2j(j)), k = zone.rfdeb(fb); k < zone.rfdeb(fb + 1); k++)
           resu(f) -= zone.m2c(j) * ve(e) * (e == f_e(f, 0) ? 1 : -1) * (e == f_e(fb, 0) ? 1 : -1) * pe(e) * zone.rfci(k) * inco(nf_tot + zone.rfji(k));
@@ -122,7 +124,8 @@ inline DoubleTab& Op_Diff_PolyMAC_old_Face::ajouter(const DoubleTab& inco, Doubl
       for (i = ch.radeb(a, 0); i < ch.radeb(a + 1, 0); i++)
         resu(nf_tot + a) -= ch.raci(i) * inco(ch.raji(i));
       //rotationnel : vitesses aux bords
-      for (i = ch.radeb(a, 1); i < ch.radeb(a + 1, 1); i++) for (k = 0; k < dimension; k++)
+      for (i = ch.radeb(a, 1); i < ch.radeb(a + 1, 1); i++)
+        for (k = 0; k < dimension; k++)
           resu(nf_tot + a) -= ch.racf(i, k) * ref_cast(Dirichlet, cls[ch.icl(ch.rajf(i), 1)].valeur()).val_imp(ch.icl(ch.rajf(i), 2), k);
       // -m1 / nu
       for (i = zone.m1deb(a); i < zone.m1deb(a + 1); i++)
@@ -139,12 +142,13 @@ inline void Op_Diff_PolyMAC_old_Face::contribuer_a_avec(const DoubleTab& inco, M
   const Zone_PolyMAC_old& zone = la_zone_poly_.valeur();
   const IntTab& f_e = zone.face_voisins(), &e_f = zone.elem_faces();
   const Champ_Face_PolyMAC_old& ch = ref_cast(Champ_Face_PolyMAC_old, equation().inconnue().valeur());
-  const DoubleVect& pe = zone.porosite_elem(), &ve = zone.volumes();
+  const DoubleVect& pe = equation().milieu().porosite_elem(), &ve = zone.volumes();
   int i, j, k, e, f, fb, a, nf_tot = zone.nb_faces_tot(), idx;
 
   update_nu();
   //partie vitesses : m2 Rf
-  for (e = 0; e < zone.nb_elem_tot(); e++) for (i = zone.m2d(e), idx = 0; i < zone.m2d(e + 1); i++, idx++)
+  for (e = 0; e < zone.nb_elem_tot(); e++)
+    for (i = zone.m2d(e), idx = 0; i < zone.m2d(e + 1); i++, idx++)
       for (f = e_f(e, idx), j = zone.m2i(i); f < zone.nb_faces() && ch.icl(f, 0) < 2 && j < zone.m2i(i + 1); j++)
         for (fb = e_f(e, zone.m2j(j)), k = zone.rfdeb(fb); k < zone.rfdeb(fb + 1); k++)
           matrice(f, nf_tot + zone.rfji(k)) += zone.m2c(j) * ve(e) * (e == f_e(f, 0) ? 1 : -1) * (e == f_e(fb, 0) ? 1 : -1) * pe(e) * zone.rfci(k);
@@ -153,7 +157,8 @@ inline void Op_Diff_PolyMAC_old_Face::contribuer_a_avec(const DoubleTab& inco, M
   for (a = 0; a < (dimension < 3 ? zone.nb_som() : zone.zone().nb_aretes()); a++)
     {
       //rotationnel : vitesses internes
-      for (i = ch.radeb(a, 0); i < ch.radeb(a + 1, 0); i++) if (ch.icl(f = ch.raji(i), 0) < 2)
+      for (i = ch.radeb(a, 0); i < ch.radeb(a + 1, 0); i++)
+        if (ch.icl(f = ch.raji(i), 0) < 2)
           matrice(nf_tot + a, f) += ch.raci(i);
       // -m1 / nu
       for (i = zone.m1deb(a); i < zone.m1deb(a + 1); i++)

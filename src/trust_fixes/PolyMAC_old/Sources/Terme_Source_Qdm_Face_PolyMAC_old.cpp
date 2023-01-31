@@ -28,6 +28,8 @@
 #include <Neumann.h>
 #include <Neumann_homogene.h>
 #include <Neumann_sortie_libre.h>
+#include <Equation_base.h>
+#include <Milieu_base.h>
 
 Implemente_instanciable(Terme_Source_Qdm_Face_PolyMAC_old,"Source_Qdm_face_PolyMAC_old",Source_base);
 
@@ -84,7 +86,7 @@ DoubleTab& Terme_Source_Qdm_Face_PolyMAC_old::ajouter(DoubleTab& resu) const
       for (int f = le_bord.num_premiere_face(); f < le_bord.num_premiere_face() + le_bord.nb_faces(); f++)
         {
           int e = zone_PolyMAC_old.face_voisins(f, 0);
-          double fac = zone_PolyMAC_old.porosite_face(f) * zone_PolyMAC_old.face_surfaces(f);
+          double fac = equation().milieu().porosite_face(f) * zone_PolyMAC_old.face_surfaces(f);
           for (int r = 0; r < dimension; r++)
             resu(f) += fac * la_source->valeurs()(sub_type(Champ_Uniforme,la_source.valeur()) ? 0 : e, r)
                        * (zone_PolyMAC_old.xv(f, r) - zone_PolyMAC_old.xp(e, r));
@@ -93,8 +95,9 @@ DoubleTab& Terme_Source_Qdm_Face_PolyMAC_old::ajouter(DoubleTab& resu) const
   /* 2. faces internes -> contributions amont/aval */
   for (int f = zone_PolyMAC_old.premiere_face_int(); f < zone_PolyMAC_old.nb_faces(); f++)
     {
-      double fac = zone_PolyMAC_old.porosite_face(f) * zone_PolyMAC_old.face_surfaces(f);
-      for (int i = 0; i < 2; i++) for (int r = 0, e = zone_PolyMAC_old.face_voisins(f, i); r < dimension; r++)
+      double fac = equation().milieu().porosite_face(f) * zone_PolyMAC_old.face_surfaces(f);
+      for (int i = 0; i < 2; i++)
+        for (int r = 0, e = zone_PolyMAC_old.face_voisins(f, i); r < dimension; r++)
           resu(f) += fac * la_source->valeurs()(sub_type(Champ_Uniforme,la_source.valeur()) ? 0 : e, r)
                      * (zone_PolyMAC_old.xv(f, r) - zone_PolyMAC_old.xp(e, r)) * (i ? -1 : 1);
     }

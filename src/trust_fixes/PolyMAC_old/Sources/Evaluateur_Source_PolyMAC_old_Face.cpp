@@ -21,7 +21,8 @@
 //////////////////////////////////////////////////////////////////////////////
 
 #include <Evaluateur_Source_PolyMAC_old_Face.h>
-
+#include <Equation_base.h>
+#include <Milieu_base.h>
 
 //
 //   Fonctions de Evaluateur_Source_PolyMAC_old_Face
@@ -39,5 +40,5 @@ void Evaluateur_Source_PolyMAC_old_Face::completer()
 {
   orientation.ref(la_zone->orientation());
   volumes_entrelaces.ref(la_zone->volumes_entrelaces());
-  porosite_surf.ref(la_zone->porosite_face());
+  porosite_surf.ref(la_zcl->equation().milieu().porosite_face());
 }

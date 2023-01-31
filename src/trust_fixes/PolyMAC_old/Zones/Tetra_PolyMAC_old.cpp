@@ -24,6 +24,8 @@
 #include <Domaine.h>
 #include <Zone_PolyMAC_old.h>
 #include <Champ_P1_PolyMAC_old.h>
+#include <Equation_base.h>
+#include <Milieu_base.h>
 
 Implemente_instanciable_sans_constructeur(Tetra_PolyMAC_old,"Tetra_PolyMAC_old",Elem_PolyMAC_old_base);
 
@@ -122,8 +124,7 @@ void Tetra_PolyMAC_old::calcul_vc(const ArrOfInt& Face,ArrOfDouble& vc,
                                   const Champ_Inc_base& vitesse,int type_cl) const
 {
   int comp;
-  const Zone_PolyMAC_old& zone_PolyMAC_old = ref_cast(Zone_PolyMAC_old,vitesse.zone_dis_base());
-  const DoubleVect& porosite_face = zone_PolyMAC_old.porosite_face();
+  const DoubleVect& porosite_face = vitesse.equation().milieu().porosite_face();
   switch(type_cl)
     {
 

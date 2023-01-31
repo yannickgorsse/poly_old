@@ -75,7 +75,7 @@ DoubleTab& Op_Div_PolyMAC_old::ajouter(const DoubleTab& vit, DoubleTab& div) con
   const Zone_PolyMAC_old& zone_PolyMAC_old = la_zone_PolyMAC_old.valeur();
   const DoubleVect& surface=zone_PolyMAC_old.face_surfaces();
   const IntTab& face_voisins = zone_PolyMAC_old.face_voisins();
-  const DoubleVect& porosite_surf = zone_PolyMAC_old.porosite_face();
+  const DoubleVect& porosite_surf = equation().milieu().porosite_face();
 
 
   Debog::verifier("poro",porosite_surf);
@@ -128,7 +128,7 @@ void Op_Div_PolyMAC_old::contribuer_a_avec(const DoubleTab&,Matrice_Morse& matri
   const Zone_PolyMAC_old& zone_PolyMAC_old = la_zone_PolyMAC_old.valeur();
   const DoubleVect& surface=zone_PolyMAC_old.face_surfaces();
   const IntTab& face_voisins = zone_PolyMAC_old.face_voisins();
-  const DoubleVect& porosite_surf = zone_PolyMAC_old.porosite_face();
+  const DoubleVect& porosite_surf = equation().milieu().porosite_face();
 
 
   int nb_faces=zone_PolyMAC_old.nb_faces();

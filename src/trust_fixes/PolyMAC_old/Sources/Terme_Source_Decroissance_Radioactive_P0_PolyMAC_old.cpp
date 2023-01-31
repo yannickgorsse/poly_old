@@ -80,7 +80,8 @@ DoubleTab& Terme_Source_Decroissance_Radioactive_P0_PolyMAC_old::ajouter(DoubleT
   const DoubleVect& ve = zone.volumes();
   const DoubleTab& c = equation().inconnue().valeurs();
 
-  for (int e = 0; e < nb_elem; e++) for (int l = 0; l < nb_groupes; l++)
+  for (int e = 0; e < nb_elem; e++)
+    for (int l = 0; l < nb_groupes; l++)
       resu(e, l) -= lambda[l] * c(e, l) * ve(e);
 
   return resu;
@@ -99,6 +100,7 @@ void Terme_Source_Decroissance_Radioactive_P0_PolyMAC_old::contribuer_a_avec(con
   const Zone_VF& zone = la_zone_PolyMAC_old.valeur();
   const DoubleVect& ve = zone.volumes();
 
-  for (int e = 0, k = 0; e < nb_elem; e++) for (int l = 0; l < nb_groupes; l++, k++)
+  for (int e = 0, k = 0; e < nb_elem; e++)
+    for (int l = 0; l < nb_groupes; l++, k++)
       matrice(k, k) += lambda[l] * ve(e);
 }

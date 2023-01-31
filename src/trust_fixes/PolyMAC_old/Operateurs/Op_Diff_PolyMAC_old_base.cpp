@@ -125,7 +125,7 @@ double Op_Diff_PolyMAC_old_base::calculer_dt_stab() const
     }
   else
     {
-      const double           deux_dim      = 2. * Objet_U::dimension;
+      const int deux_dim = 2 * Objet_U::dimension;
       const Champ_base& champ_diffu   = diffusivite();
       const DoubleTab&       valeurs_diffu = champ_diffu.valeurs();
       const Champ_base&      champ_rho     = get_champ_masse_volumique();
@@ -382,7 +382,8 @@ void Op_Diff_PolyMAC_old_base::update_nu() const
         {
           bool nu_uniforme = sub_type(Champ_Uniforme, diffusivite());
           double val_nu = diffu(0, 0);
-          for (i = 0; i < diffu_turb.dimension(0); i++) for (j = 0; j < 2; j++)
+          for (i = 0; i < diffu_turb.dimension(0); i++)
+            for (j = 0; j < 2; j++)
               {
                 if (!nu_uniforme) val_nu = diffu(i, 0);
                 nu_(i, j) = val_nu + diffu_turb(i, j);
@@ -424,7 +425,7 @@ void Op_Diff_PolyMAC_old_base::update_nu() const
         {
           if (i < cls.size() && loi_par) //facteur multiplicatif du a une loi de paroi
             nu_fac_(f) = zone.dist_norm_bord(f) / ref_cast(Modele_turbulence_scal_base,modele_turbulence.valeur()).loi_paroi().valeur().equivalent_distance(i, f - deb);
-          else nu_fac_(f) = zone.porosite_face(f); //par defaut : facteur du a la porosite
+          else nu_fac_(f) = equation().milieu().porosite_face(f); //par defaut : facteur du a la porosite
           if (nu_fac_mod.size()) nu_fac_(f) *= nu_fac_mod(f); //prise en compte de nu_fac_mod
         }
     }

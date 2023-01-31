@@ -34,6 +34,7 @@
 #include <Op_Diff_negligeable.h>
 #include <TRUSTTab_parts.h>
 #include <Schema_Euler_Implicite.h>
+#include <Milieu_base.h>
 
 Implemente_instanciable(Masse_PolyMAC_old_Elem,"Masse_PolyMAC_old_Elem",Solveur_Masse_base);
 
@@ -82,7 +83,7 @@ DoubleTab& Masse_PolyMAC_old_Elem::appliquer_impl(DoubleTab& sm) const
 {
   const Zone_PolyMAC_old& zone_PolyMAC_old = la_zone_PolyMAC_old.valeur();
   const DoubleVect& volumes = zone_PolyMAC_old.volumes();
-  const DoubleVect& porosite_elem = zone_PolyMAC_old.porosite_elem();
+  const DoubleVect& porosite_elem = equation().milieu().porosite_elem();
 
   const int nb_elem = zone_PolyMAC_old.nb_elem(), nb_dim = sm.nb_dim();
   if(nb_elem==0)
@@ -127,9 +128,11 @@ void Masse_PolyMAC_old_Elem::dimensionner(Matrice_Morse& matrix) const
   IntTab indice(0,2);
   indice.set_smart_resize(1);
   //partie superieure : diagonale
-  for (e = 0; e < zone.nb_elem(); e++) for (n = 0; n < N; n++) indice.append_line(N * e + n, N * e + n);
+  for (e = 0; e < zone.nb_elem(); e++)
+    for (n = 0; n < N; n++) indice.append_line(N * e + n, N * e + n);
   //partie inferieure : diagonale pour les CLs de Dirichlet
-  for (f = 0; !only_ne && f < zone.nb_faces(); f++) if (no_diff_ || ch.icl(f, 0) > 5)
+  for (f = 0; !only_ne && f < zone.nb_faces(); f++)
+    if (no_diff_ || ch.icl(f, 0) > 5)
       for (n = 0; n < N; n++) indice.append_line(N * (ne_tot + f) + n, N * (ne_tot + f) + n);
 
   tableau_trier_retirer_doublons(indice);
@@ -141,22 +144,25 @@ DoubleTab& Masse_PolyMAC_old_Elem::ajouter_masse(double dt, DoubleTab& secmem, c
   const Zone_PolyMAC_old& zone = la_zone_PolyMAC_old.valeur();
   const Champ_P0_PolyMAC_old& ch = ref_cast(Champ_P0_PolyMAC_old, equation().inconnue().valeur());
   const Conds_lim& cls = la_zone_Cl_PolyMAC_old->les_conditions_limites();
-  const DoubleVect& ve = zone.volumes(), &pe = zone.porosite_elem(), &fs = zone.face_surfaces();
+  const DoubleVect& ve = zone.volumes(), &pe = equation().milieu().porosite_elem(), &fs = zone.face_surfaces();
   int e, f, ne_tot = zone.nb_elem_tot(), n, N = inco.line_size();
-  DoubleVect coef(zone.porosite_elem());
+  DoubleVect coef(equation().milieu().porosite_elem());
   coef = 1.;
   if (has_coefficient_temporel_) appliquer_coef(coef);
 
   ch.init_cl();
   //partie superieure : diagonale
-  for (e = 0; e < zone.nb_elem(); e++) for (n = 0; n < N; n++)
+  for (e = 0; e < zone.nb_elem(); e++)
+    for (n = 0; n < N; n++)
       secmem(e, n) += coef(e) * pe(e) * ve(e) * inco(e, n) / dt;
 
   //partie inferieure : valeur imposee pour les CLs de Neumann / Dirichlet / Echange_Impose
   for (f = 0; secmem.dimension_tot(0) > ne_tot && f < zone.nb_faces(); f++)
-    if (ch.icl(f, 0) == 4) for (n = 0; n < N; n++) //Neumann_paroi
+    if (ch.icl(f, 0) == 4)
+      for (n = 0; n < N; n++) //Neumann_paroi
         secmem(N * (ne_tot + f) + n) -= fs(f) * ref_cast(Neumann_paroi, cls[ch.icl(f, 1)].valeur()).flux_impose(ch.icl(f, 2), n);
-    else if (ch.icl(f, 0) == 6) for (n = 0; n < N; n++) //Dirichlet
+    else if (ch.icl(f, 0) == 6)
+      for (n = 0; n < N; n++) //Dirichlet
         secmem(N * (ne_tot + f) + n) += ref_cast(Dirichlet, cls[ch.icl(f, 1)].valeur()).val_imp(ch.icl(f, 2), n);
 
   return secmem;
@@ -166,10 +172,10 @@ Matrice_Base& Masse_PolyMAC_old_Elem::ajouter_masse(double dt, Matrice_Base& mat
 {
   const Zone_PolyMAC_old& zone = la_zone_PolyMAC_old.valeur();
   const Champ_P0_PolyMAC_old& ch = ref_cast(Champ_P0_PolyMAC_old, equation().inconnue().valeur());
-  const DoubleVect& ve = zone.volumes(), &pe = zone.porosite_elem();
+  const DoubleVect& ve = zone.volumes(), &pe = equation().milieu().porosite_elem();
   int e, f, ne_tot = zone.nb_elem_tot(), n, N = ch.valeurs().line_size();
   Matrice_Morse& mat = ref_cast(Matrice_Morse, matrice);
-  DoubleVect coef(zone.porosite_elem());
+  DoubleVect coef(equation().milieu().porosite_elem());
   coef = 1.;
   if (has_coefficient_temporel_) appliquer_coef(coef);
 
@@ -180,7 +186,8 @@ Matrice_Base& Masse_PolyMAC_old_Elem::ajouter_masse(double dt, Matrice_Base& mat
 
   //partie inferieure : 1 pour les flux imposes par CLs aux faces (si diffusion) ou pour toutes les faces (sinon)
   for (f = 0; mat.nb_lignes() > N * ne_tot && f < zone.nb_faces(); f++)
-    if (ch.icl(f, 0) > 5 || no_diff_) for (n = 0; n < N; n++) //Dirichlet ou Dirichlet_homogene
+    if (ch.icl(f, 0) > 5 || no_diff_)
+      for (n = 0; n < N; n++) //Dirichlet ou Dirichlet_homogene
         mat(N * (ne_tot + f) + n, N * (ne_tot + f) + n) += 1;
 
   return matrice;

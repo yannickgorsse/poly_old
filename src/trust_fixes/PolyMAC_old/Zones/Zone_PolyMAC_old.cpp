@@ -471,12 +471,14 @@ void Zone_PolyMAC_old::discretiser()
   for (int face = 0; dimension == 3 && face < nb_faces(); face++)
     {
       double xs[3] = { 0, }, S = 0;
-      for (int k = 0; k < face_sommets_.dimension(1); k++) if (face_sommets_(face, k) >= 0)
+      for (int k = 0; k < face_sommets_.dimension(1); k++)
+        if (face_sommets_(face, k) >= 0)
           {
             int s0 = face_sommets_(face, 0), s1 = face_sommets_(face, k),
                 s2 = k + 1 < face_sommets_.dimension(1) && face_sommets_(face, k + 1) >= 0 ? face_sommets_(face, k +1) : s0;
             double s = 0;
-            for (int r = 0; r < 3; r++) for (int i = 0; i < 2; i++)
+            for (int r = 0; r < 3; r++)
+              for (int i = 0; i < 2; i++)
                 s += (i ? -1 : 1) * face_normales_(face, r) * (coords(s2, (r + 1 +  i) % 3) - coords(s0, (r + 1 +  i) % 3))
                      * (coords(s1, (r + 1 + !i) % 3) - coords(s0, (r + 1 + !i) % 3));
             for (int r = 0; r < 3; r++) xs[r] += s * (coords(s0, r) + coords(s1, r) + coords(s2, r)) / 3;
@@ -498,8 +500,6 @@ void Zone_PolyMAC_old::discretiser()
 
   detecter_faces_non_planes();
 
-  Zone_VF::calculer_porosites();
-  Zone_VF::calculer_diametres_hydrauliques();
   calculer_volumes_entrelaces();
   calculer_h_carre();
 
@@ -529,7 +529,8 @@ void Zone_PolyMAC_old::discretiser()
 
       //remplissage de som_aretes
       som_arete.resize(zone().nb_som_tot());
-      for (int i = 0; i < a_s.dimension_tot(0); i++) for (int j = 0; j < 2; j++) som_arete[a_s(i, j)][a_s(i, !j)] = i;
+      for (int i = 0; i < a_s.dimension_tot(0); i++)
+        for (int j = 0; j < 2; j++) som_arete[a_s(i, j)][a_s(i, !j)] = i;
 
       //remplissage de xa (CGs des aretes), de ta_ (vecteur tangent aux aretes) et de longueur_arete_ (longueurs des aretes)
       xa_.resize(0, 3), ta_.resize(0, 3);
@@ -584,7 +585,8 @@ void Zone_PolyMAC_old::orthocentrer()
 
         //peut-on l'orthocentrer?
         M.resize(np + 1, 4), S.resize(np + 1, 1);
-        for (i = 0; i < np; i++) for (j = 0, S(i, 0) = 0, M(i, 3) = 1; j < 3; j++)
+        for (i = 0; i < np; i++)
+          for (j = 0, S(i, 0) = 0, M(i, 3) = 1; j < 3; j++)
             S(i, 0) += 0.5 * std::pow(M(i, j) = xs(f_s(f, i), j) - xv_(f, j), 2);
         for (j = 0, S(np, 0) = M(np, 3) = 0; j < 3; j++) M(np, j) = nf(f, j) / fs(f);
         if (kersol(M, S, 1e-12, NULL, X, vp) > 1e-8) continue; //la face n'a pas d'orthocentre
@@ -600,7 +602,8 @@ void Zone_PolyMAC_old::orthocentrer()
           }
         if (dot(&X(0, 0), &X(0, 0)) > 0.25 * r2min) continue; //on s'eloigne trop du CG
 
-        for (i = 0, b_f_ortho(f) = 1; i < dimension; i++) if (std::fabs(X(i, 0)) > 1e-8) xv_(f, i) += X(i, 0);
+        for (i = 0, b_f_ortho(f) = 1; i < dimension; i++)
+          if (std::fabs(X(i, 0)) > 1e-8) xv_(f, i) += X(i, 0);
       }
   Cerr << 100. * mp_somme_vect(b_f_ortho) / Process::mp_sum(nb_faces()) << "% de faces orthocentrees" << finl;
 
@@ -620,7 +623,8 @@ void Zone_PolyMAC_old::orthocentrer()
 
       //existe-il un orthocentre?
       M.resize(np, dimension + 1), S.resize(np, 1);
-      for (i = 0; i < np; i++) for (j = 0, S(i, 0) = 0, M(i, dimension) = 1; j < dimension; j++)
+      for (i = 0; i < np; i++)
+        for (j = 0, S(i, 0) = 0, M(i, dimension) = 1; j < dimension; j++)
           S(i, 0) += 0.5 * std::pow(M(i, j) = xs(e_s(e, i), j) - xp_(e, j), 2);
       if (kersol(M, S, 1e-12, NULL, X, vp) > 1e-8) continue; //l'element n'a pas d'orthocentre
 
@@ -630,7 +634,8 @@ void Zone_PolyMAC_old::orthocentrer()
         rmin = std::min(rmin, std::fabs(dot(&xp_(e, 0), &nf(f, 0), &xv_(f, 0)) / fs(f)));
       if (dot(&X(0, 0), &X(0, 0)) > 0.25 * rmin * rmin) continue; //on s'eloigne trop du CG
 
-      for (i = 0, b_e_ortho(e) = 1; i < dimension; i++) if (std::fabs(X(i, 0)) > 1e-8) xp_(e, i) += X(i, 0);
+      for (i = 0, b_e_ortho(e) = 1; i < dimension; i++)
+        if (std::fabs(X(i, 0)) > 1e-8) xp_(e, i) += X(i, 0);
     }
   Cerr << 100. * mp_somme_vect(b_e_ortho) / Process::mp_sum(nb_elem()) << "% d'elements orthocentres" << finl;
 }
@@ -646,12 +651,15 @@ void Zone_PolyMAC_old::detecter_faces_non_planes() const
   IntTab face(np), elem1(np), elem2(np);
 
   //sur chaque proc : on cherche l'angle le plus grand entre un sommet et le plan de sa face
-  for (f = 0; f < nb_faces(); f++) for (i = 0; i < f_s.dimension(1) && (s = f_s(f, i)) >= 0; i++)
+  for (f = 0; f < nb_faces(); f++)
+    for (i = 0; i < f_s.dimension(1) && (s = f_s(f, i)) >= 0; i++)
       if ((sin2 = std::pow(dot(&xs(s, 0), &nf(f, 0), &xv_(f, 0)) / fs(f), 2) / dot(&xs(s, 0), &xs(s, 0), &xv_(f, 0), &xv_(f, 0))) > val[rk])
         val[rk] = sin2, face(rk) = f, elem1(rk) = f_e(f, 0), elem2(rk) = f_e(f, 1);
   envoyer_all_to_all(val, val), envoyer_all_to_all(face, face), envoyer_all_to_all(elem1, elem1), envoyer_all_to_all(elem2, elem2);
 
-  for (i = j = sin2 = 0; i < Process::nproc(); i++) if (val[i] > sin2) sin2 = val[i], j = i;
+  sin2 = 0.0;
+  for (i = j = 0; i < Process::nproc(); i++)
+    if (val[i] > sin2) sin2 = val[i], j = i;
   double theta = asin(sqrt(sin2)) * 180 / M_PI;
   Cerr << "Zone_PolyMAC_old : angle sommet/face max " << theta << " deg (proc " << j << " , face ";
   Cerr << face(j) << " , elems " << elem1(j) << " / " << elem2(j) << " )" << finl;
@@ -914,31 +922,39 @@ inline void Zone_PolyMAC_old::ajouter_stabilisation(DoubleTab& M, DoubleTab& N) 
   //une ligne par coeff M(i, j > i), une colonne par terme U(i, j >= i)
   int n_k = D.dimension(1), n_l = n_f * (n_f - 1) / 2, n_c = n_k * (n_k + 1) / 2, un = 1;
   A.resize(n_l, n_c), b.resize(n_l, 1);
-  for (i1 = i = 0; i1 < n_f; i1++) for (i2 = i1 + 1; i2 < n_f; i2++, i++) //(i1, i2, i) -> numero de ligne
-      for (j1 = j = 0, b(i, 0) = -M(i1, i2); j1 < n_k; j1++) for (j2 = j1; j2 < n_k; j2++, j++) //(j1, j2, j) -> numero de colonne
+  for (i1 = i = 0; i1 < n_f; i1++)
+    for (i2 = i1 + 1; i2 < n_f; i2++, i++) //(i1, i2, i) -> numero de ligne
+      for (j1 = j = 0, b(i, 0) = -M(i1, i2); j1 < n_k; j1++)
+        for (j2 = j1; j2 < n_k; j2++, j++) //(j1, j2, j) -> numero de colonne
           A(i, j) = D(i1, j1) * D(i2, j2) + (j1 != j2) * D(i1, j2) * D(i2, j1);
   char trans = 'T';
   //minimise la somme des carres des termes hors diag de M
   F77NAME(dgels)(&trans, &n_c, &n_l, &un, &A(0, 0), &n_c, &b(0, 0), &n_l, &work(0), &lwork, &infoo); //"workspace query"
-  work.resize(lwork = work(0));
+  work.resize(lwork = (int)work(0));
   F77NAME(dgels)(&trans, &n_c, &n_l, &un, &A(0, 0), &n_c, &b(0, 0), &n_l, &work(0), &lwork, &infoo); //le vrai appel
   assert(infoo == 0);
   //reconstruction de U
-  for (j1 = j = 0; j1 < n_k; j1++) for (j2 = j1; j2 < n_k; j2++, j++) U(j1, j2) = U(j2, j1) = b(j, 0);
+  for (j1 = j = 0; j1 < n_k; j1++)
+    for (j2 = j1; j2 < n_k; j2++, j++) U(j1, j2) = U(j2, j1) = b(j, 0);
 
   /* ajustement de U pour que la vp minimale depasse eps */
   //decomposition de Schur U = Vt.S.V
   char jobz = 'V', uplo = 'U';
   V = U, S.resize(n_k);
   F77NAME(dsyev)(&jobz, &uplo, &n_k, &V(0, 0), &n_k, &S(0), &work(0), &lwork, &infoo);//"workspace query"
-  work.resize(lwork = work(0));
+  work.resize(lwork = (int)work(0));
   F77NAME(dsyev)(&jobz, &uplo, &n_k, &V(0, 0), &n_k, &S(0), &work(0), &lwork, &infoo);
   assert(infoo == 0);
   //pour garantir des vp plus grandes que eps : S(k) -> std::max(S(k), eps)
-  for (i = 0, U = 0; i < n_k; i++) for (j = 0; j < n_k; j++) for (k = 0; k < n_k; k++) U(i, j) += V(k, i) * std::min(std::max(S(k), l_min), l_max) * V(k, j);
+  for (i = 0, U = 0; i < n_k; i++)
+    for (j = 0; j < n_k; j++)
+      for (k = 0; k < n_k; k++) U(i, j) += V(k, i) * std::min(std::max(S(k), l_min), l_max) * V(k, j);
 
   /* ajout a M */
-  for (i1 = 0; i1 < n_f; i1++) for (i2 = 0; i2 < n_f; i2++) for (j1 = 0; j1 < n_k; j1++) for (j2 = 0; j2 < n_k; j2++)
+  for (i1 = 0; i1 < n_f; i1++)
+    for (i2 = 0; i2 < n_f; i2++)
+      for (j1 = 0; j1 < n_k; j1++)
+        for (j2 = 0; j2 < n_k; j2++)
           M(i1, i2) += D(i1, j1) * U(j1, j2) * D(i2, j2);
 }
 
@@ -951,22 +967,32 @@ int Zone_PolyMAC_old::W_stabiliser(DoubleTab& W, DoubleTab& R, DoubleTab& N, int
   /* idx : numero de l'inconnue W(i, j) dans le probleme d'optimisation */
   //si NtR est symetrique, alors on cherche a avoir W symetrique
   Matrice33 NtR(0, 0, 0, 0, d < 2, 0, 0, 0, d < 3), iNtR;
-  for (i = 0; i < d; i++) for (j = 0; j < d; j++) for (k = 0; k < n_f; k++) NtR(i, j) += N(k, i) * R(k, j);
-  for (i = 0, sym = 1; i < d; i++) for (j = i + 1; j < d; j++) sym &= (std::fabs(NtR(i, j) - NtR(j, i)) < 1e-8);
+  for (i = 0; i < d; i++)
+    for (j = 0; j < d; j++)
+      for (k = 0; k < n_f; k++) NtR(i, j) += N(k, i) * R(k, j);
+  for (i = 0, sym = 1; i < d; i++)
+    for (j = i + 1; j < d; j++) sym &= (std::fabs(NtR(i, j) - NtR(j, i)) < 1e-8);
   //remplissage de idx(i, j) : numero de W_{ij} dans le pb d'optimisation
   IntTrav idx(n_f, n_f);
-  if (sym) for (i = 0; i < n_f; i++) for (j = i; j < n_f; j++) idx(i, j) = idx(j, i) = (W(i, j) ? nv++ : -1);
-  else for (i = 0; i < n_f; i++) for (j = 0; j < n_f; j++) idx(i, j) = (W(i, j) ? nv++ : -1);
+  if (sym)
+    for (i = 0; i < n_f; i++)
+      for (j = i; j < n_f; j++) idx(i, j) = idx(j, i) = (W(i, j) ? nv++ : -1);
+  else for (i = 0; i < n_f; i++)
+      for (j = 0; j < n_f; j++) idx(i, j) = (W(i, j) ? nv++ : -1);
 
   /* version non stabilisee : W0 = N.(NtR)^-1.Nt */
   Matrice33::inverse(NtR, iNtR); //crash si NtR non inversible
-  for (i = 0, W = 0; i < n_f; i++) for (j = 0; j < d; j++) for (k = 0; k < d; k++) for (l = 0; l < n_f; l++) W(i, l) += N(i, j) * iNtR(j, k) * N(l, k);
+  for (i = 0, W = 0; i < n_f; i++)
+    for (j = 0; j < d; j++)
+      for (k = 0; k < d; k++)
+        for (l = 0; l < n_f; l++) W(i, l) += N(i, j) * iNtR(j, k) * N(l, k);
   //spectre de Ws (partie symetrique de W)
   DoubleTrav Ws(n_f, n_f), S(n_f), work(1);
-  for (i = 0; i < n_f; i++) for (j = 0; j < n_f; j++) Ws(i, j) = (W(i, j) + W(j, i)) / 2;
+  for (i = 0; i < n_f; i++)
+    for (j = 0; j < n_f; j++) Ws(i, j) = (W(i, j) + W(j, i)) / 2;
   char jobz = 'N', uplo = 'U';
   F77NAME(dsyev)(&jobz, &uplo, &n_f, &Ws(0, 0), &n_f, &S(0), &work(0), &lwork, &infoo);//"workspace query"
-  work.resize(lwork = work(0));
+  work.resize(lwork = (int)work(0));
   F77NAME(dsyev)(&jobz, &uplo, &n_f, &Ws(0, 0), &n_f, &S(0), &work(0), &lwork, &infoo);//vrai appel
   assert(S(0) > -1e-8 && S(n_f - dimension) > 0);
   if (spectre) spectre[0] = std::min(spectre[0], S(n_f - dimension)), spectre[2] = std::max(spectre[2], S(n_f - 1));
@@ -983,15 +1009,19 @@ int Zone_PolyMAC_old::W_stabiliser(DoubleTab& W, DoubleTab& R, DoubleTab& N, int
   std::vector<std::map<int, double>> C(nv); //stockage CSC : C[j][i] = M_{ij}
   std::vector<double> lb, ub; //bornes inf/sup
   int il = 0; //suivi de la ligne qu'on est en train de creer
-  for (i = 0; i < n_f; i++) for (j = 0; j < d; j++, il++) for (k = 0, lb.push_back(N(i, j)), ub.push_back(N(i, j)); k < n_f; k++)
+  for (i = 0; i < n_f; i++)
+    for (j = 0; j < d; j++, il++)
+      for (k = 0, lb.push_back(N(i, j)), ub.push_back(N(i, j)); k < n_f; k++)
         if (idx(i, k) >= 0) C[idx(i, k)][il] += R(k, j);
 
   /* objectif: minimiser la norme l2 des termes hors diagonale */
   std::vector<int> P_c(nv + 1), P_l(nv), A_c, A_l; //coeffs de la colonne c : indices [P_c(c), P_c(c + 1)[ dans P_l, P_v
   std::vector<double> P_v(nv), A_v, Q(nv, 0.);
   for (i = 0; i < nv; i++) P_l[i] = i, P_c[i + 1] = i + 1;
-  for (i = 0; i < n_f; i++) for (j = 0; j < n_f; j++) if (idx(i, j) >= 0) P_v[idx(i, j)] += (i == j ? 1e-2 : 1);
-  data.n = nv, data.P = csc_matrix(nv, nv, P_v.size(), P_v.data(), P_l.data(), P_c.data()), data.q = Q.data();
+  for (i = 0; i < n_f; i++)
+    for (j = 0; j < n_f; j++)
+      if (idx(i, j) >= 0) P_v[idx(i, j)] += (i == j ? 1e-2 : 1);
+  data.n = nv, data.P = csc_matrix(nv, nv, (int)P_v.size(), P_v.data(), P_l.data(), P_c.data()), data.q = Q.data();
 
   //iterations : on resout et on ajoute des contraintes tant que W a un spectre hors de [l_min, l_max]
   std::fenv_t fenv;
@@ -1000,10 +1030,10 @@ int Zone_PolyMAC_old::W_stabiliser(DoubleTab& W, DoubleTab& R, DoubleTab& N, int
   for (cv = 0, it = 0; !cv && it < 100; it++)
     {
       /* assemblage de A : matrice des contraintes */
-      for (j = 0, A_c.resize(1), A_l.resize(0), A_v.resize(0); j < nv; j++, A_c.push_back(A_l.size()))
+      for (j = 0, A_c.resize(1), A_l.resize(0), A_v.resize(0); j < nv; j++, A_c.push_back((int)A_l.size()))
         for (auto && l_v : C[j]) A_l.push_back(l_v.first), A_v.push_back(l_v.second);
-      data.A = csc_matrix(lb.size(), nv, A_v.size(), A_v.data(), A_l.data(), A_c.data());
-      data.l = lb.data(), data.u = ub.data(), data.m = lb.size();
+      data.A = csc_matrix((int)lb.size(), nv, (int)A_v.size(), A_v.data(), A_l.data(), A_c.data());
+      data.l = lb.data(), data.u = ub.data(), data.m = (int)lb.size();
 
       /* resolution  */
       OSQPWorkspace *osqp = NULL;
@@ -1016,16 +1046,21 @@ int Zone_PolyMAC_old::W_stabiliser(DoubleTab& W, DoubleTab& R, DoubleTab& N, int
           osqp_cleanup(osqp), free(data.A);
           break;
         }
-      for (i = 0; i < n_f; i++) for (j = 0; j < n_f; j++) W(i, j) = (idx(i, j) >= 0 ? sol[idx(i, j)] : 0);
+      for (i = 0; i < n_f; i++)
+        for (j = 0; j < n_f; j++) W(i, j) = (idx(i, j) >= 0 ? sol[idx(i, j)] : 0);
 
       /* calcul du spectre : Ws recupere les vecteurs propres */
-      for (i = 0; i < n_f; i++) for (j = 0; j < n_f; j++) Ws(i, j) = (W(i, j) + W(j, i)) / 2;
+      for (i = 0; i < n_f; i++)
+        for (j = 0; j < n_f; j++) Ws(i, j) = (W(i, j) + W(j, i)) / 2;
       jobz = 'V', F77NAME(dsyev)(&jobz, &uplo, &n_f, &Ws(0, 0), &n_f, &S(0), &work(0), &lwork, &infoo);
 
       /* pour chaque vp sortant de [ l_min, l_max ], on ajoute une contrainte pour la restreindre a [l_min * 1.1, l_max / 1.1 ] */
-      for (i = 0, cv = (osqp->info->status_val == OSQP_SOLVED); i < n_f; i++) if (S(i) < l_min || S(i) > l_max)
+      for (i = 0, cv = (osqp->info->status_val == OSQP_SOLVED); i < n_f; i++)
+        if (S(i) < l_min || S(i) > l_max)
           {
-            for (j = 0; j < n_f; j++) for (k = 0; k < n_f; k++) if(idx(j, k) >= 0) C[idx(j, k)][il]  += Ws(i, j) * Ws(i, k);
+            for (j = 0; j < n_f; j++)
+              for (k = 0; k < n_f; k++)
+                if(idx(j, k) >= 0) C[idx(j, k)][il]  += Ws(i, j) * Ws(i, k);
             lb.push_back(l_min * (S(i) < l_min ? 1.1 : 1)), ub.push_back(l_max / (S(i) > l_max ? 1.1 : 1));
             cv = 0, il++; //on repart avec une ligne en plus
           }
@@ -1035,11 +1070,13 @@ int Zone_PolyMAC_old::W_stabiliser(DoubleTab& W, DoubleTab& R, DoubleTab& N, int
   std::fesetenv(&fenv);     //remet les exceptions FP
 
   if (!cv) return 0; //ca passe ou ca casse
-  if (spectre) for (i = 0; i < n_f; i++) spectre[1] = std::min(spectre[1], S(i)), spectre[3] = std::max(spectre[3], S(i));
+  if (spectre)
+    for (i = 0; i < n_f; i++) spectre[1] = std::min(spectre[1], S(i)), spectre[3] = std::max(spectre[3], S(i));
 
   //statistiques
   //ctr[0] : diagonale, ctr[1] : symetrique
-  for (i = 0, diag = 1; i < n_f; i++) for (j = 0; j < n_f; j++) diag &= (i == j || std::fabs(W(i, j)) < 1e-6);
+  for (i = 0, diag = 1; i < n_f; i++)
+    for (j = 0; j < n_f; j++) diag &= (i == j || std::fabs(W(i, j)) < 1e-6);
   ctr[0] += diag, ctr[1] += sym;
   return 1;
 }
@@ -1078,13 +1115,16 @@ void Zone_PolyMAC_old::init_m2() const
       W.resize(n_f, n_f), R.resize(n_f, dimension), N.resize(n_f, dimension);
 
       /* matrices R (lignes elements -> faces) et N (normales sortantes aux faces) */
-      for (i = 0; i < n_f; i++) for (j = 0, f = e_f(e, i); j < dimension; j++)
+      for (i = 0; i < n_f; i++)
+        for (j = 0, f = e_f(e, i); j < dimension; j++)
           N(i, j) = nf(f, j) / fs(f) * (e == f_e(f, 0) ? 1 : -1), R(i, j) = (xv_(f, j) - xp_(e, j)) * fs(f) / ve(e);
 
       /* faces connectees a chaque sommet, puis stencil admissible */
       for (i = 0, W = 0, som_face.clear(); i < n_f; i++)
         for (j = 0, f = e_f(e, i); j < f_s.dimension(1) && (s = f_s(f, j)) >= 0; j++) som_face[s].push_back(i);
-      for (auto &s_fs : som_face) for (auto i1 : s_fs.second) for (auto i2 : s_fs.second) W(i1, i2) = 1;
+      for (auto &s_fs : som_face)
+        for (auto i1 : s_fs.second)
+          for (auto i2 : s_fs.second) W(i1, i2) = 1;
 
       /* matrice W2 stabilisee */
       W = 1, W_stabiliser(W, R, N, ctr, spectre); /* il faut une matrice complete */
@@ -1094,10 +1134,13 @@ void Zone_PolyMAC_old::init_m2() const
       F77NAME(dpotrf)(&uplo, &n_f, M.addr(), &n_f, &infoo);
       F77NAME(dpotri)(&uplo, &n_f, M.addr(), &n_f, &infoo);
       assert(infoo == 0);
-      for (i = 0; i < n_f; i++) for (j = i + 1; j < n_f; j++) M(i, j) = M(j, i);
+      for (i = 0; i < n_f; i++)
+        for (j = i + 1; j < n_f; j++) M(i, j) = M(j, i);
 
-      for (i = 0; i < n_f; i++) for (j = 0, nef(e)++; j < n_f; j++) w2e(e, i, j) = W(i, j), nnz(e) += (std::fabs(W(i, j)) > 1e-6);
-      for (i = 0; i < n_f; i++) for (j = 0; j < n_f; j++) m2e(e, i, j) = M(i, j);
+      for (i = 0; i < n_f; i++)
+        for (j = 0, nef(e)++; j < n_f; j++) w2e(e, i, j) = W(i, j), nnz(e) += (std::fabs(W(i, j)) > 1e-6);
+      for (i = 0; i < n_f; i++)
+        for (j = 0; j < n_f; j++) m2e(e, i, j) = M(i, j);
     }
 
   /* echange et remplissage */
@@ -1105,9 +1148,11 @@ void Zone_PolyMAC_old::init_m2() const
   for (e = 0, m2d.append_line(0), m2i.append_line(0), w2i.append_line(0); e < nb_elem_tot(); e++, m2d.append_line(m2i.size() - 1))
     {
       for (n_f = 0; n_f < e_f.dimension(1) && e_f(e, n_f) >= 0; ) n_f++;
-      for (i = 0; i < n_f; i++, m2i.append_line(m2j.size())) for (j = 0, m2j.append_line(i), m2c.append_line(m2e(e, i, i)); j < n_f; j++)
+      for (i = 0; i < n_f; i++, m2i.append_line(m2j.size()))
+        for (j = 0, m2j.append_line(i), m2c.append_line(m2e(e, i, i)); j < n_f; j++)
           if (j != i && std::fabs(m2e(e, i, j)) > 1e-6) m2j.append_line(j), m2c.append_line(m2e(e, i, j));
-      for (i = 0; i < n_f; i++, w2i.append_line(w2j.size())) for (j = 0, w2j.append_line(i), w2c.append_line(w2e(e, i, i)); j < n_f; j++)
+      for (i = 0; i < n_f; i++, w2i.append_line(w2j.size()))
+        for (j = 0, w2j.append_line(i), w2c.append_line(w2e(e, i, i)); j < n_f; j++)
           if (j != i && std::fabs(w2e(e, i, j)) > 1e-6) w2j.append_line(j), w2c.append_line(w2e(e, i, j));
     }
 
@@ -1174,15 +1219,17 @@ void Zone_PolyMAC_old::init_we() const
   //remplissage de arete_faces_ (liste des faces touchant chaque arete en 3D, chaque sommet en 2D)
   std::vector<std::vector<int> > a_f_vect(dimension < 3 ? nb_som_tot() : zone().nb_aretes_tot());
   const IntTab& f_s = face_sommets_;
-  for (int f = 0, i, s1; f < nb_faces_tot(); f++) for (i = 0; i < f_s.dimension(1) && (s1 = f_s(f, i)) >= 0; i++)
+  for (int f = 0, i, s1; f < nb_faces_tot(); f++)
+    for (i = 0; i < f_s.dimension(1) && (s1 = f_s(f, i)) >= 0; i++)
       {
         int s2 = f_s(f, i + 1 < f_s.dimension(1) && f_s(f, i + 1) >= 0 ? i + 1 : 0);
         a_f_vect[dimension < 3 ? s1 : som_arete[s1].at(s2)].push_back(f);
       }
   int a_f_max = 0;
   for (int i = 0; i < (int) a_f_vect.size(); i++) a_f_max = std::max(a_f_max, (int) a_f_vect[i].size());
-  arete_faces_.resize(a_f_vect.size(), a_f_max), arete_faces_ = -1;
-  for (int i = 0, j; i < arete_faces_.dimension(0); i++) for (j = 0; j < (int) a_f_vect[i].size(); j++) arete_faces_(i, j) = a_f_vect[i][j];
+  arete_faces_.resize((int)a_f_vect.size(), a_f_max), arete_faces_ = -1;
+  for (int i = 0, j; i < arete_faces_.dimension(0); i++)
+    for (j = 0; j < (int) a_f_vect[i].size(); j++) arete_faces_(i, j) = a_f_vect[i][j];
 
   dimension < 3 ? init_we_2d() : init_we_3d();
   is_init["we"] = 1;
@@ -1253,7 +1300,8 @@ void Zone_PolyMAC_old::init_m1_2d() const
 
   //remplissage
   m1deb.resize(1), m1deb.set_smart_resize(1), m1ji.resize(0, 2), m1ji.set_smart_resize(1), m1ci.set_smart_resize(1);
-  for (i = 0; i < zone().nb_som_tot(); m1deb.append_line(m1ji.dimension(0)), i++) for (auto &&kv : m1[i])
+  for (i = 0; i < zone().nb_som_tot(); m1deb.append_line(m1ji.dimension(0)), i++)
+    for (auto &&kv : m1[i])
       m1ji.append_line(kv.first[0], kv.first[1]), m1ci.append_line(kv.second);
   CRIMP(m1deb), CRIMP(m1ji), CRIMP(m1ci);
 }
@@ -1278,7 +1326,8 @@ void Zone_PolyMAC_old::init_m1_3d() const
       /* matrice non stabilisee : contribution par facette (couple face/arete) */
       for (i = 0, idxa.clear(), n_a = 0; i < e_a.dimension(1) && (a = e_a(e, i)) >= 0; i++) idxa[a] = i, n_a++;
       M.resize(n_a, n_a), N.resize(dimension, n_a);
-      for (i = 0, M = 0; i < e_f.dimension(1) && (f = e_f(e, i)) >= 0; i++) for (j = 0; j < f_s.dimension(1) && (s = f_s(f, j)) >= 0; j++)
+      for (i = 0, M = 0; i < e_f.dimension(1) && (f = e_f(e, i)) >= 0; i++)
+        for (j = 0; j < f_s.dimension(1) && (s = f_s(f, j)) >= 0; j++)
           {
             s2 = f_s(f, j + 1 < f_s.dimension(1) && f_s(f, j + 1) >= 0 ? j + 1 : 0), a = som_arete[s].at(s2);
             std::array<double, 3> vec = cross(3, 3, &xp_(e, 0), &xv_(f, 0), &xa_(a, 0), &xa_(a, 0));
@@ -1286,23 +1335,27 @@ void Zone_PolyMAC_old::init_m1_3d() const
             int sgn = dot(&ta_(a, 0), &vec[0]) > 0 ? 1 : -1;
             for (k = wedeb(e); k < wedeb(e + 1); k++) M(idxa[a], idxa[weji(k)]) += sgn * la(a) * dot(&vec[0], &weci(k, 0)) / 2 / ve(e);
           }
-      for (i = 0; i < e_a.dimension(1) && (a = e_a(e, i)) >= 0; i++) for (j = 0; j < dimension; j++) N(j, i) = ta_(a, j);
+      for (i = 0; i < e_a.dimension(1) && (a = e_a(e, i)) >= 0; i++)
+        for (j = 0; j < dimension; j++) N(j, i) = ta_(a, j);
 
       /* stabilisation et stockage */
       ajouter_stabilisation(M, N);
-      for (i = 0; i < n_a; i++) for (j = 0; j < n_a; j++) m1e(e, i, j) = M(i, j);
+      for (i = 0; i < n_a; i++)
+        for (j = 0; j < n_a; j++) m1e(e, i, j) = M(i, j);
     }
 
   /* echange et remplissage d'un map global */
   m1e.echange_espace_virtuel();
   std::vector<std::map<std::array<int, 2>, double>> m1(zone().nb_aretes_tot()); //m1[a][{ ab, e }] : contribution de (arete ab, element e)
   for (e = 0; e < nb_elem_tot(); e++)
-    for (i = 0; i < e_a.dimension(1) && (a = e_a(e, i)) >= 0; i++) for (j = 0; j < e_a.dimension(1) && (ab = e_a(e, j)) >= 0; j++)
+    for (i = 0; i < e_a.dimension(1) && (a = e_a(e, i)) >= 0; i++)
+      for (j = 0; j < e_a.dimension(1) && (ab = e_a(e, j)) >= 0; j++)
         if (std::fabs(m1e(e, i, j)) > 1e-8) m1[a][ {{ ab, e }}] += ve(e) * m1e(e, i, j);
 
   /* remplissage final */
   m1deb.resize(1), m1deb.set_smart_resize(1), m1ji.resize(0, 2), m1ji.set_smart_resize(1), m1ci.set_smart_resize(1);
-  for (a = 0; a < zone().nb_aretes_tot(); m1deb.append_line(m1ji.dimension(0)), a++) for (auto &&kv : m1[a])
+  for (a = 0; a < zone().nb_aretes_tot(); m1deb.append_line(m1ji.dimension(0)), a++)
+    for (auto &&kv : m1[a])
       m1ji.append_line(kv.first[0], kv.first[1]), m1ci.append_line(kv.second);
   CRIMP(m1deb), CRIMP(m1ji), CRIMP(m1ci);
   Process::barrier();
@@ -1327,15 +1380,19 @@ void Zone_PolyMAC_old::init_m2solv() const
   IntTab stencil(0, 2);
   stencil.set_smart_resize(1);
   int e, i, j, k, f, fb;
-  for (e = 0; e < nb_elem_tot(); e++) for (i = 0, j = m2d(e); j < m2d(e + 1); i++, j++)
-      for (f = e_f(e, i), k = m2i(j); f < nb_faces() && k < m2i(j + 1); k++) if (f <= (fb = e_f(e, m2j(k))))
+  for (e = 0; e < nb_elem_tot(); e++)
+    for (i = 0, j = m2d(e); j < m2d(e + 1); i++, j++)
+      for (f = e_f(e, i), k = m2i(j); f < nb_faces() && k < m2i(j + 1); k++)
+        if (f <= (fb = e_f(e, m2j(k))))
           stencil.append_line(f, fb);
   tableau_trier_retirer_doublons(stencil);
   Matrix_tools::allocate_symmetric_morse_matrix(nb_elem_tot() + nb_faces_tot(), stencil, m2mat);
 
   /* remplissage */
-  for (e = 0; e < nb_elem_tot(); e++) for (i = 0, j = m2d(e); j < m2d(e + 1); i++, j++)
-      for (f = e_f(e, i), k = m2i(j); f < nb_faces() && k < m2i(j + 1); k++) if (f <= (fb = e_f(e, m2j(k))))
+  for (e = 0; e < nb_elem_tot(); e++)
+    for (i = 0, j = m2d(e); j < m2d(e + 1); i++, j++)
+      for (f = e_f(e, i), k = m2i(j); f < nb_faces() && k < m2i(j + 1); k++)
+        if (f <= (fb = e_f(e, m2j(k))))
           m2mat(f, fb) += (e == f_e(f, 0) ? 1 : -1) * (e == f_e(fb, 0) ? 1 : -1) * volumes(e) * m2c(k);
   m2mat.set_est_definie(1);
 

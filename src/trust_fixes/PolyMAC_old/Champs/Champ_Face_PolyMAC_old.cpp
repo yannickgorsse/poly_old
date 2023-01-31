@@ -207,9 +207,12 @@ void Champ_Face_PolyMAC_old::init_ra() const
           int sgn = zone.dot(&vec[0], &nf(f, 0)) > 0 ? 1 : -1;
 
           //partie m2
-          for (j = 0; j < 2 && (e = f_e(f, j)) >= 0; j++) for (k = zone.m2d(e), idx = 0; k < zone.m2d(e + 1); k++, idx++) for (l = zone.m2i(k); f == e_f(e, idx) && l < zone.m2i(k + 1); l++)
+          for (j = 0; j < 2 && (e = f_e(f, j)) >= 0; j++)
+            for (k = zone.m2d(e), idx = 0; k < zone.m2d(e + 1); k++, idx++)
+              for (l = zone.m2i(k); f == e_f(e, idx) && l < zone.m2i(k + 1); l++)
                 if (icl(fb = e_f(e, zone.m2j(l)), 0) < 2) rami[fb] += sgn * (e == f_e(f, 0) ? 1 : -1) * (e == f_e(fb, 0) ? 1 : -1) * ve(e) * zone.m2c(l) / fs(f);
-                else if (icl(fb, 0) == 3) for (r = 0; r < dimension; r++)
+                else if (icl(fb, 0) == 3)
+                  for (r = 0; r < dimension; r++)
                     ramf[fb][r] += sgn * (e == f_e(f, 0) ? 1 : -1) * (e == f_e(fb, 0) ? 1 : -1) * ve(e) * zone.m2c(l) / fs(f) * nf(fb, r) / fs(fb);
           //partie "bord" -> avec va si Neumann ou Symetrie, avec val_imp si Dirichlet_homogene
           if (icl(f, 0) == 1 || icl(f, 0) == 2)
@@ -217,14 +220,17 @@ void Champ_Face_PolyMAC_old::init_ra() const
               for (k = vadeb(a, 0); k < vadeb(a + 1, 0); k++) rami[vaji(k)] += sgn * zone.dot(&xa(a, 0), &vaci(k, 0), &xv(f, 0));
               for (k = vadeb(a, 1); k < vadeb(a + 1, 1); k++) ramf[vajf(k, 0)][vajf(k, 1)] += sgn * zone.dot(&xa(a, 0), &vacf(k, 0), &xv(f, 0));
             }
-          else if (icl(f, 0) == 3) for (k = 0; k < dimension; k++)
+          else if (icl(f, 0) == 3)
+            for (k = 0; k < dimension; k++)
               ramf[f][k] += sgn * (xa(a, k) - xv(f, k));
         }
       //remplissage
       double la = dimension < 3 ? 1 : zone.longueur_aretes()(a);
-      for (auto &&kv : rami) if (std::fabs(kv.second) > 1e-8 * la)
+      for (auto &&kv : rami)
+        if (std::fabs(kv.second) > 1e-8 * la)
           raji.append_line(kv.first), raci.append_line(kv.second * la);
-      for (auto &&kv : ramf) if (zone.dot(&kv.second[0], &kv.second[0]) > 1e-16 * la * la)
+      for (auto &&kv : ramf)
+        if (zone.dot(&kv.second[0], &kv.second[0]) > 1e-16 * la * la)
           rajf.append_line(kv.first), racf.append_line(kv.second[0] * la, kv.second[1] * la, kv.second[2] * la);
     }
   CRIMP(radeb), CRIMP(raji), CRIMP(rajf), CRIMP(raci), CRIMP(racf);
@@ -237,7 +243,8 @@ void Champ_Face_PolyMAC_old::init_va() const
   const IntTab& f_e = zone.face_voisins(), &a_f = zone.arete_faces();
   const DoubleTab& xv = zone.xv(), &ta = zone.ta(), &xs = zone.zone().domaine().coord_sommets(),
                    &xa = dimension < 3 ? xs : zone.xa(), &nf = zone.face_normales(), &xp = zone.xp();
-  const DoubleVect& fs = zone.face_surfaces(), &pf = zone.porosite_face(), &pe = zone.porosite_elem();
+  const DoubleVect& fs = zone.face_surfaces(), &pf = equation().milieu().porosite_face(), &pe = equation().milieu().porosite_elem();
+
   int i, j, k, l, m, e, f, fb, a;
 
   if (vadeb.dimension(0)) return;
@@ -261,7 +268,7 @@ void Champ_Face_PolyMAC_old::init_va() const
       for (auto && kv : fmap) fas.push_back(kv.second);
       //orientation des faces
       /* calcul de l'interpolation */
-      DoubleTrav xe(fas.size(), dimension), surf(fas.size(), 2), nsurf(fas.size(), 2, 3); //points intermediaires entre les xv, surfaces et normales des triangles de l'arete duale
+      DoubleTrav xe((int)fas.size(), dimension), surf((int)fas.size(), 2), nsurf((int)fas.size(), 2, 3); //points intermediaires entre les xv, surfaces et normales des triangles de l'arete duale
       double surf_tot = 0, xg[3] = { 0, 0, 0 }; //surface totale, centre de gravite, normale a l'arete
       //orientations des faces par rapport au contour
       for (i = 0; i < (int) fas.size(); i++)
@@ -280,16 +287,19 @@ void Champ_Face_PolyMAC_old::init_va() const
           else //angle aigu -> intersection des normales aux faces. On resout (xe - xv).(xv - xa) = 0 pour les deux faces, et xe.ta = ta.(xf + xfb) / 2 en 3D
             {
               double s[3];
-              for (j = 0; j < 2; j++) for (k = 0, s[j] = zone.dot(&xv(fa[j], 0), &xv(fa[j], 0), &xa(a, 0), &xa(a, 0)); k < 3; k++)
+              for (j = 0; j < 2; j++)
+                for (k = 0, s[j] = zone.dot(&xv(fa[j], 0), &xv(fa[j], 0), &xa(a, 0), &xa(a, 0)); k < 3; k++)
                   M(j, k) = k < dimension ? xv(fa[j], k) - xa(a, k) : 0;
               for (k = 0, s[2] = dimension < 3 ? 0 : (zone.dot(&xv(f, 0), &ta(a, 0), &xa(a, 0)) + zone.dot(&xv(fb, 0), &ta(a, 0), &xa(a, 0))) / 2; k < 3; k++)
                 M(2, k) = dimension < 3 ? (k == 2) : ta(a, k);
               double eps = Matrice33::inverse(M, iM, 0);
-              for (j = 0; eps != 0 && j < dimension; j++) for (k = 0, xe(i, j) = xa(a, j); k < dimension; k++) xe(i, j) += iM(j, k) * s[k];
+              for (j = 0; eps != 0 && j < dimension; j++)
+                for (k = 0, xe(i, j) = xa(a, j); k < dimension; k++) xe(i, j) += iM(j, k) * s[k];
               //si xe se retrouve du mauvais cote d'une des faces, on prend xp (si l'element existe) ou xf + xfb / 2 (sinon)
               if (eps == 0 || zone.dot(&xe(i, 0), &nf(f, 0), &xv(f, 0)) * sgfa[0] < 0 || zone.dot(&xe(i, 0), &nf(fb, 0), &xv(fb, 0)) * sgfa[1] > 0)
                 {
-                  if ((e = f_e(f, sgfa[0] > 0)) >= 0) for (k = 0; k < dimension; k++) xe(i, k) = xp(e, k);
+                  if ((e = f_e(f, sgfa[0] > 0)) >= 0)
+                    for (k = 0; k < dimension; k++) xe(i, k) = xp(e, k);
                   else for (k = 0; k < dimension; k++) xe(i, k) = (xv(f, k) + xv(fb, k)) / 2;
                 }
             }
@@ -312,54 +322,77 @@ void Champ_Face_PolyMAC_old::init_va() const
       M = Matrice33(surf_tot, 0, 0, 0, surf_tot, 0, 0, 0, surf_tot);
       /* boucles sur les triangles de l'arete duale */
       std::array<double, 3> vec;
-      for (i = 0; i < (int) fas.size(); i++) for (j = 0; j < 2; j++) if (surf(i, j) > 1e-16)
+      for (i = 0; i < (int) fas.size(); i++)
+        for (j = 0; j < 2; j++)
+          if (surf(i, j) > 1e-16)
             {
               f = fas[(i + j) * (i + j < (int) fas.size())], e = f_e(f, sgn[i] > 0); //face, element (si il existe)
               double x[2][3] = { { 0, }, }; //points sur le contour : xv(fa[i]) -> xe(i) (j = 0) ou xe(i) -> xv (fa[i + 1]) (j = 1)
-              for (k = 0; k < 2; k++) for (l = 0; l < dimension; l++) x[k][l] = j == k ? xv(f, l) : xe(i, l);
+              for (k = 0; k < 2; k++)
+                for (l = 0; l < dimension; l++) x[k][l] = j == k ? xv(f, l) : xe(i, l);
 
               //segments arete-points : avec va
               for (k = 0; k < 2; k++)
                 {
                   for (l = 0; l < dimension; l++) vec[l] = (xa(a, l) + x[k][l]) / 2 - xg[l];
                   vec = zone.cross(3, dimension, &nsurf(i, j, 0), &vec[0]);
-                  for (l = 0; l < 3; l++) for (m = 0; m < dimension; m++) M(l, m) -= (k ? -1 : 1) * (x[k][m] - xa(a, m)) * vec[l];
+                  for (l = 0; l < 3; l++)
+                    for (m = 0; m < dimension; m++) M(l, m) -= (k ? -1 : 1) * (x[k][m] - xa(a, m)) * vec[l];
                 }
 
               //segment x[0] -> x[1]
               for (k = 0; k < dimension; k++) vec[k] = (x[0][k] + x[1][k]) / 2 - xg[k];
               vec = zone.cross(3, dimension, &nsurf(i, j, 0), &vec[0]);
               //partie vf
-              if (icl(f, 0) < 2) for (k = 0; k < dimension; k++)
+              if (icl(f, 0) < 2)
+                for (k = 0; k < dimension; k++)
                   vami[f][k] += zone.dot(x[1], &nf(f, 0), x[0]) / fs(f) * vec[k];
-              else if (icl(f, 0) == 3) for (k = 0; k < dimension; k++) for (l = 0; l < dimension; l++)
+              else if (icl(f, 0) == 3)
+                for (k = 0; k < dimension; k++)
+                  for (l = 0; l < dimension; l++)
                     vamf[ {{ f, l }}][l] += zone.dot(x[1], &nf(f, 0), x[0]) / fs(f) * vec[k] * nf(f, l) / fs(f);
               //complement : avec ve (e >= 0) / val_imp (Dirichlet) / va (Neumann/Symetrie)
-              if (e >= 0) for (k = zone.vedeb(e); k < zone.vedeb(e + 1); k++) //ve
+              if (e >= 0)
+                for (k = zone.vedeb(e); k < zone.vedeb(e + 1); k++) //ve
                   {
-                    if (icl(fb = zone.veji(k), 0) < 2) for (l = 0; l < dimension; l++)
+                    if (icl(fb = zone.veji(k), 0) < 2)
+                      for (l = 0; l < dimension; l++)
                         vami[fb][l] += (zone.dot(x[1], &zone.veci(k, 0), x[0]) - zone.dot(x[1], &nf(f, 0), x[0]) * zone.dot(&zone.veci(k, 0), &nf(f, 0)) / (fs(f) * fs(f))) * vec[l] * pf(fb) / pe(e);
-                    else if (icl(fb, 0) == 3) for (l = 0; l < dimension; l++) for (m = 0; m < dimension; m++)
+                    else if (icl(fb, 0) == 3)
+                      for (l = 0; l < dimension; l++)
+                        for (m = 0; m < dimension; m++)
                           vamf[ {{ fb, m }}][l] += (zone.dot(x[1], &zone.veci(k, 0), x[0]) - zone.dot(x[1], &nf(f, 0), x[0]) * zone.dot(&zone.veci(k, 0), &nf(f, 0)) / (fs(f) * fs(f)))
                     * vec[l] * nf(fb, m) / fs(f) * pf(fb) / pe(e);
                   }
-              else if (icl(f, 0) == 3) for (k = 0; k < dimension; k++) for (l = 0; l < dimension; l++) //val_imp
+              else if (icl(f, 0) == 3)
+                for (k = 0; k < dimension; k++)
+                  for (l = 0; l < dimension; l++) //val_imp
                     vamf[ {{ f, k }}][l] += (x[1][k] - x[0][k] - zone.dot(x[1], &nf(f, 0), x[0]) * nf(f, k) / (fs(f) * fs(f))) * vec[l];
-              else if (icl(f, 0) == 1 || icl(f, 0) == 2) for (k = 0; k < dimension; k++) for (l = 0; l < dimension; l++) //va
+              else if (icl(f, 0) == 1 || icl(f, 0) == 2)
+                for (k = 0; k < dimension; k++)
+                  for (l = 0; l < dimension; l++) //va
                     M(k, l) -= (x[1][l] - x[0][l] - zone.dot(x[1], &nf(f, 0), x[0]) * nf(f, l) / (fs(f) * fs(f))) * vec[k];
 
               //partie normale au triangle (3D seulement): avec vf/ve/val_imp egalement
               if (dimension < 3) continue;
-              else if (e >= 0) for (k = zone.vedeb(e); k < zone.vedeb(e + 1); k++) //ve
+              else if (e >= 0)
+                for (k = zone.vedeb(e); k < zone.vedeb(e + 1); k++) //ve
                   {
-                    if (icl(fb = zone.veji(k), 0) < 2) for (l = 0; l < dimension; l++)
+                    if (icl(fb = zone.veji(k), 0) < 2)
+                      for (l = 0; l < dimension; l++)
                         vami[fb][l] += surf(i, j) * zone.dot(&nsurf(i, j, 0), &zone.veci(k, 0)) * nsurf(i, j, l) * pf(fb) / pe(e);
-                    else if (icl(fb, 0) == 3) for (l = 0; l < dimension; l++) for (m = 0; m < dimension; m++)
+                    else if (icl(fb, 0) == 3)
+                      for (l = 0; l < dimension; l++)
+                        for (m = 0; m < dimension; m++)
                           vamf[ {{ fb, m }}][l] += surf(i, j) * zone.dot(&nsurf(i, j, 0), &zone.veci(k, 0)) * nsurf(i, j, l) * nf(fb, m) / fs(f) * pf(fb) / pe(e);
                   }
-              else if (icl(f, 0) == 3) for (k = 0; k < dimension; k++) for (l = 0; l < dimension; l++) //val_imp
+              else if (icl(f, 0) == 3)
+                for (k = 0; k < dimension; k++)
+                  for (l = 0; l < dimension; l++) //val_imp
                     vamf[ {{ f, k }}][l] += surf(i, j) * nsurf(i, j, k) * nsurf(i, j, l);
-              else if (icl(f, 0) == 1 || icl(f, 0) == 2) for (k = 0; k < dimension; k++) for (l = 0; l < dimension; l++) //va
+              else if (icl(f, 0) == 1 || icl(f, 0) == 2)
+                for (k = 0; k < dimension; k++)
+                  for (l = 0; l < dimension; l++) //va
                     M(k, l) -= surf(i, j) * nsurf(i, j, k) * nsurf(i, j, l);
             }
 
@@ -369,13 +402,15 @@ void Champ_Face_PolyMAC_old::init_va() const
       for (auto && kv : vami)
         {
           double inc[3] = { 0, 0, 0 };
-          for (k = 0; k < dimension; k++) for (l = 0; l < dimension; l++) inc[k] += iM(k, l) * kv.second[l];
+          for (k = 0; k < dimension; k++)
+            for (l = 0; l < dimension; l++) inc[k] += iM(k, l) * kv.second[l];
           if (zone.dot(inc, inc) > 1e-16) vaji.append_line(kv.first), vaci.append_line(inc[0], inc[1], inc[2]);
         }
       for (auto && kv : vamf)
         {
           double inc[3] = { 0, 0, 0 };
-          for (k = 0; k < dimension; k++) for (l = 0; l < dimension; l++) inc[k] += iM(k, l) * kv.second[l];
+          for (k = 0; k < dimension; k++)
+            for (l = 0; l < dimension; l++) inc[k] += iM(k, l) * kv.second[l];
           if (zone.dot(inc, inc) > 1e-16) vajf.append_line(kv.first[0], kv.first[1]), vacf.append_line(inc[0], inc[1], inc[2]);
         }
     }
@@ -388,20 +423,24 @@ void Champ_Face_PolyMAC_old::interp_ve(const DoubleTab& inco, DoubleTab& val, bo
   const Zone_PolyMAC_old& zone = ref_cast(Zone_PolyMAC_old,zone_vf());
   const Conds_lim& cls = zone_Cl_dis().les_conditions_limites();
   const DoubleTab& nf = zone.face_normales();
-  const DoubleVect& fs = zone.face_surfaces(), &pf = zone.porosite_face(), &pe = zone.porosite_elem();
+  const DoubleVect& fs = zone.face_surfaces(), *pf = mon_equation_non_nul() ? &equation().milieu().porosite_face() : NULL, *pe = pf ? &equation().milieu().porosite_elem() : NULL;
+
   int e, f, j, k, r;
 
   zone.init_ve();
   val = 0;
-  for (e = 0; e < val.dimension(0); e++) for (j = zone.vedeb(e); j < zone.vedeb(e + 1); j++)
+  for (e = 0; e < val.dimension(0); e++)
+    for (j = zone.vedeb(e); j < zone.vedeb(e + 1); j++)
       if (icl(f = zone.veji(j), 0) < 2) //vitesse calculee
         {
-          const double coef = is_vit ? pf(f) / pe(e) : 1.0;
+          const double coef = is_vit && pf ? (*pf)(f) / (*pe)(e) : 1.0;
           for (r = 0; r < dimension; r++) val(e, r) += zone.veci(j, r) * inco(f) * coef;
         }
-      else if (icl(f, 0) == 3) for (k = 0; k < dimension; k++) for (r = 0; r < dimension; r++) //Dirichlet
+      else if (icl(f, 0) == 3)
+        for (k = 0; k < dimension; k++)
+          for (r = 0; r < dimension; r++) //Dirichlet
             {
-              const double coef = is_vit ? pf(f) / pe(e) : 1.0;
+              const double coef = is_vit && pf ? (*pf)(f) / (*pe)(e) : 1.0;
               val(e, r) += zone.veci(j, r) * ref_cast(Dirichlet, cls[icl(f, 1)].valeur()).val_imp(icl(f, 2), k) * nf(f, k) / fs(f) * coef;
             }
 }
@@ -410,7 +449,7 @@ void Champ_Face_PolyMAC_old::interp_ve(const DoubleTab& inco, DoubleTab& val, bo
 void Champ_Face_PolyMAC_old::interp_ve(const DoubleTab& inco, const IntVect& les_polys, DoubleTab& val, bool is_vit) const
 {
   const Zone_PolyMAC_old& zone = ref_cast(Zone_PolyMAC_old,zone_vf());
-  const DoubleVect& pf = zone.porosite_face(), &pe = zone.porosite_elem();
+  const DoubleVect *pf = mon_equation_non_nul() ? &equation().milieu().porosite_face() : NULL, *pe = pf ? &equation().milieu().porosite_elem() : NULL;
   int e, f, j, r;
 
   zone.init_ve();
@@ -424,7 +463,7 @@ void Champ_Face_PolyMAC_old::interp_ve(const DoubleTab& inco, const IntVect& les
           for (j = zone.vedeb(e); j < zone.vedeb(e + 1); j++)
             {
               f = zone.veji(j);
-              const double coef = is_vit ? pf(f) / pe(e) : 1.0;
+              const double coef = is_vit && pf ? (*pf)(f) / (*pe)(e) : 1.0;
               for (r = 0; r < dimension; r++) val(e, r) += zone.veci(j, r) * inco(f) * coef;
             }
         }
@@ -451,13 +490,18 @@ void Champ_Face_PolyMAC_old::interp_gve(const DoubleTab& inco, DoubleTab& vals) 
   //gradient aux faces duales, champ (nf.grad)v (obtenu en inversant m2)
   DoubleTrav gv(zone.nb_faces_tot(), dimension), cgv, ngv;
   zone.creer_tableau_faces(cgv), zone.creer_tableau_faces(ngv);
-  for (f = 0; f < zone.nb_faces_tot(); f++) if (icl(f, 0) != 1) //gve = 0 si Neumann
+  for (f = 0; f < zone.nb_faces_tot(); f++)
+    if (icl(f, 0) != 1) //gve = 0 si Neumann
       {
-        for (i = 0; i < 2; i++) if ((e = f_e(f, i)) >= 0) for (k = 0; k < dimension; k++) gv(f, k) += (i ? 1 : -1) * fs(f) * ve1(e, k); //element interne -> avec ve1
-          else if (icl(f, 0) == 3) for (k = 0; k < dimension; k++) //bord de Dirichlet -> avec val_imp
+        for (i = 0; i < 2; i++)
+          if ((e = f_e(f, i)) >= 0)
+            for (k = 0; k < dimension; k++) gv(f, k) += (i ? 1 : -1) * fs(f) * ve1(e, k); //element interne -> avec ve1
+          else if (icl(f, 0) == 3)
+            for (k = 0; k < dimension; k++) //bord de Dirichlet -> avec val_imp
               gv(f, k) += (i ? 1 : -1) * fs(f) * ref_cast(Dirichlet, cls[icl(f, 1)].valeur()).val_imp(icl(f, 2), k);
         //si Symetrie -> on ne garde que la composante normale a la face
-        if (icl(f, 0) == 2) for (k = 0, scal = zone.dot(&nf(f, 0), &gv(f, 0)) / fs(f); k < dimension; k++) gv(f, k) = scal * nf(f, k) / fs(f);
+        if (icl(f, 0) == 2)
+          for (k = 0, scal = zone.dot(&nf(f, 0), &gv(f, 0)) / fs(f); k < dimension; k++) gv(f, k) = scal * nf(f, k) / fs(f);
       }
 
   //pour chaque composante :
@@ -467,7 +511,9 @@ void Champ_Face_PolyMAC_old::interp_gve(const DoubleTab& inco, DoubleTab& vals) 
       for (f = 0; f < zone.nb_faces_tot(); f++) cgv(f) = gv(f, k);
       zone.m2solv.resoudre_systeme(zone.m2mat, cgv, ngv);
       /* reinterpolation aux elements -> grad v_k */
-      for (e = 0; e < zone.nb_elem(); e++) for (i = zone.vedeb(e); i < zone.vedeb(e + 1); i++) for (j = 0; j < dimension; j++)
+      for (e = 0; e < zone.nb_elem(); e++)
+        for (i = zone.vedeb(e); i < zone.vedeb(e + 1); i++)
+          for (j = 0; j < dimension; j++)
             vals.addr()[(e * dimension + k) * dimension + j] += zone.veci(i, j) * ngv(zone.veji(i));
     }
 
@@ -505,7 +551,8 @@ DoubleTab& Champ_Face_PolyMAC_old::valeur_aux_elems(const DoubleTab& positions, 
   zone.zone().domaine().creer_tableau_elements(ve);
   bool is_vit = cha.le_nom().debute_par("vitesse");
   interp_ve(cha.valeurs(), ve, is_vit);
-  for (int p = 0; p < les_polys.size(); p++) for (int r = 0, e = les_polys(p); e < zone.nb_elem() && r < dimension; r++) val(p, r) = (e==-1) ? 0. : ve(e, r);
+  for (int p = 0; p < les_polys.size(); p++)
+    for (int r = 0, e = les_polys(p); e < zone.nb_elem() && r < dimension; r++) val(p, r) = (e==-1) ? 0. : ve(e, r);
   return val;
 }
 

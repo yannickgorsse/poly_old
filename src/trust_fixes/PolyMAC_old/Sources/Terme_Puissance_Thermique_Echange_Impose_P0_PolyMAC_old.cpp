@@ -66,7 +66,8 @@ void Terme_Puissance_Thermique_Echange_Impose_P0_PolyMAC_old::mettre_a_jour(doub
 
   bilan().resize(N), bilan() = 0;
 
-  for (int e = 0; e < nb_elem; e++) for (n = 0; n < N; n++)
+  for (int e = 0; e < nb_elem; e++)
+    for (n = 0; n < N; n++)
       bilan()(n) += himp(!c_h * e, n) * volumes(e) * (Text(!c_T * e, n) - T(e, n));
 
   himp_.mettre_a_jour(temps);
@@ -99,7 +100,8 @@ DoubleTab& Terme_Puissance_Thermique_Echange_Impose_P0_PolyMAC_old::ajouter(Doub
   const DoubleTab& T = equation().inconnue().valeurs();
   int nb_elem=la_zone_PolyMAC_old.valeur().nb_elem(), c_h = himp.dimension(0) == 1, c_T = Text.dimension(0) == 1, n, N = T.line_size();
 
-  for (int e = 0; e < nb_elem; e++) for (n = 0; n < N; n++)
+  for (int e = 0; e < nb_elem; e++)
+    for (n = 0; n < N; n++)
       resu(e, n) -= volumes(e) * himp(!c_h * e, n) * (T(e, n) - Text(!c_T * e, n));
 
   return resu;
@@ -117,6 +119,7 @@ void Terme_Puissance_Thermique_Echange_Impose_P0_PolyMAC_old::contribuer_a_avec(
   const DoubleTab& himp = himp_.valeur().valeurs();
   int nb_elem=la_zone_PolyMAC_old.valeur().nb_elem(), c_h = himp.dimension(0) == 1, n, N = himp.line_size();
 
-  for (int e = 0, i = 0; e < nb_elem; e++) for (n = 0; n < N; n++, i++)
+  for (int e = 0, i = 0; e < nb_elem; e++)
+    for (n = 0; n < N; n++, i++)
       matrice(i, i) += volumes(e) * himp(!c_h * e, n);
 }

@@ -87,10 +87,11 @@ DoubleTab& Perte_Charge_Singuliere_PolyMAC_old_Face::ajouter(DoubleTab& resu) co
 {
   const Zone_PolyMAC_old& zone_PolyMAC_old = la_zone_PolyMAC_old.valeur();
   //const DoubleVect& volumes_entrelaces = zone_PolyMAC_old.volumes_entrelaces();
-  const DoubleVect& p_f = zone_PolyMAC_old.porosite_face();
+  const DoubleVect& p_f = equation().milieu().porosite_face();
   const DoubleTab& vit = la_vitesse->valeurs();
 
-  for (int i = 0, f; i < num_faces.size(); i++) if ((f = num_faces(i)) < zone_PolyMAC_old.nb_faces())
+  for (int i = 0, f; i < num_faces.size(); i++)
+    if ((f = num_faces(i)) < zone_PolyMAC_old.nb_faces())
       {
         double Ud = vit(f) * p_f(f),
                surf = direction_perte_charge() < 0 ? zone_PolyMAC_old.face_surfaces(f) : std::fabs(zone_PolyMAC_old.face_normales(f,direction_perte_charge())); // Taking account of inclined plane
@@ -108,10 +109,11 @@ DoubleTab& Perte_Charge_Singuliere_PolyMAC_old_Face::calculer(DoubleTab& resu) c
 void Perte_Charge_Singuliere_PolyMAC_old_Face::contribuer_a_avec(const DoubleTab& inco, Matrice_Morse& matrice) const
 {
   const Zone_PolyMAC_old& zone_PolyMAC_old = la_zone_PolyMAC_old.valeur();
-  const DoubleVect& p_f = zone_PolyMAC_old.porosite_face();
+  const DoubleVect& p_f = equation().milieu().porosite_face();
   const DoubleTab& vit = la_vitesse->valeurs();
 
-  for (int i = 0, f; i < num_faces.size(); i++) if ((f = num_faces(i)) < zone_PolyMAC_old.nb_faces())
+  for (int i = 0, f; i < num_faces.size(); i++)
+    if ((f = num_faces(i)) < zone_PolyMAC_old.nb_faces())
       {
         double Ud = vit(f) * p_f(f),
                surf = direction_perte_charge() < 0 ? zone_PolyMAC_old.face_surfaces(f) : std::fabs(zone_PolyMAC_old.face_normales(f,direction_perte_charge())); // Taking account of inclined plane

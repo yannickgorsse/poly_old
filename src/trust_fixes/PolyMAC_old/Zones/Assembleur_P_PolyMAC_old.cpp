@@ -39,6 +39,7 @@
 #include <Matrice_Morse_Sym.h>
 #include <Matrix_tools.h>
 #include <Statistiques.h>
+#include <Milieu_base.h>
 
 extern Stat_Counter_Id assemblage_sys_counter_;
 
@@ -94,7 +95,7 @@ int  Assembleur_P_PolyMAC_old::assembler_mat(Matrice& la_matrice,const DoubleVec
 
   const Zone_PolyMAC_old& zone = ref_cast(Zone_PolyMAC_old, la_zone_PolyMAC_old.valeur());
   const IntTab& e_f = zone.elem_faces(), &f_e = zone.face_voisins();
-  const DoubleVect& fs = zone.face_surfaces(), &pf = zone.porosite_face(), &pe = zone.porosite_elem(), &ve = zone.volumes();
+  const DoubleVect& fs = zone.face_surfaces(), &pf = mon_equation->milieu().porosite_face(), &pe = mon_equation->milieu().porosite_elem(), &ve = zone.volumes();
   const Champ_Face_PolyMAC_old& ch = ref_cast(Champ_Face_PolyMAC_old, mon_equation->inconnue().valeur());
   int i, j, k, e, f, fb, n_f, ne = zone.nb_elem(), ne_tot = zone.nb_elem_tot(), nf = zone.nb_faces(), nf_tot = zone.nb_faces_tot(),
                               na_tot = dimension < 3 ? zone.zone().nb_som_tot() : zone.zone().nb_aretes_tot(), infoo;
@@ -151,19 +152,24 @@ int  Assembleur_P_PolyMAC_old::assembler_mat(Matrice& la_matrice,const DoubleVec
   for (e = 0; e < ne_tot; e++)
     {
       n_f = zone.m2d(e + 1) - zone.m2d(e), W0.resize(n_f, n_f), W.resize(n_f, n_f);
-      for (i = 0, j = zone.m2d(e), W0 = 0; i < n_f; i++, j++) for (k = zone.w2i(j); k < zone.w2i(j + 1); k++) W0(i, zone.w2j(k)) = zone.w2c(k);
+      for (i = 0, j = zone.m2d(e), W0 = 0; i < n_f; i++, j++)
+        for (k = zone.w2i(j); k < zone.w2i(j + 1); k++) W0(i, zone.w2j(k)) = zone.w2c(k);
       if (!diag.size()) W = W0; //pas de correction diagonale -> on prend W telle quelle
       else //correction diagonale -> on re-inverse m2 + diag
         {
           //matrice m2 + correction diagonale
-          for (i = 0, j = zone.m2d(e), W = 0; i < n_f; i++, j++) for (k = zone.m2i(j); k < zone.m2i(j + 1); k++) W(i, zone.m2j(k)) = zone.m2c(k);
+          for (i = 0, j = zone.m2d(e), W = 0; i < n_f; i++, j++)
+            for (k = zone.m2i(j); k < zone.m2i(j + 1); k++) W(i, zone.m2j(k)) = zone.m2c(k);
           for (i = 0; i < n_f; i++) f = e_f(e, i), W(i, i) += diag(f) * zone.volumes_entrelaces_dir()(f, e != f_e(f, 0)) / zone.volumes_entrelaces(f) / ve(e);
           //inversion par Cholesky (Lapack) + annulation des petits coeffs + remplissage a la main de la partir triangulaire inf
           char uplo = 'U';
           F77NAME(dpotrf)(&uplo, &n_f, W.addr(), &n_f, &infoo);
           F77NAME(dpotri)(&uplo, &n_f, W.addr(), &n_f, &infoo);
-          for (i = 0; i < n_f; i++) for (j = i + 1; j < n_f; j++) W(i, j) = W(j, i);
-          for (i = 0; i < n_f; i++) for (j = 0; j < n_f; j++) if (W0(i, j) == 0) W(i, j) = 0;
+          for (i = 0; i < n_f; i++)
+            for (j = i + 1; j < n_f; j++) W(i, j) = W(j, i);
+          for (i = 0; i < n_f; i++)
+            for (j = 0; j < n_f; j++)
+              if (W0(i, j) == 0) W(i, j) = 0;
         }
 
       //remplissage de la matrice en (dPe, dPf)

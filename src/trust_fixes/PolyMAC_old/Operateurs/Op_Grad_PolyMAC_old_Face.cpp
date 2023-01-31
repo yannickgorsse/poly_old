@@ -69,7 +69,7 @@ void Op_Grad_PolyMAC_old_Face::associer(const Zone_dis& zone_dis,
   la_zone_polymac = zpolymac;
   la_zcl_polymac = zclpolymac;
 
-  porosite_surf.ref(zpolymac.porosite_face());
+  porosite_surf.ref(equation().milieu().porosite_face());
   volume_entrelaces.ref(zpolymac.volumes_entrelaces());
   face_voisins.ref(zpolymac.face_voisins());
   xp.ref(zpolymac.xp());
@@ -80,7 +80,8 @@ void Op_Grad_PolyMAC_old_Face::dimensionner(Matrice_Morse& mat) const
   const Zone_PolyMAC_old& zpolymac = la_zone_polymac.valeur();
   IntTab stencil(0, 2);
   stencil.set_smart_resize(1);
-  for (int f = 0; f < zpolymac.nb_faces(); f++) for (int i = 0, e; i < 2 && (e = zpolymac.face_voisins(f, i)) >= 0; i++)
+  for (int f = 0; f < zpolymac.nb_faces(); f++)
+    for (int i = 0, e; i < 2 && (e = zpolymac.face_voisins(f, i)) >= 0; i++)
       stencil.append_line(f, e);
   tableau_trier_retirer_doublons(stencil);
   Matrix_tools::allocate_morse_matrix(zpolymac.nb_faces_tot(), zpolymac.nb_elem_tot(), stencil, mat);
@@ -316,7 +317,8 @@ int Op_Grad_PolyMAC_old_Face::impr(Sortie& os) const
               Flux_grad.add_col(tab_flux_bords(0, n_bord, r));
               if (impr_sum) Flux_grad_sum.add_col(tab_flux_bords(1, n_bord, r));
             }
-          if (impr_mom) for (int r = (dimension < 3 ? 2 : 0); r < std::max(dimension, dim_max); r++)
+          if (impr_mom)
+            for (int r = (dimension < 3 ? 2 : 0); r < std::max(dimension, dim_max); r++)
               Flux_grad_moment.add_col(tab_flux_bords(2, n_bord, r));
         }
       Flux_grad << finl;
