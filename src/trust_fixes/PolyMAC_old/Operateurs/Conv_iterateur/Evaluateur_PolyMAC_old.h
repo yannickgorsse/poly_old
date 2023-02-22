@@ -24,18 +24,20 @@
 #ifndef Evaluateur_PolyMAC_old_included
 #define Evaluateur_PolyMAC_old_included
 
-#include <Ref_Zone_Cl_PolyMAC_old.h>
-#include <Ref_Zone_PolyMAC_old.h>
 #include <TRUSTTab.h>
+#include <TRUST_Ref.h>
+class Champ_base;
+class Domaine_Cl_PolyMAC_old;
+class Domaine_PolyMAC_old;
 
 //
 // .DESCRIPTION class Evaluateur_PolyMAC_old
 //
 // Classe de base des evaluateurs PolyMAC_old. Cette classe n'appartient pas a la
 // hierarchie des Objet_U.
-// Cette classe porte une reference a un objet de type Zone_PolyMAC_old et une
-// reference a un objet de type Zone_Cl_PolyMAC_old. Elle porte des tableaux locaux
-// qui sont en fait des references aux tableaux de l'objet de type Zone_PolyMAC_old
+// Cette classe porte une reference a un objet de type Domaine_PolyMAC_old et une
+// reference a un objet de type Domaine_Cl_PolyMAC_old. Elle porte des tableaux locaux
+// qui sont en fait des references aux tableaux de l'objet de type Domaine_PolyMAC_old
 // (ces tableaux locaux n'existent pas en memoire).
 
 //
@@ -53,13 +55,13 @@ public:
   inline virtual ~Evaluateur_PolyMAC_old() {};
 
   Evaluateur_PolyMAC_old(const Evaluateur_PolyMAC_old& );
-  virtual void associer_zones(const Zone_PolyMAC_old& , const Zone_Cl_PolyMAC_old& );
+  virtual void associer_domaines(const Domaine_PolyMAC_old& , const Domaine_Cl_PolyMAC_old& );
   virtual void associer_porosite(const DoubleVect&);
 
 protected:
 
-  REF(Zone_PolyMAC_old) la_zone;
-  REF(Zone_Cl_PolyMAC_old) la_zcl;
+  REF(Domaine_PolyMAC_old) la_domaine;
+  REF(Domaine_Cl_PolyMAC_old) la_zcl;
   int dimension;
   int premiere_face_bord;
   IntTab elem_;                       // les 2 elements voisins d'une face

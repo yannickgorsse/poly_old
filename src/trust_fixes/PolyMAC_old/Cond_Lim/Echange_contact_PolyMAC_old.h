@@ -25,11 +25,10 @@
 
 #include <Echange_externe_impose.h>
 #include <TRUSTTabs_forward.h>
+#include <TRUST_Ref.h>
+class Champ_Inc;
 
-#include <Ref_Champ_Inc.h>
-#include <Ref_IntTab.h>
-
-class Zone_PolyMAC_old;
+class Domaine_PolyMAC_old;
 class Front_VF;
 class Faces;
 

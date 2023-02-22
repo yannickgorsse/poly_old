@@ -22,7 +22,7 @@
 
 #include <Op_Grad_PolyMAC_old_Face.h>
 #include <Champ_P0_PolyMAC_old.h>
-#include <Zone_Cl_PolyMAC_old.h>
+#include <Domaine_Cl_PolyMAC_old.h>
 #include <Neumann_sortie_libre.h>
 
 #include <Dirichlet.h>
@@ -60,13 +60,13 @@ Entree& Op_Grad_PolyMAC_old_Face::readOn(Entree& s)
 
 
 // Description:
-void Op_Grad_PolyMAC_old_Face::associer(const Zone_dis& zone_dis,
-                                        const Zone_Cl_dis& zone_Cl_dis,
+void Op_Grad_PolyMAC_old_Face::associer(const Domaine_dis& domaine_dis,
+                                        const Domaine_Cl_dis& domaine_Cl_dis,
                                         const Champ_Inc& )
 {
-  const Zone_PolyMAC_old& zpolymac = ref_cast(Zone_PolyMAC_old, zone_dis.valeur());
-  const Zone_Cl_PolyMAC_old& zclpolymac = ref_cast(Zone_Cl_PolyMAC_old, zone_Cl_dis.valeur());
-  la_zone_polymac = zpolymac;
+  const Domaine_PolyMAC_old& zpolymac = ref_cast(Domaine_PolyMAC_old, domaine_dis.valeur());
+  const Domaine_Cl_PolyMAC_old& zclpolymac = ref_cast(Domaine_Cl_PolyMAC_old, domaine_Cl_dis.valeur());
+  la_domaine_polymac = zpolymac;
   la_zcl_polymac = zclpolymac;
 
   porosite_surf.ref(equation().milieu().porosite_face());
@@ -77,7 +77,7 @@ void Op_Grad_PolyMAC_old_Face::associer(const Zone_dis& zone_dis,
 
 void Op_Grad_PolyMAC_old_Face::dimensionner(Matrice_Morse& mat) const
 {
-  const Zone_PolyMAC_old& zpolymac = la_zone_polymac.valeur();
+  const Domaine_PolyMAC_old& zpolymac = la_domaine_polymac.valeur();
   IntTab stencil(0, 2);
   stencil.set_smart_resize(1);
   for (int f = 0; f < zpolymac.nb_faces(); f++)
@@ -90,8 +90,8 @@ void Op_Grad_PolyMAC_old_Face::dimensionner(Matrice_Morse& mat) const
 DoubleTab& Op_Grad_PolyMAC_old_Face::ajouter(const DoubleTab& inco, DoubleTab& resu) const
 {
   assert_espace_virtuel_vect(inco);
-  const Zone_PolyMAC_old& zpolymac = la_zone_polymac.valeur();
-  const Zone_Cl_PolyMAC_old& zclpolymac = la_zcl_polymac.valeur();
+  const Domaine_PolyMAC_old& zpolymac = la_domaine_polymac.valeur();
+  const Domaine_Cl_PolyMAC_old& zclpolymac = la_zcl_polymac.valeur();
   const DoubleVect& face_surfaces = zpolymac.face_surfaces();
 
   double coef;
@@ -156,8 +156,8 @@ DoubleTab& Op_Grad_PolyMAC_old_Face::calculer(const DoubleTab& inco, DoubleTab& 
 void Op_Grad_PolyMAC_old_Face::contribuer_a_avec(const DoubleTab& inco, Matrice_Morse& la_matrice) const
 {
   assert_espace_virtuel_vect(inco);
-  const Zone_PolyMAC_old& zpolymac = la_zone_polymac.valeur();
-  const Zone_Cl_PolyMAC_old& zclpolymac = la_zcl_polymac.valeur();
+  const Domaine_PolyMAC_old& zpolymac = la_domaine_polymac.valeur();
+  const Domaine_Cl_PolyMAC_old& zclpolymac = la_zcl_polymac.valeur();
   const DoubleVect& face_surfaces = zpolymac.face_surfaces();
 
   double coef;
@@ -212,12 +212,12 @@ void Op_Grad_PolyMAC_old_Face::contribuer_a_avec(const DoubleTab& inco, Matrice_
 int Op_Grad_PolyMAC_old_Face::impr(Sortie& os) const
 {
   return 0;
-  const int impr_mom=la_zone_polymac->zone().Moments_a_imprimer();
-  const int impr_sum=(la_zone_polymac->zone().Bords_a_imprimer_sum().est_vide() ? 0:1);
-  const int impr_bord=(la_zone_polymac->zone().Bords_a_imprimer().est_vide() ? 0:1);
+  const int impr_mom=la_domaine_polymac->domaine().moments_a_imprimer();
+  const int impr_sum=(la_domaine_polymac->domaine().bords_a_imprimer_sum().est_vide() ? 0:1);
+  const int impr_bord=(la_domaine_polymac->domaine().bords_a_imprimer().est_vide() ? 0:1);
   const Schema_Temps_base& sch = equation().probleme().schema_temps();
-  const Zone_PolyMAC_old& zpolymac = la_zone_polymac.valeur();
-  const Zone_Cl_PolyMAC_old& zclpolymac = la_zcl_polymac.valeur();
+  const Domaine_PolyMAC_old& zpolymac = la_domaine_polymac.valeur();
+  const Domaine_Cl_PolyMAC_old& zclpolymac = la_zcl_polymac.valeur();
   const DoubleVect& face_surfaces = zpolymac.face_surfaces();
   const Equation_base& eqn = equation();
   const Navier_Stokes_std& eqn_hydr = ref_cast(Navier_Stokes_std,eqn);
@@ -232,7 +232,7 @@ int Op_Grad_PolyMAC_old_Face::impr(Sortie& os) const
   if (impr_mom)
     {
       const DoubleTab& xgrav = zpolymac.xv();
-      const ArrOfDouble& c_grav=zpolymac.zone().cg_moments();
+      const ArrOfDouble& c_grav=zpolymac.domaine().cg_moments();
       for (int num_face=0; num_face <nb_faces; num_face++)
         for (int i=0; i<dimension; i++)
           xgr(num_face,i)=xgrav(num_face,i)-c_grav[i];
@@ -252,7 +252,7 @@ int Op_Grad_PolyMAC_old_Face::impr(Sortie& os) const
     {
       const Cond_lim& la_cl = zclpolymac.les_conditions_limites(n_bord);
       const Front_VF& le_bord = ref_cast(Front_VF,la_cl.frontiere_dis());
-      int impr_boundary = (zpolymac.zone().Bords_a_imprimer_sum().contient(le_bord.le_nom()) ? 1 : 0);
+      int impr_boundary = (zpolymac.domaine().bords_a_imprimer_sum().contient(le_bord.le_nom()) ? 1 : 0);
       int ndeb = le_bord.num_premiere_face();
       int nfin = ndeb + le_bord.nb_faces();
 
@@ -326,7 +326,7 @@ int Op_Grad_PolyMAC_old_Face::impr(Sortie& os) const
       if (impr_mom) Flux_grad_moment << finl;
     }
 
-  const LIST(Nom)& Liste_Bords_a_imprimer = zpolymac.zone().Bords_a_imprimer();
+  const LIST(Nom)& Liste_Bords_a_imprimer = zpolymac.domaine().bords_a_imprimer();
   if (!Liste_Bords_a_imprimer.est_vide())
     {
       EcrFicPartage Flux_grad_face;
@@ -337,7 +337,7 @@ int Op_Grad_PolyMAC_old_Face::impr(Sortie& os) const
           const Front_VF& le_bord = ref_cast(Front_VF,la_cl.frontiere_dis());
           int ndeb = le_bord.num_premiere_face();
           int nfin = ndeb + le_bord.nb_faces();
-          if (zpolymac.zone().Bords_a_imprimer().contient(le_bord.le_nom()))
+          if (zpolymac.domaine().bords_a_imprimer().contient(le_bord.le_nom()))
             {
               if (je_suis_maitre())
                 {

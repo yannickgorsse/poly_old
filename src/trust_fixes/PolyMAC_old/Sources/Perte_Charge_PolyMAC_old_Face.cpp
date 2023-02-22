@@ -24,7 +24,7 @@
 #include <Fluide_Incompressible.h>
 #include <Probleme_base.h>
 #include <Navier_Stokes_std.h>
-#include <Zone_PolyMAC_old.h>
+#include <Domaine_PolyMAC_old.h>
 #include <Champ_Face_PolyMAC_old.h>
 
 Implemente_base(Perte_Charge_PolyMAC_old_Face,"Perte_Charge_PolyMAC_old_Face",Source_base);
@@ -74,7 +74,7 @@ void Perte_Charge_PolyMAC_old_Face::associer_pb(const Probleme_base& pb)
         {
           la_vitesse = ref_cast(Champ_Face_PolyMAC_old,eqn.inconnue().valeur());
           le_fluide = ref_cast(Fluide_base,eqn.milieu());
-          associer_zones(eqn.zone_dis(),eqn.zone_Cl_dis());
+          associer_domaines(eqn.domaine_dis(),eqn.domaine_Cl_dis());
           i = nb_eqn;
           ok = 1;
         }
@@ -88,12 +88,12 @@ void Perte_Charge_PolyMAC_old_Face::associer_pb(const Probleme_base& pb)
     }
 }
 
-void Perte_Charge_PolyMAC_old_Face::associer_zones(const Zone_dis& zone_dis,
-                                                   const Zone_Cl_dis& zone_Cl_dis)
+void Perte_Charge_PolyMAC_old_Face::associer_domaines(const Domaine_dis& domaine_dis,
+                                                      const Domaine_Cl_dis& domaine_Cl_dis)
 {
-  Cerr << " Perte_Charge_PolyMAC_old_Face::associer_zones " << finl ;
-  la_zone_PolyMAC_old = ref_cast(Zone_PolyMAC_old, zone_dis.valeur());
-  la_zone_Cl_PolyMAC_old = ref_cast(Zone_Cl_PolyMAC_old, zone_Cl_dis.valeur());
+  Cerr << " Perte_Charge_PolyMAC_old_Face::associer_domaines " << finl ;
+  la_domaine_PolyMAC_old = ref_cast(Domaine_PolyMAC_old, domaine_dis.valeur());
+  la_domaine_Cl_PolyMAC_old = ref_cast(Domaine_Cl_PolyMAC_old, domaine_Cl_dis.valeur());
 }
 
 

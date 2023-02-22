@@ -23,7 +23,7 @@
 #ifndef MItSouPolyMAC_oldEL_H
 #define MItSouPolyMAC_oldEL_H
 #include <Iterateur_Source_PolyMAC_old_base.h>
-#include <Zone_PolyMAC_old.h>
+#include <Domaine_PolyMAC_old.h>
 #include <Champ_Uniforme.h>
 
 //////////////////////////////////////////////////////////////////////////////
@@ -57,7 +57,7 @@
   };                                                                        \
                                                                         \
   inline void It_Sou_PolyMAC_old_Elem(_TYPE_)::completer_(){                        \
-    nb_elem_=la_zone->nb_elem();                                        \
+    nb_elem_=la_domaine->nb_elem();                                        \
   }                                                                        \
   inline Evaluateur_Source_PolyMAC_old& It_Sou_PolyMAC_old_Elem(_TYPE_)::evaluateur()        \
   {                                                                        \

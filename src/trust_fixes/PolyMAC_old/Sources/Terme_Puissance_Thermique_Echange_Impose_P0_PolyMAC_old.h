@@ -25,9 +25,9 @@
 #define Terme_Puissance_Thermique_Echange_Impose_P0_PolyMAC_old_included
 
 #include <Source_base.h>
-
-#include <Ref_Zone_PolyMAC_old.h>
-#include <Ref_Zone_Cl_PolyMAC_old.h>
+#include <TRUST_Ref.h>
+class Domaine_Cl_PolyMAC_old;
+class Domaine_PolyMAC_old;
 #include <Champ_Don.h>
 
 class Probleme_base;
@@ -59,10 +59,10 @@ public:
 
 protected:
 
-  REF(Zone_PolyMAC_old) la_zone_PolyMAC_old;
-  REF(Zone_Cl_PolyMAC_old) la_zone_Cl_PolyMAC_old;
+  REF(Domaine_PolyMAC_old) la_domaine_PolyMAC_old;
+  REF(Domaine_Cl_PolyMAC_old) la_domaine_Cl_PolyMAC_old;
   Champ_Don himp_,Text_;
-  void associer_zones(const Zone_dis& ,const Zone_Cl_dis& ) override;
+  void associer_domaines(const Domaine_dis& ,const Domaine_Cl_dis& ) override;
 
 };
 

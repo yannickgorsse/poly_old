@@ -64,16 +64,16 @@ inline void eval_fluent(const double psc,const int num1,const int num2,
 
 double Op_Conv_PolyMAC_old_iterateur_base::calculer_dt_stab() const
 {
-  const Zone_PolyMAC_old& zone_PolyMAC_old = iter.zone();
-  const Zone_Cl_PolyMAC_old& zone_Cl_PolyMAC_old = iter.zone_Cl();
-  const IntTab& face_voisins = zone_PolyMAC_old.face_voisins();
-  const DoubleVect& volumes = zone_PolyMAC_old.volumes();
-  const DoubleVect& face_surfaces = zone_PolyMAC_old.face_surfaces();
+  const Domaine_PolyMAC_old& domaine_PolyMAC_old = iter.domaine();
+  const Domaine_Cl_PolyMAC_old& domaine_Cl_PolyMAC_old = iter.domaine_Cl();
+  const IntTab& face_voisins = domaine_PolyMAC_old.face_voisins();
+  const DoubleVect& volumes = domaine_PolyMAC_old.volumes();
+  const DoubleVect& face_surfaces = domaine_PolyMAC_old.face_surfaces();
   const DoubleVect& vit_associe = vitesse().valeurs();
   const DoubleVect& vit= (vitesse_pour_pas_de_temps_.non_nul()?vitesse_pour_pas_de_temps_.valeur().valeurs(): vit_associe);
   DoubleTab fluent;
   // fluent est initialise a zero par defaut:
-  zone_PolyMAC_old.zone().creer_tableau_elements(fluent);
+  domaine_PolyMAC_old.domaine().creer_tableau_elements(fluent);
 
   // Remplissage du tableau fluent
   double psc;
@@ -81,10 +81,10 @@ double Op_Conv_PolyMAC_old_iterateur_base::calculer_dt_stab() const
   int elem1;
 
   // On traite les bords
-  for (int n_bord=0; n_bord<zone_PolyMAC_old.nb_front_Cl(); n_bord++)
+  for (int n_bord=0; n_bord<domaine_PolyMAC_old.nb_front_Cl(); n_bord++)
     {
 
-      const Cond_lim& la_cl = zone_Cl_PolyMAC_old.les_conditions_limites(n_bord);
+      const Cond_lim& la_cl = domaine_Cl_PolyMAC_old.les_conditions_limites(n_bord);
 
       if ( sub_type(Dirichlet_entree_fluide,la_cl.valeur())
            || sub_type(Neumann_sortie_libre,la_cl.valeur())  )
@@ -109,9 +109,9 @@ double Op_Conv_PolyMAC_old_iterateur_base::calculer_dt_stab() const
     }
 
   // Boucle sur les faces internes pour remplir fluent
-  int zone_PolyMAC_old_nb_faces=zone_PolyMAC_old.nb_faces();
-  int premiere_face=zone_PolyMAC_old.premiere_face_int();
-  for (face=premiere_face; face<zone_PolyMAC_old_nb_faces; face++)
+  int domaine_PolyMAC_old_nb_faces=domaine_PolyMAC_old.nb_faces();
+  int premiere_face=domaine_PolyMAC_old.premiere_face_int();
+  for (face=premiere_face; face<domaine_PolyMAC_old_nb_faces; face++)
     {
       psc = vit[face]*face_surfaces(face);
       eval_fluent(psc,face_voisins(face,0),face_voisins(face,1),fluent);
@@ -121,9 +121,9 @@ double Op_Conv_PolyMAC_old_iterateur_base::calculer_dt_stab() const
   if (vitesse().le_nom()=="rho_u" && equation().probleme().is_dilatable())
     diviser_par_rho_si_dilatable(fluent,equation().milieu());
   double dt_stab = 1.e30;
-  int zone_PolyMAC_old_nb_elem=zone_PolyMAC_old.nb_elem();
+  int domaine_PolyMAC_old_nb_elem=domaine_PolyMAC_old.nb_elem();
   // dt_stab = min ( 1 / ( |U|/dx + |V|/dy + |W|/dz ) )
-  for (int num_poly=0; num_poly<zone_PolyMAC_old_nb_elem; num_poly++)
+  for (int num_poly=0; num_poly<domaine_PolyMAC_old_nb_elem; num_poly++)
     {
       double dt_elem = volumes(num_poly)/(fluent[num_poly]+DMINFLOAT);
       if (dt_elem<dt_stab)
@@ -145,13 +145,13 @@ void Op_Conv_PolyMAC_old_iterateur_base::calculer_pour_post(Champ& espace_stocka
       DoubleTab& es_valeurs = espace_stockage->valeurs();
       es_valeurs = 1.e30;
 
-      const Zone_PolyMAC_old& zone_PolyMAC_old = iter.zone();
-      const Zone_Cl_PolyMAC_old& zone_Cl_PolyMAC_old = iter.zone_Cl();
-      const IntTab& face_voisins = zone_PolyMAC_old.face_voisins();
-      const DoubleVect& volumes = zone_PolyMAC_old.volumes();
-      const DoubleVect& face_surfaces = zone_PolyMAC_old.face_surfaces();
+      const Domaine_PolyMAC_old& domaine_PolyMAC_old = iter.domaine();
+      const Domaine_Cl_PolyMAC_old& domaine_Cl_PolyMAC_old = iter.domaine_Cl();
+      const IntTab& face_voisins = domaine_PolyMAC_old.face_voisins();
+      const DoubleVect& volumes = domaine_PolyMAC_old.volumes();
+      const DoubleVect& face_surfaces = domaine_PolyMAC_old.face_surfaces();
       const DoubleVect& vit = vitesse().valeurs();
-      DoubleTrav fluent(zone_PolyMAC_old.zone().nb_elem_tot());
+      DoubleTrav fluent(domaine_PolyMAC_old.domaine().nb_elem_tot());
 
       // Remplissage du tableau fluent
 
@@ -162,10 +162,10 @@ void Op_Conv_PolyMAC_old_iterateur_base::calculer_pour_post(Champ& espace_stocka
 
       // On traite les bords
 
-      for (int n_bord=0; n_bord<zone_PolyMAC_old.nb_front_Cl(); n_bord++)
+      for (int n_bord=0; n_bord<domaine_PolyMAC_old.nb_front_Cl(); n_bord++)
         {
 
-          const Cond_lim& la_cl = zone_Cl_PolyMAC_old.les_conditions_limites(n_bord);
+          const Cond_lim& la_cl = domaine_Cl_PolyMAC_old.les_conditions_limites(n_bord);
 
           if ( sub_type(Dirichlet_entree_fluide,la_cl.valeur())
                || sub_type(Neumann_sortie_libre,la_cl.valeur())  )
@@ -192,8 +192,8 @@ void Op_Conv_PolyMAC_old_iterateur_base::calculer_pour_post(Champ& espace_stocka
 
 
       // Boucle sur les faces internes pour remplir fluent
-      int zone_PolyMAC_old_nb_faces=zone_PolyMAC_old.nb_faces();
-      for (face=zone_PolyMAC_old.premiere_face_int(); face<zone_PolyMAC_old_nb_faces; face++)
+      int domaine_PolyMAC_old_nb_faces=domaine_PolyMAC_old.nb_faces();
+      for (face=domaine_PolyMAC_old.premiere_face_int(); face<domaine_PolyMAC_old_nb_faces; face++)
         {
           psc = vit[face]*face_surfaces(face);
           eval_fluent(psc,face_voisins(face,0),face_voisins(face,1),fluent);
@@ -202,8 +202,8 @@ void Op_Conv_PolyMAC_old_iterateur_base::calculer_pour_post(Champ& espace_stocka
       if (vitesse().le_nom()=="rho_u" && equation().probleme().is_dilatable())
         diviser_par_rho_si_dilatable(fluent,equation().milieu());
 
-      int zone_PolyMAC_old_nb_elem=zone_PolyMAC_old.nb_elem();
-      for (int num_poly=0; num_poly<zone_PolyMAC_old_nb_elem; num_poly++)
+      int domaine_PolyMAC_old_nb_elem=domaine_PolyMAC_old.nb_elem();
+      for (int num_poly=0; num_poly<domaine_PolyMAC_old_nb_elem; num_poly++)
         {
           es_valeurs(num_poly) = volumes(num_poly)/(fluent[num_poly]+1.e-30);
         }
@@ -230,9 +230,9 @@ void Op_Conv_PolyMAC_old_iterateur_base::completer()
   Operateur_base::completer();
   iter.completer_();
 }
-void Op_Conv_PolyMAC_old_iterateur_base::associer_zone_cl_dis(const Zone_Cl_dis_base& zcl)
+void Op_Conv_PolyMAC_old_iterateur_base::associer_domaine_cl_dis(const Domaine_Cl_dis_base& zcl)
 {
-  iter.valeur().associer_zone_cl_dis(zcl);
+  iter.valeur().associer_domaine_cl_dis(zcl);
 }
 
 int Op_Conv_PolyMAC_old_iterateur_base::impr(Sortie& os) const

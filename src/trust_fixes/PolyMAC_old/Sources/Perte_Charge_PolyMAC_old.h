@@ -25,18 +25,20 @@
 
 #include <Source_base.h>
 #include <Terme_Source_Qdm.h>
-#include <Ref_Sous_Zone.h>
-#include <Ref_Fluide_base.h>
-#include <Ref_Champ_Inc_base.h>
-#include <Ref_Zone_PolyMAC_old.h>
-#include <Ref_Zone_Cl_PolyMAC_old.h>
+class Sous_Domaine;
+class Fluide_base;
+class Champ_Inc_base;
+#include <TRUST_Ref.h>
+class Domaine_Cl_PolyMAC_old;
+class Domaine_PolyMAC_old;
+
 
 //! Factorise les fonctionnalites de plusieurs pertes de charge en VEF, vitesse aux faces
 /**
    Perte_Charge_Isotrope, Perte_Charge_Directionnelle et
    Perte_Charge_Anisotrope heritent de Perte_Charge_PolyMAC_old. Elles
    doivent surcharger essentiellement readOn() et perte_charge().
-   readOn() est suppose lire au moins diam_hydr et sous_zone.
+   readOn() est suppose lire au moins diam_hydr et sous_domaine.
 
    Ces classes sont censees remplacer Perte_Charge_PolyMAC_old_Face
    et Perte_Charge_PolyMAC_old_P1NC.
@@ -55,7 +57,7 @@ public:
 
 protected:
 
-  void associer_zones(const Zone_dis&,const Zone_Cl_dis&) override;   //!< associe la_Zone_PolyMAC_old et la_Zone_Cl_PolyMAC_old
+  void associer_domaines(const Domaine_dis&,const Domaine_Cl_dis&) override;   //!< associe la_Domaine_PolyMAC_old et la_Domaine_Cl_PolyMAC_old
 
   //! Appele pour chaque face par ajouter()
   /**
@@ -89,14 +91,14 @@ protected:
   REF(Fluide_base) le_fluide;
   //! Vitesse associee a l'equation resolue
   REF(Champ_Inc_base) la_vitesse;
-  //! Zone dans laquelle s'applique la perte de charge
-  REF(Zone_PolyMAC_old) la_Zone_PolyMAC_old;
-  REF(Zone_Cl_PolyMAC_old) la_Zone_Cl_PolyMAC_old;
+  //! Domaine dans laquelle s'applique la perte de charge
+  REF(Domaine_PolyMAC_old) la_Domaine_PolyMAC_old;
+  REF(Domaine_Cl_PolyMAC_old) la_Domaine_Cl_PolyMAC_old;
 
-  // Cas d'une sous-zone
-  bool sous_zone; //!< Le terme est-il limite a une sous-zone ?
-  Nom nom_sous_zone; //!< Nom de la sous-zone, initialise dans readOn()
-  REF(Sous_Zone) la_sous_zone; //!< Initialise dans completer()
+  // Cas d'une sous-domaine
+  bool sous_domaine; //!< Le terme est-il limite a une sous-domaine ?
+  Nom nom_sous_domaine; //!< Nom de la sous-domaine, initialise dans readOn()
+  REF(Sous_Domaine) la_sous_domaine; //!< Initialise dans completer()
   int implicite_;
 };
 

@@ -27,8 +27,8 @@
 #include <Terme_Puissance_Thermique.h>
 #include <Terme_Source_PolyMAC_old_base.h>
 
-class Zone_dis;
-class Zone_Cl_dis;
+class Domaine_dis;
+class Domaine_Cl_dis;
 
 //////////////////////////////////////////////////////////////////////////////
 //
@@ -44,7 +44,7 @@ class Terme_Puissance_Thermique_PolyMAC_old_base : public Terme_Puissance_Thermi
 public:
 
   inline Terme_Puissance_Thermique_PolyMAC_old_base(const Iterateur_Source_PolyMAC_old_base&);
-  void associer_zones(const Zone_dis&, const Zone_Cl_dis& ) override;
+  void associer_domaines(const Domaine_dis&, const Domaine_Cl_dis& ) override;
   int initialiser(double temps) override;
 
 

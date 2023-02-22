@@ -27,8 +27,8 @@
 #include <Fluide_Incompressible.h>
 #include <Probleme_base.h>
 #include <Domaine.h>
-#include <Sous_zone_VF.h>
-#include <Zone_PolyMAC_old.h>
+#include <Sous_domaine_VF.h>
+#include <Domaine_PolyMAC_old.h>
 #include <Matrice_Morse.h>
 #include <Schema_Temps_base.h>
 #include <TRUSTTrav.h>
@@ -50,14 +50,14 @@ Sortie& Perte_Charge_Circulaire_PolyMAC_old_Face::printOn(Sortie& s ) const
 Entree& Perte_Charge_Circulaire_PolyMAC_old_Face::readOn(Entree& s )
 {
   Cerr << "Perte_Charge_Circulaire_PolyMAC_old_Face::readOn " << finl;
-  sous_zone=false;
+  sous_domaine=false;
   int lambda_ortho_ok=0;
   int lambda_ok=0;
   // Definition des mots-cles
   Motcles les_mots(7);
   les_mots[0] = "lambda";
   les_mots[1] = "diam_hydr";
-  les_mots[2] = "sous_zone";
+  les_mots[2] = "sous_domaine";
   les_mots[3] = "direction";
   les_mots[4] = "lambda_ortho";
   les_mots[5] = "diam_hydr_ortho";
@@ -104,9 +104,9 @@ Entree& Perte_Charge_Circulaire_PolyMAC_old_Face::readOn(Entree& s )
         case 5: // diam_hydr_ortho
           s >> diam_hydr_ortho;
           break;
-        case 2: // sous_zone
-          s >> nom_sous_zone;
-          sous_zone=true;
+        case 2: // sous_domaine
+          s >> nom_sous_domaine;
+          sous_domaine=true;
           break;
         case 3: // direction
           s >> v;
@@ -290,11 +290,11 @@ void  Perte_Charge_Circulaire_PolyMAC_old_Face::coeffs_perte_charge(const Double
   // copie de Perte_Charge_PolyMAC_old::ajouter
   // Raccourcis
   const Champ_Don& nu=le_fluide->viscosite_cinematique(); // viscosite cinematique
-  const DoubleTab& xv=la_zone_PolyMAC_old->xv() ;                     // centres de gravite des faces
+  const DoubleTab& xv=la_domaine_PolyMAC_old->xv() ;                     // centres de gravite des faces
   const DoubleTab& vit=la_vitesse->valeurs();
-  // Sinon segfault a l'initialisation de ssz quand il n'y a pas de sous-zone !
-  const Sous_zone_VF& ssz=sous_zone?la_sous_zone_dis.valeur():Sous_zone_VF();
-  const Zone_PolyMAC_old& zvef=la_zone_PolyMAC_old.valeur();
+  // Sinon segfault a l'initialisation de ssz quand il n'y a pas de sous-domaine !
+  const Sous_domaine_VF& ssz=sous_domaine?la_sous_domaine_dis.valeur():Sous_domaine_VF();
+  const Domaine_PolyMAC_old& zvef=la_domaine_PolyMAC_old.valeur();
 
   // Parametres pour perte_charge()
   static DoubleVect u(dimension);
@@ -318,14 +318,14 @@ void  Perte_Charge_Circulaire_PolyMAC_old_Face::coeffs_perte_charge(const Double
   double t=equation().schema_temps().temps_courant();
 
   // Nombre de faces a traiter.
-  int max_faces=sous_zone?
+  int max_faces=sous_domaine?
   ssz.les_faces().size() :
   zvef.nb_faces_tot();
 
   for (int face=0;face<max_faces;face++) {
 
-  // indice de la face dans la zone_PolyMAC_old
-  int la_face=sous_zone?
+  // indice de la face dans la domaine_PolyMAC_old
+  int la_face=sous_domaine?
   ssz.les_faces()[face] :
   face;
 
@@ -359,7 +359,7 @@ void  Perte_Charge_Circulaire_PolyMAC_old_Face::coeffs_perte_charge(const Double
   reynolds=1e-10;
 
   // Calcul du volume d'integration
-  double volume=sous_zone?
+  double volume=sous_domaine?
   ssz.volumes_entrelaces(face) :
   zvef.volumes_entrelaces(la_face);
   volume*=zvef.porosite_face(la_face);

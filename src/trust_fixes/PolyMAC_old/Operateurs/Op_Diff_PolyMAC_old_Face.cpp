@@ -27,10 +27,10 @@
 #include <Champ_Face_PolyMAC_old.h>
 #include <Schema_Temps_base.h>
 #include <Mod_turb_hyd_base.h>
-#include <Zone_Cl_PolyMAC_old.h>
+#include <Domaine_Cl_PolyMAC_old.h>
 #include <Probleme_base.h>
 #include <Synonyme_info.h>
-#include <Zone_PolyMAC_old.h>
+#include <Domaine_PolyMAC_old.h>
 #include <Matrix_tools.h>
 #include <Array_tools.h>
 #include <TRUSTLists.h>
@@ -56,11 +56,11 @@ Entree& Op_Diff_PolyMAC_old_Face::readOn( Entree& is )
 void Op_Diff_PolyMAC_old_Face::completer()
 {
   Op_Diff_PolyMAC_old_base::completer();
-  const Zone_PolyMAC_old& zone = la_zone_poly_.valeur();
+  const Domaine_PolyMAC_old& domaine = la_domaine_poly_.valeur();
   const Champ_Face_PolyMAC_old& ch = ref_cast(Champ_Face_PolyMAC_old, equation().inconnue().valeur());
-  if (zone.zone().nb_joints() && zone.zone().joint(0).epaisseur() < 1)
+  if (domaine.domaine().nb_joints() && domaine.domaine().joint(0).epaisseur() < 1)
     Cerr << "Op_Diff_PolyMAC_old_Face : largeur de joint insuffisante (minimum 1)!" << finl, Process::exit();
-  ch.init_ra(), zone.init_rf(), zone.init_m1(), zone.init_m2();
+  ch.init_ra(), domaine.init_rf(), domaine.init_m1(), domaine.init_m2();
 
   if (que_suis_je() == "Op_Diff_PolyMAC_old_Face") return;
   const RefObjU& modele_turbulence = equation().get_modele(TURBULENCE);
@@ -71,26 +71,26 @@ void Op_Diff_PolyMAC_old_Face::completer()
 
 void Op_Diff_PolyMAC_old_Face::dimensionner(Matrice_Morse& mat) const
 {
-  const Zone_PolyMAC_old& zone = la_zone_poly_.valeur();
+  const Domaine_PolyMAC_old& domaine = la_domaine_poly_.valeur();
   const Champ_Face_PolyMAC_old& ch = ref_cast(Champ_Face_PolyMAC_old, equation().inconnue().valeur());
-  const IntTab& e_f = zone.elem_faces();
-  int i, j, k, a, e, f, fb, nf_tot = zone.nb_faces_tot(), na_tot = dimension < 3 ? zone.zone().nb_som_tot() : zone.zone().nb_aretes_tot(), idx;
+  const IntTab& e_f = domaine.elem_faces();
+  int i, j, k, a, e, f, fb, nf_tot = domaine.nb_faces_tot(), na_tot = dimension < 3 ? domaine.domaine().nb_som_tot() : domaine.domaine().nb_aretes_tot(), idx;
 
-  zone.init_m2();
+  domaine.init_m2();
 
   IntTab stencil(0, 2);
   stencil.set_smart_resize(1);
   //partie vitesses : m2 Rf
-  for (e = 0; e < zone.nb_elem_tot(); e++)
-    for (i = zone.m2d(e), idx = 0; i < zone.m2d(e + 1); i++, idx++)
-      for (f = e_f(e, idx), j = zone.m2i(i); f < zone.nb_faces() && ch.icl(f, 0) < 2 && j < zone.m2i(i + 1); j++)
-        for (fb = e_f(e, zone.m2j(j)), k = zone.rfdeb(fb); k < zone.rfdeb(fb + 1); k++) stencil.append_line(f, nf_tot + zone.rfji(k));
+  for (e = 0; e < domaine.nb_elem_tot(); e++)
+    for (i = domaine.m2d(e), idx = 0; i < domaine.m2d(e + 1); i++, idx++)
+      for (f = e_f(e, idx), j = domaine.m2i(i); f < domaine.nb_faces() && ch.icl(f, 0) < 2 && j < domaine.m2i(i + 1); j++)
+        for (fb = e_f(e, domaine.m2j(j)), k = domaine.rfdeb(fb); k < domaine.rfdeb(fb + 1); k++) stencil.append_line(f, nf_tot + domaine.rfji(k));
 
   //partie vorticites : Ra m2 - m1 / nu
-  for (a = 0; a < (dimension < 3 ? zone.nb_som() : zone.zone().nb_aretes()); a++)
+  for (a = 0; a < (dimension < 3 ? domaine.nb_som() : domaine.domaine().nb_aretes()); a++)
     {
       for (i = ch.radeb(a, 0); i < ch.radeb(a + 1, 0); i++) stencil.append_line(nf_tot + a, ch.raji(i));
-      for (i = zone.m1deb(a); i < zone.m1deb(a + 1); i++) stencil.append_line(nf_tot + a, nf_tot + zone.m1ji(i, 0));
+      for (i = domaine.m1deb(a); i < domaine.m1deb(a + 1); i++) stencil.append_line(nf_tot + a, nf_tot + domaine.m1ji(i, 0));
     }
 
   tableau_trier_retirer_doublons(stencil);
@@ -101,24 +101,24 @@ void Op_Diff_PolyMAC_old_Face::dimensionner(Matrice_Morse& mat) const
 // renvoie resu
 inline DoubleTab& Op_Diff_PolyMAC_old_Face::ajouter(const DoubleTab& inco, DoubleTab& resu) const
 {
-  const Zone_PolyMAC_old& zone = la_zone_poly_.valeur();
-  const IntTab& f_e = zone.face_voisins(), &e_f = zone.elem_faces();
+  const Domaine_PolyMAC_old& domaine = la_domaine_poly_.valeur();
+  const IntTab& f_e = domaine.face_voisins(), &e_f = domaine.elem_faces();
   const Champ_Face_PolyMAC_old& ch = ref_cast(Champ_Face_PolyMAC_old, equation().inconnue().valeur());
   const Conds_lim& cls = la_zcl_poly_.valeur().les_conditions_limites();
-  const DoubleVect& pe = equation().milieu().porosite_elem(), &ve = zone.volumes();
-  int i, j, k, e, f, fb, a, nf_tot = zone.nb_faces_tot(), idx;
+  const DoubleVect& pe = equation().milieu().porosite_elem(), &ve = domaine.volumes();
+  int i, j, k, e, f, fb, a, nf_tot = domaine.nb_faces_tot(), idx;
 
   update_nu();
   //partie vitesses : m2 Rf
-  for (e = 0; e < zone.nb_elem_tot(); e++)
-    for (i = zone.m2d(e), idx = 0; i < zone.m2d(e + 1); i++, idx++)
-      for (f = e_f(e, idx), j = zone.m2i(i); f < zone.nb_faces() && ch.icl(f, 0) < 2 && j < zone.m2i(i + 1); j++)
-        for (fb = e_f(e, zone.m2j(j)), k = zone.rfdeb(fb); k < zone.rfdeb(fb + 1); k++)
-          resu(f) -= zone.m2c(j) * ve(e) * (e == f_e(f, 0) ? 1 : -1) * (e == f_e(fb, 0) ? 1 : -1) * pe(e) * zone.rfci(k) * inco(nf_tot + zone.rfji(k));
+  for (e = 0; e < domaine.nb_elem_tot(); e++)
+    for (i = domaine.m2d(e), idx = 0; i < domaine.m2d(e + 1); i++, idx++)
+      for (f = e_f(e, idx), j = domaine.m2i(i); f < domaine.nb_faces() && ch.icl(f, 0) < 2 && j < domaine.m2i(i + 1); j++)
+        for (fb = e_f(e, domaine.m2j(j)), k = domaine.rfdeb(fb); k < domaine.rfdeb(fb + 1); k++)
+          resu(f) -= domaine.m2c(j) * ve(e) * (e == f_e(f, 0) ? 1 : -1) * (e == f_e(fb, 0) ? 1 : -1) * pe(e) * domaine.rfci(k) * inco(nf_tot + domaine.rfji(k));
 
   //partie vorticites : Ra m2 - m1 / nu
   if (resu.dimension_tot(0) == nf_tot) return resu; //resu ne contient que la partie "faces"
-  for (a = 0; a < (dimension < 3 ? zone.nb_som() : zone.zone().nb_aretes()); a++)
+  for (a = 0; a < (dimension < 3 ? domaine.nb_som() : domaine.domaine().nb_aretes()); a++)
     {
       //rotationnel : vitesses internes
       for (i = ch.radeb(a, 0); i < ch.radeb(a + 1, 0); i++)
@@ -128,8 +128,8 @@ inline DoubleTab& Op_Diff_PolyMAC_old_Face::ajouter(const DoubleTab& inco, Doubl
         for (k = 0; k < dimension; k++)
           resu(nf_tot + a) -= ch.racf(i, k) * ref_cast(Dirichlet, cls[ch.icl(ch.rajf(i), 1)].valeur()).val_imp(ch.icl(ch.rajf(i), 2), k);
       // -m1 / nu
-      for (i = zone.m1deb(a); i < zone.m1deb(a + 1); i++)
-        resu(nf_tot + a) += zone.m1ci(i) / (pe(zone.m1ji(i, 1)) * nu_(zone.m1ji(i, 1), 0)) * inco(nf_tot + zone.m1ji(i, 0));
+      for (i = domaine.m1deb(a); i < domaine.m1deb(a + 1); i++)
+        resu(nf_tot + a) += domaine.m1ci(i) / (pe(domaine.m1ji(i, 1)) * nu_(domaine.m1ji(i, 1), 0)) * inco(nf_tot + domaine.m1ji(i, 0));
     }
   return resu;
 }
@@ -139,30 +139,30 @@ inline DoubleTab& Op_Diff_PolyMAC_old_Face::ajouter(const DoubleTab& inco, Doubl
 
 inline void Op_Diff_PolyMAC_old_Face::contribuer_a_avec(const DoubleTab& inco, Matrice_Morse& matrice) const
 {
-  const Zone_PolyMAC_old& zone = la_zone_poly_.valeur();
-  const IntTab& f_e = zone.face_voisins(), &e_f = zone.elem_faces();
+  const Domaine_PolyMAC_old& domaine = la_domaine_poly_.valeur();
+  const IntTab& f_e = domaine.face_voisins(), &e_f = domaine.elem_faces();
   const Champ_Face_PolyMAC_old& ch = ref_cast(Champ_Face_PolyMAC_old, equation().inconnue().valeur());
-  const DoubleVect& pe = equation().milieu().porosite_elem(), &ve = zone.volumes();
-  int i, j, k, e, f, fb, a, nf_tot = zone.nb_faces_tot(), idx;
+  const DoubleVect& pe = equation().milieu().porosite_elem(), &ve = domaine.volumes();
+  int i, j, k, e, f, fb, a, nf_tot = domaine.nb_faces_tot(), idx;
 
   update_nu();
   //partie vitesses : m2 Rf
-  for (e = 0; e < zone.nb_elem_tot(); e++)
-    for (i = zone.m2d(e), idx = 0; i < zone.m2d(e + 1); i++, idx++)
-      for (f = e_f(e, idx), j = zone.m2i(i); f < zone.nb_faces() && ch.icl(f, 0) < 2 && j < zone.m2i(i + 1); j++)
-        for (fb = e_f(e, zone.m2j(j)), k = zone.rfdeb(fb); k < zone.rfdeb(fb + 1); k++)
-          matrice(f, nf_tot + zone.rfji(k)) += zone.m2c(j) * ve(e) * (e == f_e(f, 0) ? 1 : -1) * (e == f_e(fb, 0) ? 1 : -1) * pe(e) * zone.rfci(k);
+  for (e = 0; e < domaine.nb_elem_tot(); e++)
+    for (i = domaine.m2d(e), idx = 0; i < domaine.m2d(e + 1); i++, idx++)
+      for (f = e_f(e, idx), j = domaine.m2i(i); f < domaine.nb_faces() && ch.icl(f, 0) < 2 && j < domaine.m2i(i + 1); j++)
+        for (fb = e_f(e, domaine.m2j(j)), k = domaine.rfdeb(fb); k < domaine.rfdeb(fb + 1); k++)
+          matrice(f, nf_tot + domaine.rfji(k)) += domaine.m2c(j) * ve(e) * (e == f_e(f, 0) ? 1 : -1) * (e == f_e(fb, 0) ? 1 : -1) * pe(e) * domaine.rfci(k);
 
   //partie vorticites : Ra m2 - m1 / nu
-  for (a = 0; a < (dimension < 3 ? zone.nb_som() : zone.zone().nb_aretes()); a++)
+  for (a = 0; a < (dimension < 3 ? domaine.nb_som() : domaine.domaine().nb_aretes()); a++)
     {
       //rotationnel : vitesses internes
       for (i = ch.radeb(a, 0); i < ch.radeb(a + 1, 0); i++)
         if (ch.icl(f = ch.raji(i), 0) < 2)
           matrice(nf_tot + a, f) += ch.raci(i);
       // -m1 / nu
-      for (i = zone.m1deb(a); i < zone.m1deb(a + 1); i++)
-        matrice(nf_tot + a, nf_tot + zone.m1ji(i, 0)) -= zone.m1ci(i) / (pe(zone.m1ji(i, 1)) * nu_(zone.m1ji(i, 1), 0));
+      for (i = domaine.m1deb(a); i < domaine.m1deb(a + 1); i++)
+        matrice(nf_tot + a, nf_tot + domaine.m1ji(i, 0)) -= domaine.m1ci(i) / (pe(domaine.m1ji(i, 1)) * nu_(domaine.m1ji(i, 1), 0));
     }
 }
 

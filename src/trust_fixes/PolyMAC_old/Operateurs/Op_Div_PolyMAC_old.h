@@ -25,10 +25,9 @@
 #define Op_Div_PolyMAC_old_included
 
 #include <Operateur_Div.h>
-#include <Ref_Zone_PolyMAC_old.h>
-#include <Zone_PolyMAC_old.h>
-#include <Ref_Zone_Cl_PolyMAC_old.h>
-
+#include <Domaine_PolyMAC_old.h>
+#include <TRUST_Ref.h>
+class Domaine_Cl_PolyMAC_old;
 //
 // .DESCRIPTION class Op_Div_PolyMAC_old
 //
@@ -57,7 +56,7 @@ class Op_Div_PolyMAC_old : public Operateur_Div_base
 
 public:
 
-  void associer(const Zone_dis& , const Zone_Cl_dis&,const Champ_Inc&) override;
+  void associer(const Domaine_dis& , const Domaine_Cl_dis&,const Champ_Inc&) override;
   DoubleTab& ajouter(const DoubleTab& ,  DoubleTab& ) const override;
   DoubleTab& calculer(const DoubleTab& , DoubleTab& ) const override;
   int impr(Sortie& os) const override;
@@ -68,8 +67,8 @@ public:
 
 protected:
 
-  REF(Zone_PolyMAC_old) la_zone_PolyMAC_old;
-  REF(Zone_Cl_PolyMAC_old) la_zcl_PolyMAC_old;
+  REF(Domaine_PolyMAC_old) la_domaine_PolyMAC_old;
+  REF(Domaine_Cl_PolyMAC_old) la_zcl_PolyMAC_old;
 
   DoubleVect porosite_face;
 };

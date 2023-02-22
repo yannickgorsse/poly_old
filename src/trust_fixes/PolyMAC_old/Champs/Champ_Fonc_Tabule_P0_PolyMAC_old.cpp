@@ -21,7 +21,7 @@
 //////////////////////////////////////////////////////////////////////////////
 
 #include <Champ_Fonc_Tabule_P0_PolyMAC_old.h>
-#include <Zone_VF.h>
+#include <Domaine_VF.h>
 #include <Table.h>
 
 Implemente_instanciable(Champ_Fonc_Tabule_P0_PolyMAC_old,"Champ_Fonc_Tabule_P0_PolyMAC_old",Champ_Fonc_P0_PolyMAC_old);
@@ -51,7 +51,7 @@ void Champ_Fonc_Tabule_P0_PolyMAC_old::associer_param(const VECT(REF(Champ_base)
 
 void Champ_Fonc_Tabule_P0_PolyMAC_old::mettre_a_jour(double t)
 {
-  const Zone_VF& zvf = la_zone_VF.valeur();
+  const Domaine_VF& zvf = le_dom_VF.valeur();
   const Table& table = la_table.valeur();
   DoubleTab& mes_valeurs = valeurs();
   const int nb_elem = zvf.nb_elem(), nb_elem_tot = zvf.nb_elem_tot(), nb_param = les_ch_param.size();

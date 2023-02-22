@@ -22,9 +22,9 @@
 
 #include <Champ_Fonc_Face_PolyMAC_old.h>
 #include <Domaine.h>
-#include <Zone_VF.h>
+#include <Domaine_VF.h>
 #include <Champ_Uniforme.h>
-#include <Zone_PolyMAC_old.h>
+#include <Domaine_PolyMAC_old.h>
 #include <TRUSTTab.h>
 
 Implemente_instanciable(Champ_Fonc_Face_PolyMAC_old,"Champ_Fonc_Face_PolyMAC_old",Champ_Fonc_base) ;
@@ -50,9 +50,9 @@ const Champ_base& Champ_Fonc_Face_PolyMAC_old::le_champ(void) const
   return *this;
 }
 
-void Champ_Fonc_Face_PolyMAC_old::associer_zone_dis_base(const Zone_dis_base& z_dis)
+void Champ_Fonc_Face_PolyMAC_old::associer_domaine_dis_base(const Domaine_dis_base& z_dis)
 {
-  ref_zone_vf_=ref_cast(Zone_VF, z_dis);
+  ref_domaine_vf_=ref_cast(Domaine_VF, z_dis);
 }
 
 
@@ -64,14 +64,14 @@ int Champ_Fonc_Face_PolyMAC_old::fixer_nb_valeurs_nodales(int n)
   //
   // je suis tout de meme etonne du code utilise dans
   // Champ_Fonc_P0_base::fixer_nb_valeurs_nodales()
-  // pour recuperer la zone discrete...
+  // pour recuperer la domaine discrete...
 
   const Champ_Fonc_base& self = ref_cast(Champ_Fonc_base, *this);
-  const Zone_VF& la_zone_vf = ref_cast(Zone_VF,self.zone_dis_base());
+  const Domaine_VF& la_domaine_vf = ref_cast(Domaine_VF,self.domaine_dis_base());
 
-  assert(n == la_zone_vf.nb_faces());
+  assert(n == la_domaine_vf.nb_faces());
 
-  const MD_Vector& md = la_zone_vf.md_vector_faces();
+  const MD_Vector& md = la_domaine_vf.md_vector_faces();
   // Probleme: nb_comp vaut 2 mais on ne veut qu'une dimension !!!
   // HACK :
   int old_nb_compo = nb_compo_;
@@ -85,10 +85,10 @@ Champ_base& Champ_Fonc_Face_PolyMAC_old::affecter_(const Champ_base& ch)
 {
   const DoubleTab& v = ch.valeurs();
   DoubleTab& val = valeurs();
-  const Zone_PolyMAC_old& zone_PolyMAC_old = ref_cast( Zone_PolyMAC_old,ref_zone_vf_.valeur());
-  int nb_faces = zone_PolyMAC_old.nb_faces();
-  const DoubleVect& surface = zone_PolyMAC_old.face_surfaces();
-  const DoubleTab& normales = zone_PolyMAC_old.face_normales();
+  const Domaine_PolyMAC_old& domaine_PolyMAC_old = ref_cast( Domaine_PolyMAC_old,ref_domaine_vf_.valeur());
+  int nb_faces = domaine_PolyMAC_old.nb_faces();
+  const DoubleVect& surface = domaine_PolyMAC_old.face_surfaces();
+  const DoubleTab& normales = domaine_PolyMAC_old.face_normales();
 
 
   if (sub_type(Champ_Uniforme,ch))
@@ -105,9 +105,9 @@ Champ_base& Champ_Fonc_Face_PolyMAC_old::affecter_(const Champ_base& ch)
     }
   else if (nb_compo_ == dimension)
     {
-      //      int ndeb_int = zone_PolyMAC_old.premiere_face_int();
-      //      const IntTab& face_voisins = zone_PolyMAC_old.face_voisins();
-      const DoubleTab& xv=zone_PolyMAC_old.xv();
+      //      int ndeb_int = domaine_PolyMAC_old.premiere_face_int();
+      //      const IntTab& face_voisins = domaine_PolyMAC_old.face_voisins();
+      const DoubleTab& xv=domaine_PolyMAC_old.xv();
       DoubleTab eval(val.dimension_tot(0),dimension);
       ch.valeur_aux(xv,eval);
       for (int num_face=0; num_face<nb_faces; num_face++)
@@ -123,9 +123,9 @@ Champ_base& Champ_Fonc_Face_PolyMAC_old::affecter_(const Champ_base& ch)
     }
   else if (nb_compo_ == 1)
     {
-      //      int ndeb_int = zone_PolyMAC_old.premiere_face_int();
-      //      const IntTab& face_voisins = zone_PolyMAC_old.face_voisins();
-      const DoubleTab& xv=zone_PolyMAC_old.xv();
+      //      int ndeb_int = domaine_PolyMAC_old.premiere_face_int();
+      //      const IntTab& face_voisins = domaine_PolyMAC_old.face_voisins();
+      const DoubleTab& xv=domaine_PolyMAC_old.xv();
       ch.valeur_aux(xv,val);
     }
   else abort();
@@ -168,11 +168,11 @@ DoubleTab& Champ_Fonc_Face_PolyMAC_old::valeur_aux_elems(const DoubleTab& positi
       Process::exit();
     }
 
-  const Zone_PolyMAC_old& zone_VF = ref_cast(Zone_PolyMAC_old,zone_vf());
-  //  const Zone& zone_geom = zone_VDF.zone();
-  const DoubleTab& normales = zone_VF.face_normales();
-  //  const DoubleVect& surfaces = zone_VF.face_surfaces();
-  const IntTab& elem_faces = zone_VF.elem_faces();
+  const Domaine_PolyMAC_old& domaine_VF = ref_cast(Domaine_PolyMAC_old,domaine_vf());
+  //  const Domaine& domaine_geom = domaine_VDF.domaine();
+  const DoubleTab& normales = domaine_VF.face_normales();
+  //  const DoubleVect& surfaces = domaine_VF.face_surfaces();
+  const IntTab& elem_faces = domaine_VF.elem_faces();
 
   const DoubleTab& ch = cha.valeurs();
 

@@ -41,7 +41,7 @@ Sortie& Perte_Charge_Anisotrope_PolyMAC_old_Face::printOn(Sortie& s ) const
 Entree& Perte_Charge_Anisotrope_PolyMAC_old_Face::readOn(Entree& s )
 {
   Cerr << "Perte_Charge_Anisotrope_PolyMAC_old_Face::readOn " << finl;
-  sous_zone=false;
+  sous_domaine=false;
   int lambda_ortho_ok=0;
   int lambda_ok=0;
 
@@ -49,7 +49,7 @@ Entree& Perte_Charge_Anisotrope_PolyMAC_old_Face::readOn(Entree& s )
   Motcles les_mots(6);
   les_mots[0] = "lambda";
   les_mots[1] = "diam_hydr";
-  les_mots[2] = "sous_zone";
+  les_mots[2] = "sous_domaine";
   les_mots[3] = "direction";
   les_mots[4] = "lambda_ortho";
   les_mots[5] = "implicite";
@@ -91,9 +91,9 @@ Entree& Perte_Charge_Anisotrope_PolyMAC_old_Face::readOn(Entree& s )
         case 1: // diam_hydr
           s >> diam_hydr;
           break;
-        case 2: // sous_zone
-          s >> nom_sous_zone;
-          sous_zone=true;
+        case 2: // sous_domaine
+          s >> nom_sous_domaine;
+          sous_domaine=true;
           break;
         case 3: // direction
           s >> v;

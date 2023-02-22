@@ -45,9 +45,9 @@ Entree& Iterateur_Source_PolyMAC_old_base::readOn(Entree& s )
 //
 
 
-void Iterateur_Source_PolyMAC_old_base::associer_zones(const Zone_PolyMAC_old& zone_vdf,
-                                                       const Zone_Cl_PolyMAC_old& zone_cl_vdf)
+void Iterateur_Source_PolyMAC_old_base::associer_domaines(const Domaine_PolyMAC_old& domaine_vdf,
+                                                          const Domaine_Cl_PolyMAC_old& domaine_cl_vdf)
 {
-  la_zone = zone_vdf;
-  la_zcl = zone_cl_vdf;
+  la_domaine = domaine_vdf;
+  la_zcl = domaine_cl_vdf;
 }

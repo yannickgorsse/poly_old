@@ -31,13 +31,13 @@
 //
 
 
-#include <Zone_PolyMAC_old.h>
-#include <Zone_Cl_PolyMAC_old.h>
-#include <Zone_Cl_dis.h>
+#include <Domaine_PolyMAC_old.h>
+#include <Domaine_Cl_PolyMAC_old.h>
+#include <Domaine_Cl_dis.h>
 #include <Periodique.h>
 #include <Dirichlet_paroi_fixe.h>
 #include <Dirichlet_paroi_defilante.h>
-#include <Dirichlet_entree_fluide.h>
+#include <Dirichlet_entree_fluide_leaves.h>
 #include <Neumann_paroi.h>
 #include <Neumann_paroi_adiabatique.h>
 #include <Symetrie.h>
@@ -47,7 +47,9 @@
 #include <Scalaire_impose_paroi.h>
 #include <Evaluateur_PolyMAC_old.h>
 #include <Matrice_Morse.h>
-#include <Ref_Operateur_base.h>
+#include <TRUST_Ref.h>
+#include <TRUST_Deriv.h>
+class Operateur_base;
 
 enum Type_Cl_PolyMAC_old
 {
@@ -77,9 +79,9 @@ class Iterateur_PolyMAC_old_base : public Objet_U
 
 public:
 
-  void associer(const Zone_PolyMAC_old&, const Zone_Cl_PolyMAC_old&, const Operateur_base&);
-  void associer(const Zone_dis&, const Zone_Cl_dis&, const Operateur_base&);
-  void associer_zone_cl_dis(const Zone_Cl_dis_base&);
+  void associer(const Domaine_PolyMAC_old&, const Domaine_Cl_PolyMAC_old&, const Operateur_base&);
+  void associer(const Domaine_dis&, const Domaine_Cl_dis&, const Operateur_base&);
+  void associer_domaine_cl_dis(const Domaine_Cl_dis_base&);
   inline Type_Cl_PolyMAC_old type_cl(const Cond_lim&) const;
   virtual DoubleTab& ajouter(const DoubleTab&, DoubleTab& ) const=0;
   virtual void calculer_flux_bord(const DoubleTab&) const;
@@ -89,15 +91,15 @@ public:
   virtual void ajouter_contribution_vitesse(const DoubleTab&, Matrice_Morse& ) const=0;
   virtual Evaluateur_PolyMAC_old& evaluateur() =0;
   virtual const Evaluateur_PolyMAC_old& evaluateur() const=0;
-  inline const Zone_PolyMAC_old& zone() const;
-  inline const Zone_Cl_PolyMAC_old& zone_Cl() const;
+  inline const Domaine_PolyMAC_old& domaine() const;
+  inline const Domaine_Cl_PolyMAC_old& domaine_Cl() const;
   virtual void completer_()=0;
   virtual int impr(Sortie& os) const=0;
 
 protected:
 
-  REF(Zone_PolyMAC_old) la_zone;
-  REF(Zone_Cl_PolyMAC_old) la_zcl;
+  REF(Domaine_PolyMAC_old) la_domaine;
+  REF(Domaine_Cl_PolyMAC_old) la_zcl;
   REF(Operateur_base) op_base;
 
 private:
@@ -109,7 +111,6 @@ private:
 //
 //////////////////////////////////////////////////////////////////////////////
 
-Declare_deriv(Iterateur_PolyMAC_old_base);
 class Iterateur_PolyMAC_old : public DERIV(Iterateur_PolyMAC_old_base)
 {
   Declare_instanciable(Iterateur_PolyMAC_old);
@@ -117,8 +118,8 @@ class Iterateur_PolyMAC_old : public DERIV(Iterateur_PolyMAC_old_base)
 public:
 
   inline Iterateur_PolyMAC_old(const Iterateur_PolyMAC_old_base&);
-  inline void associer(const Zone_PolyMAC_old&, const Zone_Cl_PolyMAC_old&, const Operateur_base&);
-  inline void associer(const Zone_dis&, const Zone_Cl_dis&, const Operateur_base&);
+  inline void associer(const Domaine_PolyMAC_old&, const Domaine_Cl_PolyMAC_old&, const Operateur_base&);
+  inline void associer(const Domaine_dis&, const Domaine_Cl_dis&, const Operateur_base&);
   inline DoubleTab& ajouter(const DoubleTab&, DoubleTab& ) const;
   inline DoubleTab& calculer(const DoubleTab& , DoubleTab& ) const;
   inline void contribuer_au_second_membre(DoubleTab& ) const;
@@ -126,8 +127,8 @@ public:
   inline void ajouter_contribution_vitesse(const DoubleTab&, Matrice_Morse& ) const;
   inline Evaluateur_PolyMAC_old& evaluateur();
   inline const Evaluateur_PolyMAC_old& evaluateur() const;
-  inline const Zone_PolyMAC_old& zone() const;
-  inline const Zone_Cl_PolyMAC_old& zone_Cl() const;
+  inline const Domaine_PolyMAC_old& domaine() const;
+  inline const Domaine_Cl_PolyMAC_old& domaine_Cl() const;
   inline void completer_();
   inline int impr(Sortie& os) const;
 protected:
@@ -143,12 +144,12 @@ private:
 //
 
 
-inline const Zone_PolyMAC_old& Iterateur_PolyMAC_old_base::zone() const
+inline const Domaine_PolyMAC_old& Iterateur_PolyMAC_old_base::domaine() const
 {
-  return la_zone.valeur();
+  return la_domaine.valeur();
 }
 
-inline const Zone_Cl_PolyMAC_old& Iterateur_PolyMAC_old_base::zone_Cl() const
+inline const Domaine_Cl_PolyMAC_old& Iterateur_PolyMAC_old_base::domaine_Cl() const
 {
   return la_zcl.valeur();
 }
@@ -193,14 +194,14 @@ inline const Evaluateur_PolyMAC_old& Iterateur_PolyMAC_old::evaluateur() const
   return valeur().evaluateur();
 }
 
-inline const Zone_PolyMAC_old& Iterateur_PolyMAC_old::zone() const
+inline const Domaine_PolyMAC_old& Iterateur_PolyMAC_old::domaine() const
 {
-  return valeur().zone();
+  return valeur().domaine();
 }
 
-inline const Zone_Cl_PolyMAC_old& Iterateur_PolyMAC_old::zone_Cl() const
+inline const Domaine_Cl_PolyMAC_old& Iterateur_PolyMAC_old::domaine_Cl() const
 {
-  return valeur().zone_Cl();
+  return valeur().domaine_Cl();
 }
 
 Type_Cl_PolyMAC_old Iterateur_PolyMAC_old::type_cl(const Cond_lim& cl) const
@@ -230,16 +231,16 @@ inline void Iterateur_PolyMAC_old::ajouter_contribution_vitesse(const DoubleTab&
   valeur().ajouter_contribution_vitesse(inco, matrice);
 }
 
-inline void Iterateur_PolyMAC_old::associer(const Zone_PolyMAC_old& zone_vdf,
-                                            const Zone_Cl_PolyMAC_old& zone_cl_vdf, const Operateur_base& op)
+inline void Iterateur_PolyMAC_old::associer(const Domaine_PolyMAC_old& domaine_vdf,
+                                            const Domaine_Cl_PolyMAC_old& domaine_cl_vdf, const Operateur_base& op)
 {
-  valeur().associer(zone_vdf,zone_cl_vdf,op);
+  valeur().associer(domaine_vdf,domaine_cl_vdf,op);
 }
 
-inline void Iterateur_PolyMAC_old::associer(const Zone_dis& zone_dis,
-                                            const Zone_Cl_dis& zone_cl_dis, const Operateur_base& op)
+inline void Iterateur_PolyMAC_old::associer(const Domaine_dis& domaine_dis,
+                                            const Domaine_Cl_dis& domaine_cl_dis, const Operateur_base& op)
 {
-  valeur().associer(zone_dis,zone_cl_dis,op);
+  valeur().associer(domaine_dis,domaine_cl_dis,op);
 }
 
 inline void Iterateur_PolyMAC_old::completer_()

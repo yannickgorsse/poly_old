@@ -31,8 +31,7 @@
 //
 #include <Iterateur_Source_PolyMAC_old_base.h>
 #include <ItSouPolyMAC_oldFa.h>
-
-Declare_deriv(Iterateur_Source_PolyMAC_old_base);
+#include <TRUST_Deriv.h>
 
 class Iterateur_Source_PolyMAC_old : public DERIV(Iterateur_Source_PolyMAC_old_base)
 {

@@ -25,9 +25,9 @@
 
 
 #include <Champ_Fonc_P0_PolyMAC_old.h>
-#include <Ref_Zone_Cl_PolyMAC_old.h>
-#include <Ref_Champ_Face_PolyMAC_old.h>
 #include <Champ_Face_PolyMAC_old.h>
+#include <TRUST_Ref.h>
+class Domaine_Cl_PolyMAC_old;
 
 //
 //.DESCRIPTION  classe grad_U_Champ_Face_PolyMAC_old
@@ -45,11 +45,11 @@ public:
   void associer_champ(const Champ_Face_PolyMAC_old& );
   void me_calculer(double );
 
-  inline void associer_zone_Cl_dis_base(const Zone_Cl_dis_base&);
+  inline void associer_domaine_Cl_dis_base(const Domaine_Cl_dis_base&);
 
 protected:
 
-  REF(Zone_Cl_PolyMAC_old) la_zone_Cl_PolyMAC_old;
+  REF(Domaine_Cl_PolyMAC_old) la_domaine_Cl_PolyMAC_old;
   REF(Champ_Face_PolyMAC_old) vitesse_;
 };
 
@@ -60,9 +60,9 @@ inline void grad_U_Champ_Face_PolyMAC_old::mettre_a_jour(double tps)
   Champ_Fonc_base::mettre_a_jour(tps);
 }
 
-inline void grad_U_Champ_Face_PolyMAC_old::associer_zone_Cl_dis_base(const Zone_Cl_dis_base& la_zone_Cl_dis_base)
+inline void grad_U_Champ_Face_PolyMAC_old::associer_domaine_Cl_dis_base(const Domaine_Cl_dis_base& la_domaine_Cl_dis_base)
 {
-  la_zone_Cl_PolyMAC_old  = (const Zone_Cl_PolyMAC_old&) la_zone_Cl_dis_base;
+  la_domaine_Cl_PolyMAC_old  = (const Domaine_Cl_PolyMAC_old&) la_domaine_Cl_dis_base;
 }
 
 

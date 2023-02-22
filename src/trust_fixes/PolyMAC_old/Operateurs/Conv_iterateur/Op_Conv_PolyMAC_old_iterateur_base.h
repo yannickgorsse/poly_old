@@ -64,7 +64,7 @@ public:
   void calculer_pour_post(Champ& espace_stockage,const Nom& option,int comp) const override;
   Motcle get_localisation_pour_post(const Nom& option) const override;
   int impr(Sortie& os) const override;
-  void associer_zone_cl_dis(const Zone_Cl_dis_base&) override;
+  void associer_domaine_cl_dis(const Domaine_Cl_dis_base&) override;
 protected:
 
   Iterateur_PolyMAC_old iter;

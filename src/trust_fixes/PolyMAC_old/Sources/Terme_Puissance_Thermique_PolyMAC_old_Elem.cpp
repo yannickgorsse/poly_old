@@ -40,12 +40,12 @@ Entree& Terme_Puissance_Thermique_PolyMAC_old_Elem::readOn(Entree& s )
 }
 
 
-void Terme_Puissance_Thermique_PolyMAC_old_Elem::associer_zones(const Zone_dis& zone_dis,
-                                                                const Zone_Cl_dis& zone_cl_dis)
+void Terme_Puissance_Thermique_PolyMAC_old_Elem::associer_domaines(const Domaine_dis& domaine_dis,
+                                                                   const Domaine_Cl_dis& domaine_cl_dis)
 {
-  Terme_Puissance_Thermique_PolyMAC_old_base::associer_zones(zone_dis,zone_cl_dis);
+  Terme_Puissance_Thermique_PolyMAC_old_base::associer_domaines(domaine_dis,domaine_cl_dis);
   Eval_Puiss_Th_PolyMAC_old_Elem& eval_puis = (Eval_Puiss_Th_PolyMAC_old_Elem&) iter.evaluateur();
-  eval_puis.associer_zones(zone_dis.valeur(),zone_cl_dis.valeur());
+  eval_puis.associer_domaines(domaine_dis.valeur(),domaine_cl_dis.valeur());
 }
 
 

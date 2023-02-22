@@ -45,7 +45,7 @@ class Terme_Puissance_Thermique_PolyMAC_old_Elem : public Terme_Puissance_Thermi
 public:
 
   inline Terme_Puissance_Thermique_PolyMAC_old_Elem();
-  void associer_zones(const Zone_dis&, const Zone_Cl_dis& ) override;
+  void associer_domaines(const Domaine_dis&, const Domaine_Cl_dis& ) override;
   void associer_pb(const Probleme_base& ) override;
   void mettre_a_jour(double temps) override
   {

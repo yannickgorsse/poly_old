@@ -27,11 +27,11 @@
 
 #include <Operateur_Diff_base.h>
 #include <Op_Diff_Turbulent_base.h>
-#include <Ref_Zone_PolyMAC_old.h>
-#include <Ref_Zone_Cl_PolyMAC_old.h>
-#include <Zone_PolyMAC_old.h>
+#include <TRUST_Ref.h>
+#include <Domaine_PolyMAC_old.h>
 #include <SFichier.h>
 class Champ_Fonc;
+class Domaine_Cl_PolyMAC_old;
 
 
 //
@@ -58,7 +58,7 @@ class Op_Diff_PolyMAC_old_base : public Operateur_Diff_base, public Op_Diff_Turb
   Declare_base(Op_Diff_PolyMAC_old_base);
 
 public:
-  void associer(const Zone_dis& , const Zone_Cl_dis& ,const Champ_Inc& ) override;
+  void associer(const Domaine_dis& , const Domaine_Cl_dis& ,const Champ_Inc& ) override;
 
   double calculer_dt_stab() const override;
 
@@ -88,8 +88,8 @@ public:
   mutable DoubleTab nu_fac_mod; //facteur multiplicatif "utilisateur" a appliquer a nu_fac
 
 protected:
-  REF(Zone_PolyMAC_old) la_zone_poly_;
-  REF(Zone_Cl_PolyMAC_old) la_zcl_poly_;
+  REF(Domaine_PolyMAC_old) la_domaine_poly_;
+  REF(Domaine_Cl_PolyMAC_old) la_zcl_poly_;
   REF(Champ_base) diffusivite_;
   mutable DoubleTab nu_, nu_fac_; //conductivite aux elements, facteur multiplicatif a appliquer par face
   mutable int nu_a_jour_; //si on doit mettre a jour nu
@@ -104,13 +104,13 @@ protected:
 /* diffusivite a l'interieur d'un element e : nu_ef(i, n) : diffusivite de la composante n entre le centre de l'element et celui de la face i */
 inline void Op_Diff_PolyMAC_old_base::remplir_nu_ef(int e, DoubleTab& nu_ef) const
 {
-  const Zone_PolyMAC_old& zone = la_zone_poly_.valeur();
-  const IntTab& e_f = zone.elem_faces();
-  const DoubleTab& xp = zone.xp(), &xv = zone.xv();
+  const Domaine_PolyMAC_old& domaine = la_domaine_poly_.valeur();
+  const IntTab& e_f = domaine.elem_faces();
+  const DoubleTab& xp = domaine.xp(), &xv = domaine.xv();
   int i, j, k, f, n, N = nu_ef.dimension(1), N_nu = nu_.line_size();
   double fac;
 
-  for (i = 0; i < zone.m2d(e + 1) - zone.m2d(e); i++)
+  for (i = 0; i < domaine.m2d(e + 1) - domaine.m2d(e); i++)
     {
       f = e_f(e, i);
       /* diffusivite de chaque composante dans la direction (xf - xe) */
@@ -126,7 +126,7 @@ inline void Op_Diff_PolyMAC_old_base::remplir_nu_ef(int e, DoubleTab& nu_ef) con
             for (k = 0; k < dimension; k++)
               nu_ef(i, n) += nu_.addr()[dimension * (dimension * (N * e + n) + j) + k] * (xv(f, j) - xp(e, j)) * (xv(f, k) - xp(e, k)); //anisotrope complet
       else abort();
-      for (n = 0, fac = nu_fac_.addr()[f] * (N_nu > N ? 1. / zone.dot(&xv(f, 0), &xv(f, 0), &xp(e, 0), &xp(e, 0)) : 1); n < N; n++) nu_ef(i, n) *= fac;
+      for (n = 0, fac = nu_fac_.addr()[f] * (N_nu > N ? 1. / domaine.dot(&xv(f, 0), &xv(f, 0), &xp(e, 0), &xp(e, 0)) : 1); n < N; n++) nu_ef(i, n) *= fac;
     }
 }
 #endif

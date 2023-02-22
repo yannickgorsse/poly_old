@@ -23,12 +23,12 @@
 #ifndef Iterateur_Source_PolyMAC_old_base_included
 #define Iterateur_Source_PolyMAC_old_base_included
 
-#include <Ref_Zone_Cl_PolyMAC_old.h>
 #include <TRUSTTabs_forward.h>
-#include <Ref_Zone_PolyMAC_old.h>
-#include <Ref_Source_base.h>
-#include <Zone_Cl_PolyMAC_old.h>
+#include <Domaine_Cl_PolyMAC_old.h>
 #include <Equation_base.h>
+#include <TRUST_Ref.h>
+class Domaine_PolyMAC_old;
+class Source_base;
 
 class Evaluateur_Source_PolyMAC_old;
 
@@ -39,7 +39,7 @@ class Iterateur_Source_PolyMAC_old_base : public Objet_U
 
 public:
 
-  void associer_zones(const Zone_PolyMAC_old&, const Zone_Cl_PolyMAC_old&);
+  void associer_domaines(const Domaine_PolyMAC_old&, const Domaine_Cl_PolyMAC_old&);
   inline void associer(const Source_base& source);
   virtual DoubleTab& ajouter(DoubleTab& ) const=0;
   virtual DoubleTab& calculer(DoubleTab& ) const=0;
@@ -50,8 +50,8 @@ public:
 
 protected:
 
-  REF(Zone_PolyMAC_old) la_zone;
-  REF(Zone_Cl_PolyMAC_old) la_zcl;
+  REF(Domaine_PolyMAC_old) la_domaine;
+  REF(Domaine_Cl_PolyMAC_old) la_zcl;
   REF(Source_base) so_base;
 
 };

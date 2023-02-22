@@ -23,11 +23,10 @@
 #ifndef Evaluateur_Source_PolyMAC_old_included
 #define Evaluateur_Source_PolyMAC_old_included
 
-#include <Ref_Zone_Cl_PolyMAC_old.h>
 #include <TRUSTTabs_forward.h>
-#include <Ref_Zone_PolyMAC_old.h>
-#include <Zone_Cl_PolyMAC_old.h>
-#include <Zone_PolyMAC_old.h>
+#include <Domaine_Cl_PolyMAC_old.h>
+#include <Domaine_PolyMAC_old.h>
+#include <TRUST_Ref.h>
 
 class Evaluateur_Source_PolyMAC_old
 {
@@ -35,26 +34,26 @@ public:
   inline Evaluateur_Source_PolyMAC_old();
   inline virtual ~Evaluateur_Source_PolyMAC_old() {};
   inline Evaluateur_Source_PolyMAC_old(const Evaluateur_Source_PolyMAC_old& );
-  inline void associer_zones(const Zone_dis_base&,const Zone_Cl_dis_base&);
+  inline void associer_domaines(const Domaine_dis_base&,const Domaine_Cl_dis_base&);
   virtual void mettre_a_jour( ) =0;
   virtual void completer() = 0;
   virtual double calculer_terme_source(int ) const =0;
   virtual void calculer_terme_source(int , DoubleVect&  ) const =0;
 
 protected:
-  REF(Zone_PolyMAC_old) la_zone;
-  REF(Zone_Cl_PolyMAC_old) la_zcl;
+  REF(Domaine_PolyMAC_old) la_domaine;
+  REF(Domaine_Cl_PolyMAC_old) la_zcl;
 };
 
 inline Evaluateur_Source_PolyMAC_old::Evaluateur_Source_PolyMAC_old() {}
 
 inline Evaluateur_Source_PolyMAC_old::Evaluateur_Source_PolyMAC_old(const Evaluateur_Source_PolyMAC_old& eval)
-  : la_zone(eval.la_zone),la_zcl(eval.la_zcl) {}
+  : la_domaine(eval.la_domaine),la_zcl(eval.la_zcl) {}
 
-inline void Evaluateur_Source_PolyMAC_old::associer_zones(const Zone_dis_base& zone_vdf, const Zone_Cl_dis_base& zone_cl_vdf)
+inline void Evaluateur_Source_PolyMAC_old::associer_domaines(const Domaine_dis_base& domaine_vdf, const Domaine_Cl_dis_base& domaine_cl_vdf)
 {
-  la_zone = ref_cast(Zone_PolyMAC_old, zone_vdf);
-  la_zcl = ref_cast(Zone_Cl_PolyMAC_old, zone_cl_vdf);
+  la_domaine = ref_cast(Domaine_PolyMAC_old, domaine_vdf);
+  la_zcl = ref_cast(Domaine_Cl_PolyMAC_old, domaine_cl_vdf);
   completer();
 }
 

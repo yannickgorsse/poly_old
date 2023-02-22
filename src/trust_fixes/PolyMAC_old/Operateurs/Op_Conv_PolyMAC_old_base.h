@@ -25,8 +25,10 @@
 #define Op_Conv_PolyMAC_old_base_included
 
 #include <Operateur_Conv.h>
-#include <Ref_Zone_PolyMAC_old.h>
-#include <Ref_Zone_Cl_PolyMAC_old.h>
+#include <TRUST_Ref.h>
+class Champ_base;
+class Domaine_PolyMAC_old;
+class Domaine_Cl_PolyMAC_old;
 //
 // .DESCRIPTION class Op_Conv_PolyMAC_old_base
 //
@@ -58,16 +60,16 @@ public:
   //void calculer_pour_post(Champ& espace_stockage,const Nom& option,int comp) const;
   //virtual Motcle get_localisation_pour_post(const Nom& option) const;
   int impr(Sortie& os) const override;
-  void associer_zone_cl_dis(const Zone_Cl_dis_base&) override;
-  void associer(const Zone_dis& , const Zone_Cl_dis& ,const Champ_Inc& ) override;
+  void associer_domaine_cl_dis(const Domaine_Cl_dis_base&) override;
+  void associer(const Domaine_dis& , const Domaine_Cl_dis& ,const Champ_Inc& ) override;
 
   void associer_vitesse(const Champ_base& ) override;
 
 
 
 protected:
-  REF(Zone_PolyMAC_old) la_zone_poly_;
-  REF(Zone_Cl_PolyMAC_old) la_zcl_poly_;
+  REF(Domaine_PolyMAC_old) la_domaine_poly_;
+  REF(Domaine_Cl_PolyMAC_old) la_zcl_poly_;
   REF(Champ_base) vitesse_;
 
 };

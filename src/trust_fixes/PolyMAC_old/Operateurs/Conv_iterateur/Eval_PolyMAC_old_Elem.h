@@ -24,17 +24,20 @@
 #ifndef Eval_PolyMAC_old_Elem_included
 #define Eval_PolyMAC_old_Elem_included
 
-#include <Ref_Champ_base.h>
+
+#include <TRUST_Ref.h>
 #include <Periodique.h>
 #include <Dirichlet_paroi_fixe.h>
 #include <Dirichlet_paroi_defilante.h>
-#include <Dirichlet_entree_fluide.h>
+#include <Dirichlet_entree_fluide_leaves.h>
 #include <Neumann_paroi.h>
 #include <Neumann_paroi_adiabatique.h>
 #include <Symetrie.h>
 #include <Echange_global_impose.h>
 #include <Echange_externe_impose.h>
 #include <Neumann_sortie_libre.h>
+
+class Champ_base;
 
 //
 // .DESCRIPTION class Eval_PolyMAC_old_Elem

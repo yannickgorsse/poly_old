@@ -21,14 +21,14 @@
 //////////////////////////////////////////////////////////////////////////////
 
 #include <Evaluateur_PolyMAC_old.h>
-#include <Zone_Cl_PolyMAC_old.h>
-#include <Zone_PolyMAC_old.h>
+#include <Domaine_Cl_PolyMAC_old.h>
+#include <Domaine_PolyMAC_old.h>
 #include <Equation_base.h>
 #include <Milieu_base.h>
 
 Evaluateur_PolyMAC_old::Evaluateur_PolyMAC_old(const Evaluateur_PolyMAC_old& eval)
   :
-  la_zone(eval.la_zone),la_zcl(eval.la_zcl),dimension(eval.dimension),premiere_face_bord(eval.premiere_face_bord)
+  la_domaine(eval.la_domaine),la_zcl(eval.la_zcl),dimension(eval.dimension),premiere_face_bord(eval.premiere_face_bord)
 {
   surface.ref(eval.surface);
   elem_.ref(eval.elem_);
@@ -38,18 +38,18 @@ Evaluateur_PolyMAC_old::Evaluateur_PolyMAC_old(const Evaluateur_PolyMAC_old& eva
 
 }
 
-void Evaluateur_PolyMAC_old::associer_zones(const Zone_PolyMAC_old& zone_vdf,
-                                            const Zone_Cl_PolyMAC_old& zone_cl_vdf)
+void Evaluateur_PolyMAC_old::associer_domaines(const Domaine_PolyMAC_old& domaine_vdf,
+                                               const Domaine_Cl_PolyMAC_old& domaine_cl_vdf)
 {
-  la_zone = zone_vdf;
-  la_zcl = zone_cl_vdf;
+  la_domaine = domaine_vdf;
+  la_zcl = domaine_cl_vdf;
   dimension = Objet_U::dimension;
-  premiere_face_bord = zone_vdf.premiere_face_bord();
-  surface.ref(zone_vdf.face_surfaces());
-  elem_.ref(zone_vdf.face_voisins());
+  premiere_face_bord = domaine_vdf.premiere_face_bord();
+  surface.ref(domaine_vdf.face_surfaces());
+  elem_.ref(domaine_vdf.face_voisins());
   porosite.ref(la_zcl->equation().milieu().porosite_face());
-  volume_entrelaces.ref(zone_vdf.volumes_entrelaces());
-  xv.ref(zone_vdf.xv());
+  volume_entrelaces.ref(domaine_vdf.volumes_entrelaces());
+  xv.ref(domaine_vdf.xv());
 }
 
 void Evaluateur_PolyMAC_old::associer_porosite(const DoubleVect& poro)

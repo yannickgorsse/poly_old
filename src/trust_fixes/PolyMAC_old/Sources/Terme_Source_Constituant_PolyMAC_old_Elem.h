@@ -35,7 +35,7 @@ declare_It_Sou_PolyMAC_old_Elem(Eval_Source_C_PolyMAC_old_Elem)
 //.DESCRIPTION class Terme_Source_Constituant_PolyMAC_old_Elem
 //
 // Cette classe represente un terme source de l'equation de la thermique
-// du type degagement volumique de puissance thermique uniforme sur une zone
+// du type degagement volumique de puissance thermique uniforme sur une domaine
 //
 //.SECTION
 // voir aussi Terme_Source_Constituant, Terme_Source_PolyMAC_old_base
@@ -48,7 +48,7 @@ class Terme_Source_Constituant_PolyMAC_old_Elem : public Terme_Source_Constituan
 public:
 
   inline Terme_Source_Constituant_PolyMAC_old_Elem();
-  void associer_zones(const Zone_dis&, const Zone_Cl_dis& ) override;
+  void associer_domaines(const Domaine_dis&, const Domaine_Cl_dis& ) override;
   void associer_pb(const Probleme_base& ) override;
   void mettre_a_jour(double temps) override
   {

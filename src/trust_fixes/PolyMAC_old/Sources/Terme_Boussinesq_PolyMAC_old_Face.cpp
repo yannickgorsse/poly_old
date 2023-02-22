@@ -23,8 +23,8 @@
 #include <Terme_Boussinesq_PolyMAC_old_Face.h>
 #include <Fluide_Incompressible.h>
 #include <Champ_Uniforme.h>
-#include <Zone_PolyMAC_old.h>
-#include <Zone_Cl_PolyMAC_old.h>
+#include <Domaine_PolyMAC_old.h>
+#include <Domaine_Cl_PolyMAC_old.h>
 #include <Champ_Face_PolyMAC_old.h>
 #include <Convection_Diffusion_Temperature.h>
 #include <Synonyme_info.h>
@@ -45,24 +45,24 @@ Entree& Terme_Boussinesq_PolyMAC_old_Face::readOn(Entree& s )
   return Terme_Boussinesq_base::readOn(s);
 }
 
-void Terme_Boussinesq_PolyMAC_old_Face::associer_zones(const Zone_dis& zone_dis,
-                                                       const Zone_Cl_dis& zone_Cl_dis)
+void Terme_Boussinesq_PolyMAC_old_Face::associer_domaines(const Domaine_dis& domaine_dis,
+                                                          const Domaine_Cl_dis& domaine_Cl_dis)
 {
-  la_zone_PolyMAC_old = ref_cast(Zone_PolyMAC_old, zone_dis.valeur());
-  la_zone_Cl_PolyMAC_old = ref_cast(Zone_Cl_PolyMAC_old, zone_Cl_dis.valeur());
+  la_domaine_PolyMAC_old = ref_cast(Domaine_PolyMAC_old, domaine_dis.valeur());
+  la_domaine_Cl_PolyMAC_old = ref_cast(Domaine_Cl_PolyMAC_old, domaine_Cl_dis.valeur());
 }
 
 DoubleTab& Terme_Boussinesq_PolyMAC_old_Face::ajouter(DoubleTab& resu) const
 {
-  const Zone_PolyMAC_old& zone = la_zone_PolyMAC_old.valeur();
+  const Domaine_PolyMAC_old& domaine = la_domaine_PolyMAC_old.valeur();
   const Champ_Face_PolyMAC_old& ch = ref_cast(Champ_Face_PolyMAC_old, equation().inconnue().valeur());
   const DoubleTab& param = equation_scalaire().inconnue().valeurs();
   const DoubleTab& beta_valeurs = beta().valeur().valeurs();
   const DoubleVect& grav = gravite().valeurs();
-  const IntTab& f_e = zone.face_voisins();
-  const DoubleTab& xv = zone.xv(), &xp = zone.xp();
+  const IntTab& f_e = domaine.face_voisins();
+  const DoubleTab& xv = domaine.xv(), &xp = domaine.xp();
   const DoubleVect& pf = equation().milieu().porosite_face();
-  const DoubleVect& fs = zone.face_surfaces();
+  const DoubleVect& fs = domaine.face_surfaces();
 
   DoubleVect g(dimension);
   g = grav;
@@ -72,12 +72,12 @@ DoubleTab& Terme_Boussinesq_PolyMAC_old_Face::ajouter(DoubleTab& resu) const
   // Verifie la validite de T0:
   check();
   int e, i, f, n;
-  for (f = 0; f < zone.nb_faces(); f++)
+  for (f = 0; f < domaine.nb_faces(); f++)
     for (i = 0; ch.icl(f, 0) < 2 && i < 2 && (e = f_e(f, i)) >= 0; i++) //contributions amont/aval
       {
         double coeff = 0;
         for (n = 0; n < nb_dim; n++) coeff += valeur(beta_valeurs, e, e ,n) * (Scalaire0(n) - valeur(param, e, n));
-        resu(f) += coeff * (i ? -1 : 1) * zone.dot(&xv(f, 0), g.addr(), &xp(e, 0)) * fs(f) * pf(f);
+        resu(f) += coeff * (i ? -1 : 1) * domaine.dot(&xv(f, 0), g.addr(), &xp(e, 0)) * fs(f) * pf(f);
       }
   return resu;
 }

@@ -22,7 +22,7 @@
 
 
 #include <Champ_Q1_PolyMAC_old.h>
-#include <Zone_PolyMAC_old.h>
+#include <Domaine_PolyMAC_old.h>
 #include <Domaine.h>
 
 
@@ -57,9 +57,9 @@ Entree& Champ_Q1_PolyMAC_old::readOn(Entree& s)
 // Exception:
 // Effets de bord:
 // Postcondition:
-const Zone_dis_base& Champ_Q1_PolyMAC_old::zone_dis_base() const
+const Domaine_dis_base& Champ_Q1_PolyMAC_old::domaine_dis_base() const
 {
-  return la_zone_VF.valeur();
+  return la_domaine_VF.valeur();
 }
 // Description:
 //
@@ -69,14 +69,14 @@ const Zone_dis_base& Champ_Q1_PolyMAC_old::zone_dis_base() const
 //    Contraintes:
 //    Acces: entree/sortie
 // Retour:  z_dis
-//    Signification: la zone discretise
+//    Signification: la domaine discretise
 //    Contraintes:
 // Exception:
 // Effets de bord:
 // Postcondition:
-void Champ_Q1_PolyMAC_old::associer_zone_dis_base(const Zone_dis_base& z_dis)
+void Champ_Q1_PolyMAC_old::associer_domaine_dis_base(const Domaine_dis_base& z_dis)
 {
-  la_zone_VF=ref_cast(Zone_VF, z_dis);
+  la_domaine_VF=ref_cast(Domaine_VF, z_dis);
 }
 
 // Description:
@@ -86,23 +86,23 @@ void Champ_Q1_PolyMAC_old::associer_zone_dis_base(const Zone_dis_base& z_dis)
 //    Valeurs par defaut:
 //    Contraintes:
 //    Acces: entree/sortie
-// Retour: la_zone_PolyMAC_old_Q1.valeur()
+// Retour: la_domaine_PolyMAC_old_Q1.valeur()
 //    Signification:
 //    Contraintes:
 // Exception:
 // Effets de bord:
 // Postcondition:
-const Zone_PolyMAC_old& Champ_Q1_PolyMAC_old::zone_PolyMAC_old() const
+const Domaine_PolyMAC_old& Champ_Q1_PolyMAC_old::domaine_PolyMAC_old() const
 {
-  return ref_cast(Zone_PolyMAC_old, la_zone_VF.valeur());
+  return ref_cast(Domaine_PolyMAC_old, la_domaine_VF.valeur());
 }
 
 int Champ_Q1_PolyMAC_old::imprime(Sortie& os, int ncomp) const
 {
-  const Zone_dis_base& zone_dis = zone_dis_base();
-  const Zone& zone = zone_dis.zone();
-  const DoubleTab& coord=zone.domaine().coord_sommets();
-  const int nb_som = zone.domaine().nb_som();
+  const Domaine_dis_base& domaine_dis = domaine_dis_base();
+  const Domaine& domaine = domaine_dis.domaine();
+  const DoubleTab& coord=domaine.coord_sommets();
+  const int nb_som = domaine.nb_som();
   const DoubleTab& val = valeurs();
   int som;
   os << nb_som << finl;

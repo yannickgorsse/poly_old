@@ -24,9 +24,10 @@
 #define Champ_Q1_PolyMAC_old_included
 
 #include <Champ_Inc_Q1_base.h>
-#include <Ref_Zone_VF.h>
+#include <TRUST_Ref.h>
+class Domaine_VF;
 
-class Zone_PolyMAC_old;
+class Domaine_PolyMAC_old;
 
 class Champ_Q1_PolyMAC_old : public Champ_Inc_Q1_base
 {
@@ -34,14 +35,14 @@ class Champ_Q1_PolyMAC_old : public Champ_Inc_Q1_base
 
 public :
 
-  const Zone_PolyMAC_old&        zone_PolyMAC_old() const;
-  void                         associer_zone_dis_base(const Zone_dis_base&) override;
-  const Zone_dis_base& zone_dis_base() const override;
+  const Domaine_PolyMAC_old&        domaine_PolyMAC_old() const;
+  void                         associer_domaine_dis_base(const Domaine_dis_base&) override;
+  const Domaine_dis_base& domaine_dis_base() const override;
   int                       imprime(Sortie& , int ) const override;
 
 protected :
 
-  REF(Zone_VF) la_zone_VF;
+  REF(Domaine_VF) la_domaine_VF;
 
 
 };

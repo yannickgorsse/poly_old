@@ -22,7 +22,7 @@
 
 #include <grad_U_Champ_Face_PolyMAC_old.h>
 #include <Champ_Face_PolyMAC_old.h>
-#include <Zone_Cl_PolyMAC_old.h>
+#include <Domaine_Cl_PolyMAC_old.h>
 
 Implemente_instanciable(grad_U_Champ_Face_PolyMAC_old,"grad_U_Champ_Face_PolyMAC_old",Champ_Fonc_P0_PolyMAC_old);
 

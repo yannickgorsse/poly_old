@@ -25,9 +25,9 @@
 #define Op_Grad_PolyMAC_old_Face_included
 
 #include <Operateur_Grad.h>
-#include <Ref_Zone_PolyMAC_old.h>
-#include <Zone_PolyMAC_old.h>
-#include <Ref_Zone_Cl_PolyMAC_old.h>
+#include <Domaine_PolyMAC_old.h>
+#include <TRUST_Ref.h>
+class Domaine_Cl_PolyMAC_old;
 
 //
 // .DESCRIPTION class Op_Grad_PolyMAC_old_Face
@@ -48,7 +48,7 @@ class Op_Grad_PolyMAC_old_Face : public Operateur_Grad_base
 
 public:
 
-  void associer(const Zone_dis& , const Zone_Cl_dis& ,
+  void associer(const Domaine_dis& , const Domaine_Cl_dis& ,
                 const Champ_Inc& ) override;
   void dimensionner(Matrice_Morse& ) const override;
   DoubleTab& ajouter(const DoubleTab& ,  DoubleTab& ) const override;
@@ -56,10 +56,10 @@ public:
   void contribuer_a_avec(const DoubleTab& inco, Matrice_Morse& matrice) const override;
   int impr(Sortie& os) const override;
 
-  inline Zone_PolyMAC_old& zone_PolyMAC_old();
-  inline const Zone_PolyMAC_old& zone_PolyMAC_old() const;
-  inline Zone_Cl_PolyMAC_old& zone_Cl_PolyMAC_old();
-  inline const Zone_Cl_PolyMAC_old& zone_Cl_PolyMAC_old() const;
+  inline Domaine_PolyMAC_old& domaine_PolyMAC_old();
+  inline const Domaine_PolyMAC_old& domaine_PolyMAC_old() const;
+  inline Domaine_Cl_PolyMAC_old& domaine_Cl_PolyMAC_old();
+  inline const Domaine_Cl_PolyMAC_old& domaine_Cl_PolyMAC_old() const;
   inline int& face_voisins_(int i, int j);
   inline const int& face_voisins_(int i, int j) const ;
   inline double volume_entrelaces_(int i) ;
@@ -71,8 +71,8 @@ public:
 
 private:
 
-  REF(Zone_PolyMAC_old) la_zone_polymac;
-  REF(Zone_Cl_PolyMAC_old) la_zcl_polymac;
+  REF(Domaine_PolyMAC_old) la_domaine_polymac;
+  REF(Domaine_Cl_PolyMAC_old) la_zcl_polymac;
 
   DoubleTab xp;
   DoubleVect volume_entrelaces;
@@ -126,29 +126,29 @@ inline const int& Op_Grad_PolyMAC_old_Face::face_voisins_(int i, int j) const
   return face_voisins(i,j);
 }
 
-inline Zone_PolyMAC_old& Op_Grad_PolyMAC_old_Face::zone_PolyMAC_old()
+inline Domaine_PolyMAC_old& Op_Grad_PolyMAC_old_Face::domaine_PolyMAC_old()
 {
-  return la_zone_polymac.valeur();
+  return la_domaine_polymac.valeur();
 }
 
-inline const Zone_PolyMAC_old& Op_Grad_PolyMAC_old_Face::zone_PolyMAC_old() const
+inline const Domaine_PolyMAC_old& Op_Grad_PolyMAC_old_Face::domaine_PolyMAC_old() const
 {
-  return la_zone_polymac.valeur();
+  return la_domaine_polymac.valeur();
 }
 
-inline Zone_Cl_PolyMAC_old& Op_Grad_PolyMAC_old_Face::zone_Cl_PolyMAC_old()
+inline Domaine_Cl_PolyMAC_old& Op_Grad_PolyMAC_old_Face::domaine_Cl_PolyMAC_old()
 {
   return la_zcl_polymac.valeur();
 }
 
-inline const Zone_Cl_PolyMAC_old& Op_Grad_PolyMAC_old_Face::zone_Cl_PolyMAC_old() const
+inline const Domaine_Cl_PolyMAC_old& Op_Grad_PolyMAC_old_Face::domaine_Cl_PolyMAC_old() const
 {
   return la_zcl_polymac.valeur();
 }
 
 inline double Op_Grad_PolyMAC_old_Face::dist_norm_bord(int num_face) const
 {
-  return la_zone_polymac->dist_norm_bord(num_face);
+  return la_domaine_polymac->dist_norm_bord(num_face);
 }
 
 #endif

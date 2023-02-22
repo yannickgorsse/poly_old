@@ -24,8 +24,8 @@
 #define Champ_Face_PolyMAC_old_included
 
 #include <Champ_Inc_base.h>
-#include <Zone_VF.h>
-#include <Ref_Zone_VF.h>
+#include <Domaine_VF.h>
+#include <TRUST_Ref.h>
 #include <SolveurSys.h>
 
 /////////////////////////////////////////////////////////////////////////////
@@ -47,10 +47,10 @@ protected :
 
 public :
 
-  void    associer_zone_dis_base(const Zone_dis_base&) override;
-  const Zone_dis_base& zone_dis_base() const override
+  void    associer_domaine_dis_base(const Domaine_dis_base&) override;
+  const Domaine_dis_base& domaine_dis_base() const override
   {
-    return ref_zone_vf_.valeur();
+    return ref_domaine_vf_.valeur();
   } ;
 
   DoubleVect& valeur_a_elem(const DoubleVect& position, DoubleVect& result, int poly) const override;
@@ -69,9 +69,9 @@ public :
   Champ_base& affecter_(const Champ_base& ) override;
   int nb_valeurs_nodales() const override;
 
-  const Zone_VF& zone_vf() const
+  const Domaine_VF& domaine_vf() const
   {
-    return ref_zone_vf_.valeur();
+    return ref_domaine_vf_.valeur();
   };
 
   int fixer_nb_valeurs_nodales(int n) override;
@@ -102,7 +102,7 @@ public :
 
 
 protected:
-  REF(Zone_VF) ref_zone_vf_;
+  REF(Domaine_VF) ref_domaine_vf_;
 };
 
 

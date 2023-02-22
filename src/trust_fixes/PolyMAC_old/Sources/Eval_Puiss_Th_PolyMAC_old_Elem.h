@@ -24,10 +24,10 @@
 #define Eval_Puiss_Th_PolyMAC_old_Elem_included
 
 #include <Evaluateur_Source_PolyMAC_old_Elem.h>
-#include <Ref_Champ_Don.h>
 #include <TRUSTTab.h>
 #include <Champ_Uniforme.h>
 #include <Champ_Don.h>
+#include <TRUST_Ref.h>
 #include <Equation_base.h>
 
 ////////////////////////////////////////////////////////////////////////////

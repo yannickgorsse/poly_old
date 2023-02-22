@@ -60,7 +60,7 @@ class Op_Conv_Centre_PolyMAC_old_Elem : public Op_Conv_PolyMAC_old_iterateur_bas
 public:
 
   Op_Conv_Centre_PolyMAC_old_Elem();
-  void associer(const Zone_dis& , const Zone_Cl_dis& ,const Champ_Inc& ) override;
+  void associer(const Domaine_dis& , const Domaine_Cl_dis& ,const Champ_Inc& ) override;
   void associer_vitesse(const Champ_base& ) override;
   const Champ_base& vitesse() const override;
   Champ_base& vitesse() override;
@@ -82,17 +82,17 @@ inline Op_Conv_Centre_PolyMAC_old_Elem::Op_Conv_Centre_PolyMAC_old_Elem(const It
 // on dimensionne notre matrice.
 inline  void Op_Conv_Centre_PolyMAC_old_Elem::dimensionner(Matrice_Morse& matrice) const
 {
-  Op_PolyMAC_old_Elem::dimensionner(iter.zone(), iter.zone_Cl(), matrice);
+  Op_PolyMAC_old_Elem::dimensionner(iter.domaine(), iter.domaine_Cl(), matrice);
 }
 
 inline  void Op_Conv_Centre_PolyMAC_old_Elem::dimensionner_bloc_vitesse(Matrice_Morse& matrice) const
 {
-  Op_PolyMAC_old_Elem::dimensionner_bloc_vitesse(iter.zone(), iter.zone_Cl(), matrice);
+  Op_PolyMAC_old_Elem::dimensionner_bloc_vitesse(iter.domaine(), iter.domaine_Cl(), matrice);
 }
 
 inline void Op_Conv_Centre_PolyMAC_old_Elem::modifier_pour_Cl(Matrice_Morse& matrice, DoubleTab& secmem) const
 {
-  Op_PolyMAC_old_Elem::modifier_pour_Cl(iter.zone(), iter.zone_Cl(), matrice, secmem);
+  Op_PolyMAC_old_Elem::modifier_pour_Cl(iter.domaine(), iter.domaine_Cl(), matrice, secmem);
 }
 
 #endif

@@ -21,7 +21,7 @@
 //////////////////////////////////////////////////////////////////////////////
 
 #include <Champ_Fonc_P0_PolyMAC_old.h>
-#include <Zone_VF.h>
+#include <Domaine_VF.h>
 
 Implemente_instanciable(Champ_Fonc_P0_PolyMAC_old,"Champ_Fonc_P0_PolyMAC_old",Champ_Fonc_P0_base);
 

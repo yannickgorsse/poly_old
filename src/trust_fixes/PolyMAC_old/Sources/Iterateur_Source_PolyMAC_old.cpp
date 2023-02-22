@@ -22,7 +22,6 @@
 
 #include <Iterateur_Source_PolyMAC_old.h>
 
-Implemente_deriv(Iterateur_Source_PolyMAC_old_base);
 Implemente_instanciable(Iterateur_Source_PolyMAC_old,"Iterateur_Source_PolyMAC_old",DERIV(Iterateur_Source_PolyMAC_old_base));
 
 //// printOn

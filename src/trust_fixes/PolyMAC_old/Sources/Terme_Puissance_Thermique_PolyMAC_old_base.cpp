@@ -21,7 +21,7 @@
 //////////////////////////////////////////////////////////////////////////////
 
 #include <Terme_Puissance_Thermique_PolyMAC_old_base.h>
-#include <Zone_PolyMAC_old.h>
+#include <Domaine_PolyMAC_old.h>
 #include <Champ_val_tot_sur_vol_base.h>
 
 Implemente_base(Terme_Puissance_Thermique_PolyMAC_old_base,"Terme_Puissance_Thermique_PolyMAC_old_base",Terme_Source_PolyMAC_old_base);
@@ -45,12 +45,12 @@ Entree& Terme_Puissance_Thermique_PolyMAC_old_base::readOn(Entree& s )
   return s ;
 }
 
-void Terme_Puissance_Thermique_PolyMAC_old_base::associer_zones(const Zone_dis& zone_dis,
-                                                                const Zone_Cl_dis& zone_cl_dis)
+void Terme_Puissance_Thermique_PolyMAC_old_base::associer_domaines(const Domaine_dis& domaine_dis,
+                                                                   const Domaine_Cl_dis& domaine_cl_dis)
 {
-  const Zone_PolyMAC_old& zvdf = ref_cast(Zone_PolyMAC_old,zone_dis.valeur());
-  const Zone_Cl_PolyMAC_old& zclvdf = ref_cast(Zone_Cl_PolyMAC_old,zone_cl_dis.valeur());
-  iter->associer_zones(zvdf,zclvdf);
+  const Domaine_PolyMAC_old& zvdf = ref_cast(Domaine_PolyMAC_old,domaine_dis.valeur());
+  const Domaine_Cl_PolyMAC_old& zclvdf = ref_cast(Domaine_Cl_PolyMAC_old,domaine_cl_dis.valeur());
+  iter->associer_domaines(zvdf,zclvdf);
 }
 
 int Terme_Puissance_Thermique_PolyMAC_old_base::initialiser(double temps)

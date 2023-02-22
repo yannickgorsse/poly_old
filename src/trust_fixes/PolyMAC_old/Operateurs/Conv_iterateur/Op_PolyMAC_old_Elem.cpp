@@ -21,8 +21,8 @@
 //////////////////////////////////////////////////////////////////////////////
 
 #include <Op_PolyMAC_old_Elem.h>
-#include <Zone_PolyMAC_old.h>
-#include <Zone_Cl_PolyMAC_old.h>
+#include <Domaine_PolyMAC_old.h>
+#include <Domaine_Cl_PolyMAC_old.h>
 #include <Periodique.h>
 #include <Matrice_Morse.h>
 #include <Equation_base.h>
@@ -30,8 +30,8 @@
 #include <Matrix_tools.h>
 #include <Array_tools.h>
 
-void Op_PolyMAC_old_Elem::dimensionner(const Zone_PolyMAC_old& la_zone,
-                                       const Zone_Cl_PolyMAC_old& la_zone_cl,
+void Op_PolyMAC_old_Elem::dimensionner(const Domaine_PolyMAC_old& la_domaine,
+                                       const Domaine_Cl_PolyMAC_old& la_domaine_cl,
                                        Matrice_Morse& la_matrice) const
 {
   // Dimensionnement de la matrice qui devra recevoir les coefficients provenant de
@@ -40,16 +40,16 @@ void Op_PolyMAC_old_Elem::dimensionner(const Zone_PolyMAC_old& la_zone,
   // Nous commencons par calculer les tailles des tableaux tab1 et tab2.
 
   int num_face,face,k;
-  int n1 = la_zone.zone().nb_elem_tot(), n2 = la_zone.nb_faces_tot();
+  int n1 = la_domaine.domaine().nb_elem_tot(), n2 = la_domaine.nb_faces_tot();
   int elem1,elem2, i;
-  const IntTab& face_voisins = la_zone.face_voisins();
-  //  const DoubleVect& face_surfaces = la_zone.face_surfaces();
-  //  const DoubleVect& volumes_entrelaces = la_zone.volumes_entrelaces();
-  //  const DoubleVect& porosite_face = la_zone.porosite_face();
-  const Conds_lim& les_cl = la_zone_cl.les_conditions_limites();
+  const IntTab& face_voisins = la_domaine.face_voisins();
+  //  const DoubleVect& face_surfaces = la_domaine.face_surfaces();
+  //  const DoubleVect& volumes_entrelaces = la_domaine.volumes_entrelaces();
+  //  const DoubleVect& porosite_face = la_domaine.porosite_face();
+  const Conds_lim& les_cl = la_domaine_cl.les_conditions_limites();
   int nb_comp = 1;
 
-  const DoubleTab& champ_inconnue = la_zone_cl.equation().inconnue().valeurs();
+  const DoubleTab& champ_inconnue = la_domaine_cl.equation().inconnue().valeurs();
   if (champ_inconnue.nb_dim() == 2) nb_comp = champ_inconnue.dimension(1);
   //Cerr << "nb_compo de Op_PolyMAC_old_Elem::dimensionner" << nb_comp << finl;
   //Cerr << " nombre d'elements de Op_PolyMAC_old_Elem::dimensionner" << n1 << finl;
@@ -59,8 +59,8 @@ void Op_PolyMAC_old_Elem::dimensionner(const Zone_PolyMAC_old& la_zone,
   IntVect& tab1=la_matrice.get_set_tab1();
   IntVect& tab2=la_matrice.get_set_tab2();
 
-  int ndeb = la_zone.premiere_face_int();
-  int nfin = la_zone.nb_faces();
+  int ndeb = la_domaine.premiere_face_int();
+  int nfin = la_domaine.nb_faces();
   DoubleVect& coeff = la_matrice.get_set_coeff();
   coeff=0;
 
@@ -185,17 +185,17 @@ void Op_PolyMAC_old_Elem::dimensionner(const Zone_PolyMAC_old& la_zone,
   // Cerr << "tab2 = " << tab2 << finl;
 }
 
-void Op_PolyMAC_old_Elem::dimensionner_bloc_vitesse(const Zone_PolyMAC_old& la_zone,
-                                                    const Zone_Cl_PolyMAC_old& la_zone_cl,
+void Op_PolyMAC_old_Elem::dimensionner_bloc_vitesse(const Domaine_PolyMAC_old& la_domaine,
+                                                    const Domaine_Cl_PolyMAC_old& la_domaine_cl,
                                                     Matrice_Morse& matrice) const
 {
 
-  int nb_faces=la_zone.nb_faces();
-  int nb_faces_tot=la_zone.nb_faces_tot();
-  int nb_elem_tot=la_zone.nb_elem_tot();
+  int nb_faces=la_domaine.nb_faces();
+  int nb_faces_tot=la_domaine.nb_faces_tot();
+  int nb_elem_tot=la_domaine.nb_elem_tot();
   IntTab stencyl(0,2);
   stencyl.set_smart_resize(1);
-  const IntTab& face_voisins = la_zone.face_voisins();
+  const IntTab& face_voisins = la_domaine.face_voisins();
 
   int nb_coef=0;
   for (int face=0; face<nb_faces; face++)
@@ -218,8 +218,8 @@ void Op_PolyMAC_old_Elem::dimensionner_bloc_vitesse(const Zone_PolyMAC_old& la_z
 }
 
 
-void Op_PolyMAC_old_Elem:: modifier_pour_Cl(const Zone_PolyMAC_old& la_zone,
-                                            const Zone_Cl_PolyMAC_old& la_zone_cl,
+void Op_PolyMAC_old_Elem:: modifier_pour_Cl(const Domaine_PolyMAC_old& la_domaine,
+                                            const Domaine_Cl_PolyMAC_old& la_domaine_cl,
                                             Matrice_Morse& la_matrice, DoubleTab& secmem) const
 {
   // Dimensionnement de la matrice qui devra recevoir les coefficients provenant de
@@ -227,9 +227,9 @@ void Op_PolyMAC_old_Elem:: modifier_pour_Cl(const Zone_PolyMAC_old& la_zone,
   // Cette matrice a une structure de matrice morse.
   // Nous commencons par calculer les tailles des tableaux tab1 et tab2.
 
-  //  int nfin = la_zone.nb_faces();
-  //  const Conds_lim& les_cl = la_zone_cl.les_conditions_limites();
-  //  const IntVect& orientation=la_zone.orientation();
+  //  int nfin = la_domaine.nb_faces();
+  //  const Conds_lim& les_cl = la_domaine_cl.les_conditions_limites();
+  //  const IntVect& orientation=la_domaine.orientation();
 
   // Prise en compte des conditions de type periodicite
   //Cerr << "dans Op_PolyMAC_old_Elem:: modifier_pour_Cl" << finl;

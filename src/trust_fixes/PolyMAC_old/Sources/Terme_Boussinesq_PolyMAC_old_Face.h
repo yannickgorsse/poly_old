@@ -24,8 +24,9 @@
 #define Terme_Boussinesq_PolyMAC_old_Face_included
 
 #include <Terme_Boussinesq_base.h>
-#include <Ref_Zone_PolyMAC_old.h>
-#include <Ref_Zone_Cl_PolyMAC_old.h>
+#include <TRUST_Ref.h>
+class Domaine_Cl_PolyMAC_old;
+class Domaine_PolyMAC_old;
 
 class Convection_Diffusion_std;
 //
@@ -44,9 +45,9 @@ public:
 
 protected:
 
-  REF(Zone_PolyMAC_old) la_zone_PolyMAC_old;
-  REF(Zone_Cl_PolyMAC_old) la_zone_Cl_PolyMAC_old;
-  void associer_zones(const Zone_dis& ,const Zone_Cl_dis& ) override;
+  REF(Domaine_PolyMAC_old) la_domaine_PolyMAC_old;
+  REF(Domaine_Cl_PolyMAC_old) la_domaine_Cl_PolyMAC_old;
+  void associer_domaines(const Domaine_dis& ,const Domaine_Cl_dis& ) override;
 };
 
 #endif

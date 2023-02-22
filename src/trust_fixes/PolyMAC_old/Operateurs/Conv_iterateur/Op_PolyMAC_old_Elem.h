@@ -25,16 +25,16 @@
 
 #include <TRUSTTabs_forward.h>
 class Matrice_Morse;
-class Zone_PolyMAC_old;
-class Zone_Cl_PolyMAC_old;
+class Domaine_PolyMAC_old;
+class Domaine_Cl_PolyMAC_old;
 
 class Op_PolyMAC_old_Elem
 {
 public :
 
-  void dimensionner(const Zone_PolyMAC_old&, const Zone_Cl_PolyMAC_old&, Matrice_Morse&) const;
-  void dimensionner_bloc_vitesse(const Zone_PolyMAC_old&, const Zone_Cl_PolyMAC_old&, Matrice_Morse&) const;
-  void modifier_pour_Cl(const Zone_PolyMAC_old&, const Zone_Cl_PolyMAC_old&, Matrice_Morse&, DoubleTab&) const;
+  void dimensionner(const Domaine_PolyMAC_old&, const Domaine_Cl_PolyMAC_old&, Matrice_Morse&) const;
+  void dimensionner_bloc_vitesse(const Domaine_PolyMAC_old&, const Domaine_Cl_PolyMAC_old&, Matrice_Morse&) const;
+  void modifier_pour_Cl(const Domaine_PolyMAC_old&, const Domaine_Cl_PolyMAC_old&, Matrice_Morse&, DoubleTab&) const;
 };
 
 #endif

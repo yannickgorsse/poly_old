@@ -38,7 +38,7 @@ Evaluateur_Source_PolyMAC_old_Face::Evaluateur_Source_PolyMAC_old_Face(const Eva
 
 void Evaluateur_Source_PolyMAC_old_Face::completer()
 {
-  orientation.ref(la_zone->orientation());
-  volumes_entrelaces.ref(la_zone->volumes_entrelaces());
+  orientation.ref(la_domaine->orientation());
+  volumes_entrelaces.ref(la_domaine->volumes_entrelaces());
   porosite_surf.ref(la_zcl->equation().milieu().porosite_face());
 }

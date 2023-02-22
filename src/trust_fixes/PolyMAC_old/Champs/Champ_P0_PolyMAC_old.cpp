@@ -22,7 +22,7 @@
 
 
 #include <Champ_P0_PolyMAC_old.h>
-#include <Zone_Cl_dis.h>
+#include <Domaine_Cl_dis.h>
 #include <Dirichlet.h>
 #include <Symetrie.h>
 #include <Dirichlet_homogene.h>
@@ -63,9 +63,9 @@ Entree& Champ_P0_PolyMAC_old::readOn(Entree& s)
 // Exception:
 // Effets de bord:
 // Postcondition:
-const Zone_dis_base& Champ_P0_PolyMAC_old::zone_dis_base() const
+const Domaine_dis_base& Champ_P0_PolyMAC_old::domaine_dis_base() const
 {
-  return la_zone_VF.valeur();
+  return la_domaine_VF.valeur();
 }
 // Description:
 //
@@ -75,14 +75,14 @@ const Zone_dis_base& Champ_P0_PolyMAC_old::zone_dis_base() const
 //    Contraintes:
 //    Acces: entree/sortie
 // Retour:  z_dis
-//    Signification: la zone discretise
+//    Signification: la domaine discretise
 //    Contraintes:
 // Exception:
 // Effets de bord:
 // Postcondition:
-void Champ_P0_PolyMAC_old::associer_zone_dis_base(const Zone_dis_base& z_dis)
+void Champ_P0_PolyMAC_old::associer_domaine_dis_base(const Domaine_dis_base& z_dis)
 {
-  la_zone_VF=ref_cast(Zone_VF, z_dis);
+  la_domaine_VF=ref_cast(Domaine_VF, z_dis);
 }
 
 // Description:
@@ -92,23 +92,23 @@ void Champ_P0_PolyMAC_old::associer_zone_dis_base(const Zone_dis_base& z_dis)
 //    Valeurs par defaut:
 //    Contraintes:
 //    Acces: entree/sortie
-// Retour: la_zone_PolyMAC_old_P0.valeur()
+// Retour: la_domaine_PolyMAC_old_P0.valeur()
 //    Signification:
 //    Contraintes:
 // Exception:
 // Effets de bord:
 // Postcondition:
-const Zone_PolyMAC_old& Champ_P0_PolyMAC_old::zone_PolyMAC_old() const
+const Domaine_PolyMAC_old& Champ_P0_PolyMAC_old::domaine_PolyMAC_old() const
 {
-  return ref_cast(Zone_PolyMAC_old, la_zone_VF.valeur());
+  return ref_cast(Domaine_PolyMAC_old, la_domaine_VF.valeur());
 }
 
 int Champ_P0_PolyMAC_old::imprime(Sortie& os, int ncomp) const
 {
-  const Zone_dis_base& zone_dis = zone_dis_base();
-  const Zone& zone = zone_dis.zone();
-  const DoubleTab& coord=zone.domaine().coord_sommets();
-  const int nb_som = zone.domaine().nb_som();
+  const Domaine_dis_base& domaine_dis = domaine_dis_base();
+  const Domaine& domaine = domaine_dis.domaine();
+  const DoubleTab& coord=domaine.coord_sommets();
+  const int nb_som = domaine.nb_som();
   const DoubleTab& val = valeurs();
   int som;
   os << nb_som << finl;
@@ -130,18 +130,18 @@ int Champ_P0_PolyMAC_old::imprime(Sortie& os, int ncomp) const
 
 int Champ_P0_PolyMAC_old::fixer_nb_valeurs_nodales(int n)
 {
-  if (n == zone_dis_base().zone().nb_elem()) //champ sans flux aux faces (ex. aiguilles)
-    creer_tableau_distribue(zone_dis_base().zone().md_vector_elements());
+  if (n == domaine_dis_base().domaine().nb_elem()) //champ sans flux aux faces (ex. aiguilles)
+    creer_tableau_distribue(domaine_dis_base().domaine().md_vector_elements());
   else //champ avec flux
-    creer_tableau_distribue(ref_cast(Zone_PolyMAC_old, zone_dis_base()).mdv_elems_faces);
+    creer_tableau_distribue(ref_cast(Domaine_PolyMAC_old, domaine_dis_base()).mdv_elems_faces);
   return n;
 }
 
 Champ_base& Champ_P0_PolyMAC_old::affecter_(const Champ_base& ch)
 {
-  const Zone_PolyMAC_old& zone = ref_cast(Zone_PolyMAC_old,la_zone_VF.valeur());
+  const Domaine_PolyMAC_old& domaine = ref_cast(Domaine_PolyMAC_old,la_domaine_VF.valeur());
   DoubleTab_parts part(valeurs());
-  for (int i = 0; i < part.size(); i++) ch.valeur_aux(i ? zone.xv() : zone.xp(), part[i]);
+  for (int i = 0; i < part.size(); i++) ch.valeur_aux(i ? domaine.xv() : domaine.xp(), part[i]);
   valeurs().echange_espace_virtuel();
   return *this;
 }
@@ -149,12 +149,12 @@ Champ_base& Champ_P0_PolyMAC_old::affecter_(const Champ_base& ch)
 //utilitaires pour CL
 void Champ_P0_PolyMAC_old::init_cl() const
 {
-  const Zone_PolyMAC_old& zone = ref_cast(Zone_PolyMAC_old,la_zone_VF.valeur());
-  const Conds_lim& cls = ma_zone_cl_dis.valeur().les_conditions_limites();
+  const Domaine_PolyMAC_old& domaine = ref_cast(Domaine_PolyMAC_old,la_domaine_VF.valeur());
+  const Conds_lim& cls = mon_dom_cl_dis->les_conditions_limites();
   int i, f, n;
 
   if (icl.dimension(0)) return;
-  icl.resize(zone.nb_faces_tot(), 3);
+  icl.resize(domaine.nb_faces_tot(), 3);
   for (n = 0; n < cls.size(); n++)
     {
       const Front_VF& fvf = ref_cast(Front_VF, cls[n].frontiere_dis());
@@ -171,21 +171,21 @@ void Champ_P0_PolyMAC_old::init_cl() const
 
 DoubleTab& Champ_P0_PolyMAC_old::valeur_aux_faces(DoubleTab& dst) const
 {
-  const Zone_PolyMAC_old& zone = ref_cast(Zone_PolyMAC_old, zone_dis_base());
-  const IntTab& f_e = zone.face_voisins();
+  const Domaine_PolyMAC_old& domaine = ref_cast(Domaine_PolyMAC_old, domaine_dis_base());
+  const IntTab& f_e = domaine.face_voisins();
   const DoubleTab& src = valeurs();
 
   /* vals doit etre pre-dimensionne */
   int i, e, f, n, N = (src.nb_dim() == 1 ? 1 : src.dimension(1));
-  assert(dst.dimension(0) == zone.xv().dimension(0) && N == (dst.nb_dim() == 1 ? 1 : dst.dimension(1)));
+  assert(dst.dimension(0) == domaine.xv().dimension(0) && N == (dst.nb_dim() == 1 ? 1 : dst.dimension(1)));
 
-  if (src.dimension_tot(0) > zone.nb_elem_tot()) //on a les valeurs aux faces
+  if (src.dimension_tot(0) > domaine.nb_elem_tot()) //on a les valeurs aux faces
     for (f = 0; f < dst.dimension(0); f++)
-      for (n = 0; n < N; n++) dst(f, n) = src(zone.nb_elem_tot() + f, n);
+      for (n = 0; n < N; n++) dst(f, n) = src(domaine.nb_elem_tot() + f, n);
   else for (f = 0; f < dst.dimension(0); f++) //on prend (amont + aval) / 2
       for (i = 0; i < 2 && (e = f_e(f, i)) >= 0; i++)
         for (n = 0; n < N; n++)
-          dst(f, n) += src(e, n) * (f < zone.premiere_face_int() ? 1 : 0.5);
+          dst(f, n) += src(e, n) * (f < domaine.premiere_face_int() ? 1 : 0.5);
 
   return dst;
 }

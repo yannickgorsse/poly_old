@@ -47,18 +47,18 @@ Entree& Op_Conv_Centre_PolyMAC_old_Elem::readOn(Entree& s )
 
 // Description:
 // complete l'iterateur et l'evaluateur
-void Op_Conv_Centre_PolyMAC_old_Elem::associer(const Zone_dis& zone_dis,
-                                               const Zone_Cl_dis& zone_cl_dis,
+void Op_Conv_Centre_PolyMAC_old_Elem::associer(const Domaine_dis& domaine_dis,
+                                               const Domaine_Cl_dis& domaine_cl_dis,
                                                const Champ_Inc& ch_transporte)
 {
-  const Zone_PolyMAC_old& zvdf = ref_cast(Zone_PolyMAC_old,zone_dis.valeur());
-  const Zone_Cl_PolyMAC_old& zclvdf = ref_cast(Zone_Cl_PolyMAC_old,zone_cl_dis.valeur());
+  const Domaine_PolyMAC_old& zvdf = ref_cast(Domaine_PolyMAC_old,domaine_dis.valeur());
+  const Domaine_Cl_PolyMAC_old& zclvdf = ref_cast(Domaine_Cl_PolyMAC_old,domaine_cl_dis.valeur());
   const Champ_P0_PolyMAC_old& inco = ref_cast(Champ_P0_PolyMAC_old,ch_transporte.valeur());
 
   iter->associer(zvdf, zclvdf, *this);
 
   Eval_centre_PolyMAC_old_Elem& eval_conv = (Eval_centre_PolyMAC_old_Elem&) iter.evaluateur();
-  eval_conv.associer_zones(zvdf, zclvdf );          // Evaluateur_PolyMAC_old::associer
+  eval_conv.associer_domaines(zvdf, zclvdf );          // Evaluateur_PolyMAC_old::associer
   eval_conv.associer_inconnue(inco );        // Eval_PolyMAC_old_Elem::associer_inconnue
 }
 

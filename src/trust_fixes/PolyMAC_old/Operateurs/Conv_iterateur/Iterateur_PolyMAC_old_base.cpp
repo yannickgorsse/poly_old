@@ -22,7 +22,6 @@
 
 #include <Iterateur_PolyMAC_old_base.h>
 
-Implemente_deriv(Iterateur_PolyMAC_old_base);
 Implemente_base(Iterateur_PolyMAC_old_base,"Iterateur_PolyMAC_old_base",Objet_U);
 Implemente_instanciable(Iterateur_PolyMAC_old,"Iterateur_PolyMAC_old",DERIV(Iterateur_PolyMAC_old_base));
 
@@ -59,24 +58,24 @@ Entree& Iterateur_PolyMAC_old::readOn(Entree& s )
 }
 
 
-void Iterateur_PolyMAC_old_base::associer(const Zone_dis& z,
-                                          const Zone_Cl_dis& zcl, const Operateur_base& op)
+void Iterateur_PolyMAC_old_base::associer(const Domaine_dis& z,
+                                          const Domaine_Cl_dis& zcl, const Operateur_base& op)
 {
-  const Zone_PolyMAC_old& zone_vdf=ref_cast(Zone_PolyMAC_old, z.valeur());
-  const Zone_Cl_PolyMAC_old& zone_cl_vdf=ref_cast(Zone_Cl_PolyMAC_old, zcl.valeur());
-  associer(zone_vdf, zone_cl_vdf,op);
+  const Domaine_PolyMAC_old& domaine_vdf=ref_cast(Domaine_PolyMAC_old, z.valeur());
+  const Domaine_Cl_PolyMAC_old& domaine_cl_vdf=ref_cast(Domaine_Cl_PolyMAC_old, zcl.valeur());
+  associer(domaine_vdf, domaine_cl_vdf,op);
 }
-void Iterateur_PolyMAC_old_base::associer_zone_cl_dis(const Zone_Cl_dis_base& zcl)
+void Iterateur_PolyMAC_old_base::associer_domaine_cl_dis(const Domaine_Cl_dis_base& zcl)
 {
-  const Zone_Cl_PolyMAC_old& zone_cl_vdf=ref_cast(Zone_Cl_PolyMAC_old, zcl);
-  la_zcl=zone_cl_vdf;
+  const Domaine_Cl_PolyMAC_old& domaine_cl_vdf=ref_cast(Domaine_Cl_PolyMAC_old, zcl);
+  la_zcl=domaine_cl_vdf;
 
 }
-void Iterateur_PolyMAC_old_base::associer(const Zone_PolyMAC_old& zone_vdf,
-                                          const Zone_Cl_PolyMAC_old& zone_cl_vdf, const Operateur_base& op)
+void Iterateur_PolyMAC_old_base::associer(const Domaine_PolyMAC_old& domaine_vdf,
+                                          const Domaine_Cl_PolyMAC_old& domaine_cl_vdf, const Operateur_base& op)
 {
-  la_zone=zone_vdf;
-  la_zcl=zone_cl_vdf;
+  la_domaine=domaine_vdf;
+  la_zcl=domaine_cl_vdf;
   op_base=op;
   // completer_();
 }

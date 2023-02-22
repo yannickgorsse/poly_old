@@ -23,8 +23,7 @@
 #include <Interprete_bloc.h>
 #include <Type_Verifie.h>
 
-Implemente_instanciable_sans_constructeur_ni_destructeur(Interprete_bloc,"Interprete_bloc",liste);
-Implemente_ref(Interprete_bloc);
+Implemente_instanciable_sans_constructeur_ni_destructeur(Interprete_bloc,"Interprete_bloc",Liste_bloc);
 
 // Voir Interprete_bloc::interprete_courant()
 static REF(Interprete_bloc) interprete_courant_;

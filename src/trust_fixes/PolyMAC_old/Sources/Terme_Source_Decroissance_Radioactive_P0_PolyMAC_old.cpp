@@ -22,8 +22,8 @@
 
 #include <Terme_Source_Decroissance_Radioactive_P0_PolyMAC_old.h>
 #include <Equation_base.h>
-#include <Zone_Cl_dis.h>
-#include <Zone_PolyMAC_old.h>
+#include <Domaine_Cl_dis.h>
+#include <Domaine_PolyMAC_old.h>
 #include <Synonyme_info.h>
 
 Implemente_instanciable_sans_constructeur(Terme_Source_Decroissance_Radioactive_P0_PolyMAC_old,"Decroissance_Radioactive_P0_PolyMAC_old",Source_base);
@@ -66,18 +66,18 @@ void Terme_Source_Decroissance_Radioactive_P0_PolyMAC_old::completer()
     }
 }
 
-void Terme_Source_Decroissance_Radioactive_P0_PolyMAC_old::associer_zones(const Zone_dis& zone_dis,
-                                                                          const Zone_Cl_dis& zone_Cl_dis)
+void Terme_Source_Decroissance_Radioactive_P0_PolyMAC_old::associer_domaines(const Domaine_dis& domaine_dis,
+                                                                             const Domaine_Cl_dis& domaine_Cl_dis)
 {
-  Cerr << " Terme_Source_Decroissance_Radioactive_P0_PolyMAC_old::associer_zones " << finl ;
-  la_zone_PolyMAC_old = ref_cast(Zone_PolyMAC_old, zone_dis.valeur());
+  Cerr << " Terme_Source_Decroissance_Radioactive_P0_PolyMAC_old::associer_domaines " << finl ;
+  la_domaine_PolyMAC_old = ref_cast(Domaine_PolyMAC_old, domaine_dis.valeur());
 }
 
 DoubleTab& Terme_Source_Decroissance_Radioactive_P0_PolyMAC_old::ajouter(DoubleTab& resu)  const
 {
-  int nb_elem = la_zone_PolyMAC_old.valeur().nb_elem();
-  const Zone_VF& zone = la_zone_PolyMAC_old.valeur();
-  const DoubleVect& ve = zone.volumes();
+  int nb_elem = la_domaine_PolyMAC_old.valeur().nb_elem();
+  const Domaine_VF& domaine = la_domaine_PolyMAC_old.valeur();
+  const DoubleVect& ve = domaine.volumes();
   const DoubleTab& c = equation().inconnue().valeurs();
 
   for (int e = 0; e < nb_elem; e++)
@@ -96,9 +96,9 @@ DoubleTab& Terme_Source_Decroissance_Radioactive_P0_PolyMAC_old::calculer(Double
 
 void Terme_Source_Decroissance_Radioactive_P0_PolyMAC_old::contribuer_a_avec(const DoubleTab& inco, Matrice_Morse& matrice) const
 {
-  int nb_elem = la_zone_PolyMAC_old.valeur().nb_elem();
-  const Zone_VF& zone = la_zone_PolyMAC_old.valeur();
-  const DoubleVect& ve = zone.volumes();
+  int nb_elem = la_domaine_PolyMAC_old.valeur().nb_elem();
+  const Domaine_VF& domaine = la_domaine_PolyMAC_old.valeur();
+  const DoubleVect& ve = domaine.volumes();
 
   for (int e = 0, k = 0; e < nb_elem; e++)
     for (int l = 0; l < nb_groupes; l++, k++)

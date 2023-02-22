@@ -24,8 +24,10 @@
 #define Champ_Fonc_Tabule_P0_PolyMAC_old_included
 
 #include <Champ_Fonc_P0_PolyMAC_old.h>
-#include <Vect_Ref_Champ_base.h>
-#include <Ref_Table.h>
+#include <TRUST_Vector.h>
+#include <TRUST_Ref.h>
+
+class Table;
 
 //////////////////////////////////////////////////////////////////////////////
 //

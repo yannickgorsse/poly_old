@@ -23,7 +23,8 @@
 #ifndef Eval_Conv_PolyMAC_old_included
 #define Eval_Conv_PolyMAC_old_included
 
-#include <Ref_Champ_Face_PolyMAC_old.h>
+class Champ_Face_PolyMAC_old;
+#include <TRUST_Ref.h>
 #include <Evaluateur_PolyMAC_old.h>
 
 class Champ_Inc_base;

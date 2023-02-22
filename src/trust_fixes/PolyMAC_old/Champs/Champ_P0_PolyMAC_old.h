@@ -24,12 +24,12 @@
 #define Champ_P0_PolyMAC_old_included
 
 #include <Champ_Inc_P0_base.h>
-#include <Ref_Zone_VF.h>
-#include <Zone_PolyMAC_old.h>
+#include <Domaine_PolyMAC_old.h>
 #include <Operateur.h>
 #include <Op_Diff_PolyMAC_old_base.h>
-
-class Zone_PolyMAC_old;
+#include <TRUST_Ref.h>
+class Domaine_VF;
+class Domaine_PolyMAC_old;
 
 /////////////////////////////////////////////////////////////////////////////
 // .NAME        : Champ_P0_PolyMAC_old
@@ -45,9 +45,9 @@ class Champ_P0_PolyMAC_old : public Champ_Inc_P0_base
 
 public :
 
-  const Zone_PolyMAC_old&        zone_PolyMAC_old() const;
-  void                         associer_zone_dis_base(const Zone_dis_base&) override;
-  const Zone_dis_base& zone_dis_base() const override;
+  const Domaine_PolyMAC_old&        domaine_PolyMAC_old() const;
+  void                         associer_domaine_dis_base(const Domaine_dis_base&) override;
+  const Domaine_dis_base& domaine_dis_base() const override;
   Champ_base& affecter_(const Champ_base& ch) override;
   int                       imprime(Sortie& , int ) const override;
 
@@ -71,7 +71,7 @@ public :
 
 protected :
 
-  REF(Zone_VF) la_zone_VF;
+  REF(Domaine_VF) la_domaine_VF;
 
 
 };
@@ -81,16 +81,16 @@ inline DoubleTab& Champ_P0_PolyMAC_old::trace(const Frontiere_dis_base& fr, Doub
   /* dimensionnement du tableau de destination x si necessaire */
   const DoubleTab& src = valeurs();
   const Front_VF& fvf = ref_cast(Front_VF, fr);
-  const Zone_PolyMAC_old& zone = ref_cast(Zone_PolyMAC_old, zone_dis_base());
-  const IntTab& f_e = zone.face_voisins();
+  const Domaine_PolyMAC_old& domaine = ref_cast(Domaine_PolyMAC_old, domaine_dis_base());
+  const IntTab& f_e = domaine.face_voisins();
 
   DoubleTrav dst; //reconstruction du champ aux faces (on ne le remplit que sur le bord concerne)
-  int i, n, e, f, N = src.nb_dim() > 1 ? src.dimension(1): 1, has_faces = src.dimension_tot(0) > zone.nb_elem_tot();
+  int i, n, e, f, N = src.nb_dim() > 1 ? src.dimension(1): 1, has_faces = src.dimension_tot(0) > domaine.nb_elem_tot();
   if (!x.dimension(0) && !x.get_md_vector().non_nul()) x.resize(fvf.nb_faces(), N);
-  N > 1 ? dst.resize(zone.nb_faces(), N) : dst.resize(zone.nb_faces()); //aargh
+  N > 1 ? dst.resize(domaine.nb_faces(), N) : dst.resize(domaine.nb_faces()); //aargh
   for (i = 0; i < fvf.nb_faces(); i++)
     for (n = 0, f = fvf.num_face(i), e = f_e(f, 0); n < N; n++)
-      dst(f, n) = src(has_faces ? zone.nb_elem_tot() + f : e, n);
+      dst(f, n) = src(has_faces ? domaine.nb_elem_tot() + f : e, n);
 
   if (distant) fr.frontiere().trace_face_distant(dst, x);
   else fr.frontiere().trace_face_local(dst, x);

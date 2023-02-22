@@ -27,7 +27,7 @@
 
 #include <Eval_Conv_PolyMAC_old.h>
 #include <Eval_PolyMAC_old_Elem.h>
-#include <Zone_PolyMAC_old.h>
+#include <Domaine_PolyMAC_old.h>
 #include <Champ_P0_PolyMAC_old.h>
 //
 // .DESCRIPTION class Eval_centre_PolyMAC_old_Elem
@@ -1198,7 +1198,7 @@ inline void Eval_centre_PolyMAC_old_Elem::secmem_faces_interne(int, DoubleVect& 
 
 inline int Eval_centre_PolyMAC_old_Elem::amont_amont(int face, int i) const
 {
-  return 0;//la_zone->amont_amont(face, i);
+  return 0;//la_domaine->amont_amont(face, i);
 }
 
 

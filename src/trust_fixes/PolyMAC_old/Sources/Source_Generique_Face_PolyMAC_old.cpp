@@ -21,9 +21,9 @@
 //////////////////////////////////////////////////////////////////////////////
 
 #include <Source_Generique_Face_PolyMAC_old.h>
-#include <Zone_PolyMAC_old.h>
-#include <Zone_Cl_PolyMAC_old.h>
-#include <Zone_Cl_dis.h>
+#include <Domaine_PolyMAC_old.h>
+#include <Domaine_Cl_PolyMAC_old.h>
+#include <Domaine_Cl_dis.h>
 #include <Champ_Face_PolyMAC_old.h>
 #include <Equation_base.h>
 #include <Milieu_base.h>
@@ -61,28 +61,28 @@ DoubleTab& Source_Generique_Face_PolyMAC_old::ajouter(DoubleTab& resu) const
 {
   Champ espace_stockage;
   const Champ_base& la_source = ch_source_->get_champ(espace_stockage); // Aux faces
-  const Zone_PolyMAC_old& zone = la_zone_PolyMAC_old.valeur();
-  const Zone_Cl_PolyMAC_old& zone_Cl_PolyMAC_old = la_zcl_PolyMAC_old.valeur();
+  const Domaine_PolyMAC_old& domaine = la_domaine_PolyMAC_old.valeur();
+  const Domaine_Cl_PolyMAC_old& domaine_Cl_PolyMAC_old = la_zcl_PolyMAC_old.valeur();
   const DoubleVect& pf = equation().milieu().porosite_face();
-  const DoubleVect& fs = zone.face_surfaces();
-  const IntTab& f_e = zone.face_voisins();
-  const DoubleTab& xv = zone.xv(), &xp = zone.xp();
+  const DoubleVect& fs = domaine.face_surfaces();
+  const IntTab& f_e = domaine.face_voisins();
+  const DoubleTab& xv = domaine.xv(), &xp = domaine.xp();
   /* 1. faces de bord -> on ne contribue qu'aux faces de Neumann */
-  for (int n_bord=0; n_bord<zone.nb_front_Cl(); n_bord++)
+  for (int n_bord=0; n_bord<domaine.nb_front_Cl(); n_bord++)
     {
-      const Cond_lim& la_cl = zone_Cl_PolyMAC_old.les_conditions_limites(n_bord);
+      const Cond_lim& la_cl = domaine_Cl_PolyMAC_old.les_conditions_limites(n_bord);
       if (!sub_type(Neumann,la_cl.valeur()) && !sub_type(Neumann_homogene,la_cl.valeur())) continue;
       const Front_VF& le_bord = ref_cast(Front_VF,la_cl.frontiere_dis());
       for (int f = le_bord.num_premiere_face(); f < le_bord.num_premiere_face() + le_bord.nb_faces(); f++)
         {
-          int e = zone.face_voisins(f, 0);
+          int e = domaine.face_voisins(f, 0);
           double fac = pf(f) * fs(f);
           for (int r = 0; r < dimension; r++)
             resu(f) += fac * la_source.valeurs()(f) * (xv(f, r) - xp(e, r));
         }
     }
   /* 2. faces internes -> contributions amont/aval */
-  for (int f = zone.premiere_face_int(); f < zone.nb_faces(); f++)
+  for (int f = domaine.premiere_face_int(); f < domaine.nb_faces(); f++)
     {
       double fac = pf(f) * fs(f);
       for (int i = 0; i < 2; i++)
@@ -92,11 +92,11 @@ DoubleTab& Source_Generique_Face_PolyMAC_old::ajouter(DoubleTab& resu) const
   return resu;
 }
 
-void Source_Generique_Face_PolyMAC_old::associer_zones(const Zone_dis& zone_dis,
-                                                       const Zone_Cl_dis& zcl_dis)
+void Source_Generique_Face_PolyMAC_old::associer_domaines(const Domaine_dis& domaine_dis,
+                                                          const Domaine_Cl_dis& zcl_dis)
 {
-  la_zone_PolyMAC_old = ref_cast(Zone_PolyMAC_old,zone_dis.valeur());
-  la_zcl_PolyMAC_old = ref_cast(Zone_Cl_PolyMAC_old,zcl_dis.valeur());
+  la_domaine_PolyMAC_old = ref_cast(Domaine_PolyMAC_old,domaine_dis.valeur());
+  la_zcl_PolyMAC_old = ref_cast(Domaine_Cl_PolyMAC_old,zcl_dis.valeur());
 }
 
 Nom Source_Generique_Face_PolyMAC_old::localisation_source()

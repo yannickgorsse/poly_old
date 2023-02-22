@@ -36,7 +36,7 @@
    Perte_Charge_Isotrope_PolyMAC_old_Face diametre_hydraulique {
    lambda expression(Re,x,y,z,t)
    diam_hydr champ_don
-   [sous_zone nom]
+   [sous_domaine nom]
    }
 */
 

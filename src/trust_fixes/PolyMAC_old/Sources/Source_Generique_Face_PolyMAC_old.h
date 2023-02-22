@@ -25,8 +25,9 @@
 #define Source_Generique_Face_PolyMAC_old_included
 
 #include <Source_Generique_base.h>
-#include <Ref_Zone_PolyMAC_old.h>
-#include <Ref_Zone_Cl_PolyMAC_old.h>
+#include <TRUST_Ref.h>
+class Domaine_Cl_PolyMAC_old;
+class Domaine_PolyMAC_old;
 
 // .DESCRIPTION class Source_Generique_Face_PolyMAC_old
 // .SECTION voir Source_Generique_base
@@ -39,13 +40,13 @@ class Source_Generique_Face_PolyMAC_old: public Source_Generique_base
 public:
 
   DoubleTab& ajouter(DoubleTab& ) const override;
-  void associer_zones(const Zone_dis& ,const Zone_Cl_dis&) override;
+  void associer_domaines(const Domaine_dis& ,const Domaine_Cl_dis&) override;
   Nom localisation_source() override;
 
 protected:
 
-  REF(Zone_PolyMAC_old) la_zone_PolyMAC_old;
-  REF(Zone_Cl_PolyMAC_old) la_zcl_PolyMAC_old;
+  REF(Domaine_PolyMAC_old) la_domaine_PolyMAC_old;
+  REF(Domaine_Cl_PolyMAC_old) la_zcl_PolyMAC_old;
 };
 
 #endif

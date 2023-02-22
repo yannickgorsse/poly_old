@@ -93,7 +93,7 @@
     return s ;                                                                \
   }                                                                        \
   inline void It_PolyMAC_old_Elem(_TYPE_)::completer_(){                        \
-    elem.ref(la_zone->face_voisins());                                        \
+    elem.ref(la_domaine->face_voisins());                                        \
   }                                                                        \
   const Milieu_base& It_PolyMAC_old_Elem(_TYPE_)::milieu() const{                \
     return (la_zcl->equation()).milieu();                                \
@@ -104,12 +104,12 @@
     ((_TYPE_&) flux_evaluateur).mettre_a_jour();                        \
     assert(donne.nb_dim() < 3);                                                \
     assert(la_zcl.non_nul());                                                \
-    assert(la_zone.non_nul());                                                \
+    assert(la_domaine.non_nul());                                                \
     int ncomp=1;                                                        \
     if (donne.nb_dim() == 2)                                                \
       ncomp=donne.dimension(1);                                                \
     DoubleTab& flux_bords=op_base->flux_bords();                        \
-    flux_bords.resize(la_zone->nb_faces_bord(),ncomp);                        \
+    flux_bords.resize(la_domaine->nb_faces_bord(),ncomp);                        \
     flux_bords=0;                                                        \
     /* modif b.m.: on va faire += sur des items virtuels, initialiser les cases */ \
     /* sinon risque que les cases soient invalides ou non initialisees */ \
@@ -140,7 +140,7 @@
     int face;                                                                \
     int num_cl=0;                                                        \
     double flux;                                                        \
-    int nb_front_Cl=la_zone->nb_front_Cl();                                \
+    int nb_front_Cl=la_domaine->nb_front_Cl();                                \
     DoubleTab& flux_bords=op_base->flux_bords();                        \
     for (; num_cl<nb_front_Cl; num_cl++) {                                \
       /* pour chaque Condition Limite on regarde son type */                \
@@ -151,7 +151,7 @@
       /* Test en bidim axi */                                                \
       if (bidim_axi && !sub_type(Symetrie,la_cl.valeur()))                \
         {                                                                \
-          if (nfin>ndeb && est_egal(la_zone.valeur().face_surfaces()[ndeb],0)) \
+          if (nfin>ndeb && est_egal(la_domaine.valeur().face_surfaces()[ndeb],0)) \
             {                                                                \
               Cerr << "Error in the definition of the boundary conditions." << finl; \
               Cerr << "The axis of revolution for this 2D calculation is along Y." << finl; \
@@ -287,11 +287,11 @@
           const Echange_externe_impose& cl =(const Echange_externe_impose&) (la_cl.valeur()); \
                                                                                 \
          int boundary_index=-1;							\
-          if (la_zone.valeur().front_VF(num_cl).le_nom() == frontiere_dis.le_nom()) \
+          if (la_domaine.valeur().front_VF(num_cl).le_nom() == frontiere_dis.le_nom()) \
 	    boundary_index=num_cl;                                                  \
                                                                                 \
           for (face=ndeb; face<nfin; face++) {                                \
-            int local_face=la_zone.valeur().front_VF(boundary_index).num_local_face(face); \
+            int local_face=la_domaine.valeur().front_VF(boundary_index).num_local_face(face); \
             flux = flux_evaluateur.flux_face(donnee, boundary_index,face,local_face, cl, ndeb); \
             if ( (elem1=elem(face,0)) > -1)                                \
               {                                                                \
@@ -372,12 +372,12 @@
     ((_TYPE_&) flux_evaluateur).mettre_a_jour();                        \
     assert(donnee.nb_dim() < 3);                                                \
     assert(la_zcl.non_nul());                                                \
-    assert(la_zone.non_nul());                                                \
+    assert(la_domaine.non_nul());                                                \
     int ncomp=1;                                                        \
     if (donnee.nb_dim() == 2)                                                \
       ncomp=donnee.dimension(1);                                                \
     DoubleTab& flux_bords=op_base->flux_bords();                        \
-    flux_bords.resize(la_zone->nb_faces_bord(),ncomp);                        \
+    flux_bords.resize(la_domaine->nb_faces_bord(),ncomp);                        \
     flux_bords=0;                                                        \
                                                                      \
     if( ncomp != 1) Process ::exit();/* cas scalaire */			\
@@ -387,7 +387,7 @@
     int face;                                                                \
     int num_cl=0;                                                        \
     double flux;                                                        \
-    int nb_front_Cl=la_zone->nb_front_Cl();                                \
+    int nb_front_Cl=la_domaine->nb_front_Cl();                                \
     for (; num_cl<nb_front_Cl; num_cl++) {                                \
       /* pour chaque Condition Limite on regarde son type */                \
       const Cond_lim& la_cl = la_zcl->les_conditions_limites(num_cl);        \
@@ -397,7 +397,7 @@
       /* Test en bidim axi */                                                \
       if (bidim_axi && !sub_type(Symetrie,la_cl.valeur()))                \
         {                                                                \
-          if (nfin>ndeb && est_egal(la_zone.valeur().face_surfaces()[ndeb],0)) \
+          if (nfin>ndeb && est_egal(la_domaine.valeur().face_surfaces()[ndeb],0)) \
             {                                                                \
               Cerr << "Error in the definition of the boundary conditions." << finl; \
               Cerr << "The axis of revolution for this 2D calculation is along Y." << finl; \
@@ -518,11 +518,11 @@
           const Echange_externe_impose& cl =(const Echange_externe_impose&) (la_cl.valeur()); \
                                                                                 \
           int boundary_index=-1;							\
-          if (la_zone.valeur().front_VF(num_cl).le_nom() == frontiere_dis.le_nom()) \
+          if (la_domaine.valeur().front_VF(num_cl).le_nom() == frontiere_dis.le_nom()) \
 	    boundary_index=num_cl;                                                  \
                                                                                 \
           for (face=ndeb; face<nfin; face++) {                                \
-            int local_face=la_zone.valeur().front_VF(boundary_index).num_local_face(face); \
+            int local_face=la_domaine.valeur().front_VF(boundary_index).num_local_face(face); \
             flux = flux_evaluateur.flux_face(donnee, boundary_index,face,local_face, cl, ndeb); \
             if ( (elem(face,0)) > -1)                                \
               {                                                                \
@@ -603,7 +603,7 @@ modifier_flux() ;  						\
     int face,k;                                                                \
     DoubleVect flux(ncomp);                                                \
     int num_cl=0;                                                        \
-    int nb_front_Cl=la_zone->nb_front_Cl();                                \
+    int nb_front_Cl=la_domaine->nb_front_Cl();                                \
     DoubleTab& flux_bords=op_base->flux_bords();                        \
     for (; num_cl<nb_front_Cl; num_cl++) {                                \
       const Cond_lim& la_cl = la_zcl->les_conditions_limites(num_cl);        \
@@ -613,7 +613,7 @@ modifier_flux() ;  						\
       /* Test en bidim axi */                                                \
       if (bidim_axi && !sub_type(Symetrie,la_cl.valeur()))                \
         {                                                                \
-          if (nfin>ndeb && est_egal(la_zone.valeur().face_surfaces()[ndeb],0)) \
+          if (nfin>ndeb && est_egal(la_domaine.valeur().face_surfaces()[ndeb],0)) \
             {                                                                \
               Cerr << "Error in the definition of the boundary conditions." << finl; \
               Cerr << "The axis of revolution for this 2D calculation is along Y." << finl; \
@@ -767,11 +767,11 @@ modifier_flux() ;  						\
           const Echange_externe_impose& cl =(const Echange_externe_impose&) (la_cl.valeur()); \
                                                                                 \
           int boundary_index=-1;							\
-          if (la_zone.valeur().front_VF(num_cl).le_nom() == frontiere_dis.le_nom()) \
+          if (la_domaine.valeur().front_VF(num_cl).le_nom() == frontiere_dis.le_nom()) \
 	    boundary_index=num_cl;                                                  \
                                                                                 \
           for (face=ndeb; face<nfin; face++) {                                \
-            int local_face=la_zone.valeur().front_VF(boundary_index).num_local_face(face); \
+            int local_face=la_domaine.valeur().front_VF(boundary_index).num_local_face(face); \
             flux_evaluateur.flux_face(donnee, boundary_index, face, local_face, cl, ndeb, flux); \
             if ( (elem1=elem(face,0)) > -1)                                \
               for (k=0; k<ncomp; k++)                                        \
@@ -859,11 +859,11 @@ modifier_flux() ;  						\
   DoubleTab& It_PolyMAC_old_Elem(_TYPE_)::ajouter_interne(const DoubleTab& donnee, \
                                                   DoubleTab& resu) const \
   {                                                                        \
-    const Zone_PolyMAC_old& zone_PolyMAC_old = la_zone.valeur();                        \
+    const Domaine_PolyMAC_old& domaine_PolyMAC_old = la_domaine.valeur();                        \
     double flux;                                                        \
     int face;                                                                \
-    int ndeb = zone_PolyMAC_old.premiere_face_int();                                \
-    int nfin = zone_PolyMAC_old.nb_faces();                                        \
+    int ndeb = domaine_PolyMAC_old.premiere_face_int();                                \
+    int nfin = domaine_PolyMAC_old.nb_faces();                                        \
     for (face=ndeb; face<nfin; face++)                                        \
       {                                                                        \
         flux=flux_evaluateur.flux_faces_interne(donnee, face);                \
@@ -875,12 +875,12 @@ modifier_flux() ;  						\
   DoubleTab& It_PolyMAC_old_Elem(_TYPE_)::ajouter_interne(const DoubleTab& donnee, \
                                                   DoubleTab& resu,int ncomp) const \
   {                                                                        \
-    const Zone_PolyMAC_old& zone_PolyMAC_old = la_zone.valeur();                        \
+    const Domaine_PolyMAC_old& domaine_PolyMAC_old = la_domaine.valeur();                        \
     DoubleVect flux(ncomp);                                                \
     int face,k;                                                                \
     int elem0,elem1;                                                        \
-    int ndeb = zone_PolyMAC_old.premiere_face_int();                                \
-    int nfin = zone_PolyMAC_old.nb_faces();                                        \
+    int ndeb = domaine_PolyMAC_old.premiere_face_int();                                \
+    int nfin = domaine_PolyMAC_old.nb_faces();                                        \
     for (face=ndeb; face<nfin; face++)                                        \
       {                                                                        \
         flux_evaluateur.flux_faces_interne(donnee, face, flux);                \
@@ -904,10 +904,10 @@ modifier_flux() ;  						\
         && !( sub_type(Operateur_Diff_base,op_base.valeur()) && ref_cast(Operateur_Diff_base,op_base.valeur()).diffusivite().le_nom() == "conductivite" ) ) \
       {                                                                        \
         DoubleTab& flux_bords=op_base->flux_bords();                        \
-        const Zone_PolyMAC_old& la_zone_vdf=ref_cast(Zone_PolyMAC_old,op_base->equation().zone_dis().valeur());        \
+        const Domaine_PolyMAC_old& la_domaine_vdf=ref_cast(Domaine_PolyMAC_old,op_base->equation().domaine_dis().valeur());        \
         const Champ_base& rho = (op_base->equation()).milieu().masse_volumique().valeur(); \
         const Champ_Don& Cp = (op_base->equation()).milieu().capacite_calorifique(); \
-        const IntTab& face_voisins=la_zone_vdf.face_voisins();                \
+        const IntTab& face_voisins=la_domaine_vdf.face_voisins();                \
         int rho_uniforme=(sub_type(Champ_Uniforme,rho) ? 1:0); \
         int cp_uniforme=(sub_type(Champ_Uniforme,Cp.valeur()) ? 1:0); \
         int is_rho_u=op_base->equation().probleme().is_dilatable();                \
@@ -920,7 +920,7 @@ modifier_flux() ;  						\
                 is_rho_u=1;                                                \
           }                                                                \
         double Cp_=0,rho_=0;                                                \
-        const int& nb_faces_bords=la_zone_vdf.nb_faces_bord();        \
+        const int& nb_faces_bords=la_domaine_vdf.nb_faces_bord();        \
         for (int face=0; face<nb_faces_bords; face++)                \
           {                                                                \
             int num_elem=face_voisins(face,0);                        \
@@ -942,14 +942,14 @@ modifier_flux() ;  						\
   }                                                                        \
   int It_PolyMAC_old_Elem(_TYPE_)::impr(Sortie& os) const                        \
   {                                                                        \
-    const Zone& mazone=la_zone->zone();                                        \
-    const int impr_bord=(mazone.Bords_a_imprimer().est_vide() ? 0:1);        \
+    const Domaine& madomaine=la_domaine->domaine();                                        \
+    const int impr_bord=(madomaine.bords_a_imprimer().est_vide() ? 0:1);        \
     double temps=la_zcl->equation().probleme().schema_temps().temps_courant(); \
     Nom espace=" \t";                                                        \
     DoubleTab& flux_bords=op_base->flux_bords();                        \
     DoubleVect bilan(flux_bords.dimension(1));                                \
     int k,face;                                                                \
-    int nb_front_Cl=la_zone->nb_front_Cl();                                \
+    int nb_front_Cl=la_domaine->nb_front_Cl();                                \
     DoubleTrav flux_bords2( 3, nb_front_Cl , flux_bords.dimension(1)) ;         \
     flux_bords2=0;                                                              \
     /*flux_bord(k)          ->   flux_bords2(0,num_cl,k) */ \
@@ -997,7 +997,7 @@ modifier_flux() ;  						\
           Flux<< espace << bilan(k); \
        Flux << finl;\
      }\
-    const LIST(Nom)& Liste_Bords_a_imprimer = la_zone->zone().Bords_a_imprimer();\
+    const LIST(Nom)& Liste_Bords_a_imprimer = la_domaine->domaine().bords_a_imprimer();\
     if (!Liste_Bords_a_imprimer.est_vide())\
     { \
        EcrFicPartage Flux_face;\
@@ -1009,15 +1009,15 @@ modifier_flux() ;  						\
 	   const Front_VF& frontiere_dis = ref_cast(Front_VF,la_cl.frontiere_dis());\
 	   int ndeb = frontiere_dis.num_premiere_face();\
 	   int nfin = ndeb + frontiere_dis.nb_faces();\
-	   if (mazone.Bords_a_imprimer().contient(la_fr.le_nom()))\
+	   if (madomaine.bords_a_imprimer().contient(la_fr.le_nom()))\
              {\
                Flux_face << "# Flux par face sur " << la_fr.le_nom() << " au temps " << temps << " : " << finl;\
                for (face=ndeb; face<nfin; face++)\
         	 {\
         	   if (dimension == 2)                                            \
-                     Flux_face << "# Face a x= " << la_zone->xv(face,0) << " y= " << la_zone->xv(face,1) << " : ";\
+                     Flux_face << "# Face a x= " << la_domaine->xv(face,0) << " y= " << la_domaine->xv(face,1) << " : ";\
         	   else if (dimension == 3)                                        \
-                     Flux_face << "# Face a x= " << la_zone->xv(face,0) << " y= " << la_zone->xv(face,1) << " z= " << la_zone->xv(face,2) << " : ";\
+                     Flux_face << "# Face a x= " << la_domaine->xv(face,0) << " y= " << la_domaine->xv(face,1) << " z= " << la_domaine->xv(face,2) << " : ";\
         	   for(k=0; k<flux_bords.dimension(1); k++)                        \
                      Flux_face << flux_bords(face, k) << " ";\
         	   Flux_face << finl;\
@@ -1035,11 +1035,11 @@ modifier_flux() ;  						\
     ((_TYPE_&) flux_evaluateur).mettre_a_jour();                        \
     assert(resu.nb_dim() < 3);                                                \
     assert(la_zcl.non_nul());                                                \
-    assert(la_zone.non_nul());                                                \
+    assert(la_domaine.non_nul());                                                \
     int ncomp=1;                                                        \
     if (resu.nb_dim() == 2)                                                \
       ncomp=resu.dimension(1);                                                \
-    assert(op_base->flux_bords().dimension(0)==la_zone->nb_faces_bord()); /* resize deja fait */ \
+    assert(op_base->flux_bords().dimension(0)==la_domaine->nb_faces_bord()); /* resize deja fait */ \
     if( ncomp == 1) /* cas scalaire */                                        \
       {                                                                        \
         contribuer_au_second_membre_bords(resu) ;                        \
@@ -1058,7 +1058,7 @@ modifier_flux() ;  						\
     int face;                                                                \
     int num_cl=0;                                                        \
     double flux;                                                        \
-    int nb_front_Cl=la_zone->nb_front_Cl();                                \
+    int nb_front_Cl=la_domaine->nb_front_Cl();                                \
     DoubleTab& flux_bords=op_base->flux_bords();                        \
     for (; num_cl<nb_front_Cl; num_cl++) {                                \
       /* pour chaque Condition Limite on regarde son type */                \
@@ -1198,11 +1198,11 @@ modifier_flux() ;  						\
           const Echange_externe_impose& cl =(const Echange_externe_impose&) (la_cl.valeur()); \
                                                                                 \
           int boundary_index=-1;							\
-          if (la_zone.valeur().front_VF(num_cl).le_nom() == frontiere_dis.le_nom()) \
+          if (la_domaine.valeur().front_VF(num_cl).le_nom() == frontiere_dis.le_nom()) \
 	    boundary_index=num_cl;                                                  \
                                                                                 \
           for (face=ndeb; face<nfin; face++) {                                \
-	    int local_face=la_zone.valeur().front_VF(boundary_index).num_local_face(face); \
+	    int local_face=la_domaine.valeur().front_VF(boundary_index).num_local_face(face); \
             flux = flux_evaluateur.secmem_face(boundary_index,face,local_face, cl, ndeb); \
             if ( (elem1=elem(face,0)) > -1)                                \
               {                                                                \
@@ -1277,7 +1277,7 @@ modifier_flux() ;  						\
     int face,k;                                                                \
     DoubleVect flux(ncomp);                                                \
     int num_cl=0;                                                        \
-    int nb_front_Cl=la_zone->nb_front_Cl();                                \
+    int nb_front_Cl=la_domaine->nb_front_Cl();                                \
     DoubleTab& flux_bords=op_base->flux_bords();                        \
     for (; num_cl<nb_front_Cl; num_cl++) {                                \
       const Cond_lim& la_cl = la_zcl->les_conditions_limites(num_cl);        \
@@ -1430,11 +1430,11 @@ modifier_flux() ;  						\
           const Echange_externe_impose& cl =(const Echange_externe_impose&) (la_cl.valeur()); \
                                                                                 \
           int boundary_index=-1;							\
-          if (la_zone.valeur().front_VF(num_cl).le_nom() == frontiere_dis.le_nom()) \
+          if (la_domaine.valeur().front_VF(num_cl).le_nom() == frontiere_dis.le_nom()) \
 	    boundary_index=num_cl;                                                  \
                                                                                 \
           for (face=ndeb; face<nfin; face++) {                                \
-            int local_face=la_zone.valeur().front_VF(boundary_index).num_local_face(face); \
+            int local_face=la_domaine.valeur().front_VF(boundary_index).num_local_face(face); \
             flux_evaluateur.secmem_face(boundary_index,face,local_face, cl, ndeb, flux); \
             if ( (elem1=elem(face,0)) > -1)                                \
               for (k=0; k<ncomp; k++)                                        \
@@ -1518,11 +1518,11 @@ modifier_flux() ;  						\
 #define implemente6_It_PolyMAC_old_Elem(_TYPE_)                                        \
   void It_PolyMAC_old_Elem(_TYPE_)::contribuer_au_second_membre_interne(DoubleTab& resu) const \
   {                                                                        \
-    const Zone_PolyMAC_old& zone_PolyMAC_old = la_zone.valeur();                        \
+    const Domaine_PolyMAC_old& domaine_PolyMAC_old = la_domaine.valeur();                        \
     double flux;                                                        \
     int face;                                                                \
-    int ndeb=zone_PolyMAC_old.premiere_face_int();                                \
-    int nfin=zone_PolyMAC_old.nb_faces();                                        \
+    int ndeb=domaine_PolyMAC_old.premiere_face_int();                                \
+    int nfin=domaine_PolyMAC_old.nb_faces();                                        \
     for (face=ndeb; face<nfin; face++)                                        \
       {                                                                        \
         flux=flux_evaluateur.secmem_faces_interne(face);                \
@@ -1532,12 +1532,12 @@ modifier_flux() ;  						\
   }                                                                        \
   void It_PolyMAC_old_Elem(_TYPE_)::contribuer_au_second_membre_interne( DoubleTab& resu,int ncomp) const \
   {                                                                        \
-    const Zone_PolyMAC_old& zone_PolyMAC_old = la_zone.valeur();                        \
+    const Domaine_PolyMAC_old& domaine_PolyMAC_old = la_domaine.valeur();                        \
     DoubleVect flux(ncomp);                                                \
     int face,k;                                                                \
     int elem0,elem1;                                                        \
-    int ndeb=zone_PolyMAC_old.premiere_face_int();                                \
-    int nfin=zone_PolyMAC_old.nb_faces();                                        \
+    int ndeb=domaine_PolyMAC_old.premiere_face_int();                                \
+    int nfin=domaine_PolyMAC_old.nb_faces();                                        \
     for (face=ndeb; face<nfin; face++)                                        \
       {                                                                        \
         flux_evaluateur.secmem_faces_interne(face, flux);                \
@@ -1556,12 +1556,12 @@ modifier_flux() ;  						\
     ((_TYPE_&) flux_evaluateur).mettre_a_jour();                        \
     assert(inco.nb_dim() < 3);                                                \
     assert(la_zcl.non_nul());                                                \
-    assert(la_zone.non_nul());                                                \
+    assert(la_domaine.non_nul());                                                \
     int ncomp=1;                                                        \
     if (inco.nb_dim() == 2)                                                \
       ncomp=inco.dimension(1);                                                \
     DoubleTab& flux_bords=op_base->flux_bords();                        \
-    flux_bords.resize(la_zone->nb_faces_bord(),ncomp);                        \
+    flux_bords.resize(la_domaine->nb_faces_bord(),ncomp);                        \
     flux_bords=0;                                                        \
     if( ncomp == 1) /* cas scalaire */                                        \
       {                                                                        \
@@ -1581,7 +1581,7 @@ modifier_flux() ;  						\
     int ndeb, nfin;                                                        \
     int face;                                                                \
     int num_cl=0;                                                        \
-    int nb_front_Cl=la_zone->nb_front_Cl();                                \
+    int nb_front_Cl=la_domaine->nb_front_Cl();                                \
     for (; num_cl<nb_front_Cl; num_cl++) {                                \
       /* pour chaque Condition Limite on regarde son type */                \
       const Cond_lim& la_cl = la_zcl->les_conditions_limites(num_cl);        \
@@ -1706,11 +1706,11 @@ modifier_flux() ;  						\
           const Echange_externe_impose& cl =(const Echange_externe_impose&) (la_cl.valeur()); \
                                                                                 \
           int boundary_index=-1;							\
-          if (la_zone.valeur().front_VF(num_cl).le_nom() == frontiere_dis.le_nom()) \
+          if (la_domaine.valeur().front_VF(num_cl).le_nom() == frontiere_dis.le_nom()) \
 	    boundary_index=num_cl;                                                  \
                                                                                 \
           for (face=ndeb; face<nfin; face++) {                                \
-            int local_face=la_zone.valeur().front_VF(boundary_index).num_local_face(face); \
+            int local_face=la_domaine.valeur().front_VF(boundary_index).num_local_face(face); \
             flux_evaluateur.coeffs_face(boundary_index,face,local_face,ndeb, cl, aii, ajj); \
             if ( (elem1=elem(face,0)) > -1)                                \
               {                                                                \
@@ -1773,7 +1773,7 @@ modifier_flux() ;  						\
     int ndeb, nfin;                                                        \
     int face,i;                                                                \
     int num_cl=0;                                                        \
-    int nb_front_Cl=la_zone->nb_front_Cl();                                \
+    int nb_front_Cl=la_domaine->nb_front_Cl();                                \
     for (; num_cl<nb_front_Cl; num_cl++) {                                \
       const Cond_lim& la_cl = la_zcl->les_conditions_limites(num_cl);        \
       const Front_VF& frontiere_dis = ref_cast(Front_VF,la_cl.frontiere_dis());        \
@@ -1959,11 +1959,11 @@ modifier_flux() ;  						\
           const Echange_externe_impose& cl =(const Echange_externe_impose&) (la_cl.valeur()); \
                                                                                 \
           int boundary_index=-1;							\
-          if (la_zone.valeur().front_VF(num_cl).le_nom() == frontiere_dis.le_nom()) \
+          if (la_domaine.valeur().front_VF(num_cl).le_nom() == frontiere_dis.le_nom()) \
 	    boundary_index=num_cl;                                                  \
                                                                                 \
           for (face=ndeb; face<nfin; face++) {                                \
-            int local_face=la_zone.valeur().front_VF(boundary_index).num_local_face(face); \
+            int local_face=la_domaine.valeur().front_VF(boundary_index).num_local_face(face); \
             flux_evaluateur.coeffs_face(boundary_index,face,local_face,ndeb, cl, aii, ajj); \
             elem1 = elem(face,0);                                        \
             elem2 = elem(face,1);                                        \
@@ -2042,12 +2042,12 @@ modifier_flux() ;  						\
 #define implemente9_It_PolyMAC_old_Elem(_TYPE_)                                        \
   void It_PolyMAC_old_Elem(_TYPE_)::ajouter_contribution_interne(const DoubleTab& inco, Matrice_Morse& matrice ) const \
   {                                                                        \
-    const Zone_PolyMAC_old& zone_PolyMAC_old = la_zone.valeur();                        \
+    const Domaine_PolyMAC_old& domaine_PolyMAC_old = la_domaine.valeur();                        \
     int face;                                                                \
     double aii=0, ajj=0;                                                \
     int elem1,elem2;                                                        \
-    int ndeb=zone_PolyMAC_old.premiere_face_int();                                \
-    int nfin=zone_PolyMAC_old.nb_faces();                                        \
+    int ndeb=domaine_PolyMAC_old.premiere_face_int();                                \
+    int nfin=domaine_PolyMAC_old.nb_faces();                                        \
     for (face=ndeb; face<nfin; face++) {                                \
       elem1 = elem(face,0);                                                \
       elem2 = elem(face,1);                                                \
@@ -2060,12 +2060,12 @@ modifier_flux() ;  						\
   }                                                                        \
   void It_PolyMAC_old_Elem(_TYPE_)::ajouter_contribution_interne(const DoubleTab& inco, Matrice_Morse& matrice ,int ncomp) const \
   {                                                                        \
-    const Zone_PolyMAC_old& zone_PolyMAC_old = la_zone.valeur();                        \
+    const Domaine_PolyMAC_old& domaine_PolyMAC_old = la_domaine.valeur();                        \
     int face,i;                                                                \
     DoubleVect aii(ncomp), ajj(ncomp);                                        \
     int elem1,elem2;                                                        \
-    int ndeb=zone_PolyMAC_old.premiere_face_int();                                \
-    int nfin=zone_PolyMAC_old.nb_faces();                                        \
+    int ndeb=domaine_PolyMAC_old.premiere_face_int();                                \
+    int nfin=domaine_PolyMAC_old.nb_faces();                                        \
     for (face=ndeb; face<nfin; face++) {                                \
       elem1 = elem(face,0);                                                \
       elem2 = elem(face,1);                                                \

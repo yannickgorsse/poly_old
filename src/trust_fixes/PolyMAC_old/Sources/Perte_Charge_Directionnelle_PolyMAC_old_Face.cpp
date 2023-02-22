@@ -44,14 +44,14 @@ Sortie& Perte_Charge_Directionnelle_PolyMAC_old_Face::printOn(Sortie& s ) const
 Entree& Perte_Charge_Directionnelle_PolyMAC_old_Face::readOn(Entree& s )
 {
   Cerr << "Perte_Charge_Directionnelle_PolyMAC_old_Face::readOn " << finl;
-  sous_zone=false;
+  sous_domaine=false;
   int lambda_ok=0;
 
   // Definition des mots-cles
   Motcles les_mots(5);
   les_mots[0] = "lambda";
   les_mots[1] = "diam_hydr";
-  les_mots[2] = "sous_zone";
+  les_mots[2] = "sous_domaine";
   les_mots[3] = "direction";
   les_mots[4] = "implicite";
 
@@ -92,9 +92,9 @@ Entree& Perte_Charge_Directionnelle_PolyMAC_old_Face::readOn(Entree& s )
         case 1: // diam_hydr
           s >> diam_hydr;
           break;
-        case 2: // sous_zone
-          s >> nom_sous_zone;
-          sous_zone=true;
+        case 2: // sous_domaine
+          s >> nom_sous_domaine;
+          sous_domaine=true;
           break;
         case 3: // direction
           s >> v;

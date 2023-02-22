@@ -21,7 +21,7 @@
 //////////////////////////////////////////////////////////////////////////////
 
 #include <DP_Impose_PolyMAC_old_Face.h>
-#include <Zone_PolyMAC_old.h>
+#include <Domaine_PolyMAC_old.h>
 #include <Equation_base.h>
 #include <Probleme_base.h>
 #include <Milieu_base.h>
@@ -65,10 +65,10 @@ Entree& DP_Impose_PolyMAC_old_Face::readOn(Entree& s)
 void DP_Impose_PolyMAC_old_Face::remplir_num_faces(Entree& s)
 {
   const Domaine& le_domaine = equation().probleme().domaine();
-  const Zone_PolyMAC_old& zone_PolyMAC_old = ref_cast(Zone_PolyMAC_old,equation().zone_dis().valeur());
-  int taille_bloc = zone_PolyMAC_old.nb_elem();
+  const Domaine_PolyMAC_old& domaine_PolyMAC_old = ref_cast(Domaine_PolyMAC_old,equation().domaine_dis().valeur());
+  int taille_bloc = domaine_PolyMAC_old.nb_elem();
   num_faces.resize(taille_bloc);
-  lire_surfaces(s,le_domaine,zone_PolyMAC_old,num_faces, sgn);
+  lire_surfaces(s,le_domaine,domaine_PolyMAC_old,num_faces, sgn);
   // int nfac_tot = mp_sum(num_faces.size());
   int nfac_max = (int)mp_max(num_faces.size()); // not to count several (number of processes) times the same face
 
@@ -81,27 +81,27 @@ void DP_Impose_PolyMAC_old_Face::remplir_num_faces(Entree& s)
     }
 
   DoubleTrav S;
-  zone_PolyMAC_old.creer_tableau_faces(S);
-  for (int i = 0; i < num_faces.size(); i++) S(num_faces(i)) = zone_PolyMAC_old.face_surfaces(num_faces(i));
+  domaine_PolyMAC_old.creer_tableau_faces(S);
+  for (int i = 0; i < num_faces.size(); i++) S(num_faces(i)) = domaine_PolyMAC_old.face_surfaces(num_faces(i));
   surf = mp_somme_vect(S);
 }
 
 DoubleTab& DP_Impose_PolyMAC_old_Face::ajouter(DoubleTab& resu) const
 {
-  const Zone_PolyMAC_old& zone_PolyMAC_old = la_zone_PolyMAC_old.valeur();
-  const DoubleVect& pf = equation().milieu().porosite_face(), &fs = zone_PolyMAC_old.face_surfaces();
+  const Domaine_PolyMAC_old& domaine_PolyMAC_old = la_domaine_PolyMAC_old.valeur();
+  const DoubleVect& pf = equation().milieu().porosite_face(), &fs = domaine_PolyMAC_old.face_surfaces();
   const DoubleTab& vit = equation().inconnue().valeurs();
 
   //valeurs du champ de DP
   DoubleTrav xvf(num_faces.size(), dimension), DP(num_faces.size(), 3);
   for (int i = 0; i < num_faces.size(); i++)
-    for (int j = 0; j < dimension; j++) xvf(i, j) = zone_PolyMAC_old.xv()(num_faces(i), j);
+    for (int j = 0; j < dimension; j++) xvf(i, j) = domaine_PolyMAC_old.xv()(num_faces(i), j);
   DP_.valeur().valeur_aux(xvf, DP);
 
   double rho = equation().milieu().masse_volumique()(0, 0), fac_rho = equation().probleme().is_dilatable() ? 1.0 : 1.0 / rho;
 
   for (int i = 0, f; i < num_faces.size(); i++)
-    if ((f = num_faces(i)) < zone_PolyMAC_old.nb_faces())
+    if ((f = num_faces(i)) < domaine_PolyMAC_old.nb_faces())
       resu(f) += fs(f) * pf(f) * sgn(i) * (DP(i, 0) + DP(i, 1) * (surf * sgn(i) * vit(f) - DP(i, 2))) * fac_rho;
 
   bilan().resize(4); //DP dDP/dQ Q Q0
@@ -114,18 +114,18 @@ DoubleTab& DP_Impose_PolyMAC_old_Face::ajouter(DoubleTab& resu) const
 
 void DP_Impose_PolyMAC_old_Face::contribuer_a_avec(const DoubleTab& inco, Matrice_Morse& mat) const
 {
-  const Zone_PolyMAC_old& zone_PolyMAC_old = la_zone_PolyMAC_old.valeur();
-  const DoubleVect& pf = equation().milieu().porosite_face(), &fs = zone_PolyMAC_old.face_surfaces();
+  const Domaine_PolyMAC_old& domaine_PolyMAC_old = la_domaine_PolyMAC_old.valeur();
+  const DoubleVect& pf = equation().milieu().porosite_face(), &fs = domaine_PolyMAC_old.face_surfaces();
 
   //valeurs du champ de DP
   DoubleTrav xvf(num_faces.size(), dimension), DP(num_faces.size(), 3);
   for (int i = 0; i < num_faces.size(); i++)
-    for (int j = 0; j < dimension; j++) xvf(i, j) = zone_PolyMAC_old.xv()(num_faces(i), j);
+    for (int j = 0; j < dimension; j++) xvf(i, j) = domaine_PolyMAC_old.xv()(num_faces(i), j);
   DP_.valeur().valeur_aux(xvf, DP);
 
   double rho = equation().milieu().masse_volumique()(0, 0), fac_rho = equation().probleme().is_dilatable() ? 1.0 : 1.0 / rho;
   for (int i = 0, f; i < num_faces.size(); i++)
-    if ((f = num_faces(i)) < zone_PolyMAC_old.nb_faces())
+    if ((f = num_faces(i)) < domaine_PolyMAC_old.nb_faces())
       mat(f, f) -= fs(f) * pf(f) * DP(i, 1) * surf * fac_rho;
 }
 
