@@ -1,0 +1,15 @@
+Makefile
+README.BALTIK
+build/
+configure
+env_poly_old.sh
+full_env_poly_old.sh
+poly_old
+poly_old_opt
+Version_kernel
+.check_sources.ok
+
+#eclipse
+.cproject
+.project
+.settings/
