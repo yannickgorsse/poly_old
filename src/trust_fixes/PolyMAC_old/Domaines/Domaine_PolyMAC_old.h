@@ -138,13 +138,13 @@ public :
   inline double dot (const double *a, const double *b, const double *ma = NULL, const double *mb = NULL) const;
   inline std::array<double, 3> cross(int dima, int dimb, const double *a, const double *b, const double *ma = NULL, const double *mb = NULL) const;
 
-  inline double dist_norm(int num_face) const override;
-  inline double dist_norm_bord(int num_face) const override;
+  inline double dist_norm(int num_face) const ;
+  inline double dist_norm_bord(int num_face) const ;
   DoubleVect& dist_norm_bord(DoubleVect& , const Nom& nom_bord) const;
-  inline double dist_face_elem0(int num_face,int n0) const override;
-  inline double dist_face_elem1(int num_face,int n1) const override;
-  inline double dist_face_elem0_period(int num_face,int n0,double l) const override;
-  inline double dist_face_elem1_period(int num_face,int n1,double l) const override;
+  inline double dist_face_elem0(int num_face,int n0) const ;
+  inline double dist_face_elem1(int num_face,int n1) const ;
+  inline double dist_face_elem0_period(int num_face,int n0,double l) const ;
+  inline double dist_face_elem1_period(int num_face,int n1,double l) const ;
 
   IntVect cyclic; // cyclic(i) = 1 i le poly i est cyclique
 
